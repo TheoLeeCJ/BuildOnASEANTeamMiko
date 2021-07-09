@@ -1,0 +1,8 @@
+{
+  "name": "lambda-test-function",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "adm-zip": "^0.5.5"
+  }
+}
