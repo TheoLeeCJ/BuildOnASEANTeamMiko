@@ -11,7 +11,7 @@
         margin: 0;
       }
 
-      input[type=text] {
+      input[type=text], input[type=email], input[type=password] {
         width: calc(100% - 32px);
         padding: 8px;
         font-size: 1rem;
@@ -38,9 +38,11 @@
       }
     </style>
 
-    <form action="https://567ospnwdc.execute-api.us-east-1.amazonaws.com/test-function" onsubmit="event.preventDefault(); postRequest(this);" method="post">
-      <input type="text" name="endpoint" placeholder="Endpoint" value="https://567ospnwdc.execute-api.us-east-1.amazonaws.com/test-function" />
-      <input type="text" name="hotel" value="Trivago" />
+    <form onsubmit="event.preventDefault(); postRequest(this);" method="post">
+      <input type="text" name="endpoint" placeholder="Endpoint" value="https://xdpj2nme28.execute-api.us-east-1.amazonaws.com/account/register" />
+      <input type="text" name="username" value="sakuramiko35" />
+      <input type="password" name="password" value="pekomikoteetee" />
+      <input type="email" name="email" value="171274w@student.hci.edu.sg" />
       <input type="submit" value="Send POST Request" />
     </form>
 
