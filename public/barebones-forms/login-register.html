@@ -52,6 +52,10 @@
     <div id="output"></div>
 
     <script>
+      function getJWTData(jwt) {
+        return JSON.parse(atob(jwt.split(".")[1]));
+      }
+
       async function postRequest(form) {
         let formData = new FormData(form);
         let responseText = await (

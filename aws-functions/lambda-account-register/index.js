@@ -65,7 +65,7 @@ exports.handler = async (event, context, lambdaCallback) => {
       statusCode: 200,
       msg: {
         success: true,
-        jwt: jwt.sign({ "user": formFields["username"] }, SECRET),
+        jwt: jwt.sign({ "user": formFields["username"] }, SECRET, { algorithm: "HS256" }),
       },
     }));
   }
