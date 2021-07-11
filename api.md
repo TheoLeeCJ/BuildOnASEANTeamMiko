@@ -29,7 +29,7 @@ FormData fields required: jwt
 | msg.reason | "missing" / "no-auth" (if msg.success false) |
 | msg.user | JSON object containing user's info (if msg.success true) |
 
-## /listing/new - WIP
+## /item/create - WIP
 List a new product
 
 FormData fields required:
@@ -64,7 +64,7 @@ FormData fields required:
 | msg.reason | "no-auth" / "missing" / "blocked" (if msg.success false) |
 | msg.id | listing's UUID (if msg.success true) |
 
-## listing/search - WIP
+## /item/search - WIP
 Search listings and get basic information about results, up to 10 items at a time
 
 FormData fields required:
@@ -78,5 +78,5 @@ FormData fields required:
 | msg.reason | "missing" / "blocked" (if msg.success false) |
 | msg.items | JSON array representing items found, can be zero-lengtj (if msg.success true) |
 
-## listing/get/<UUID> - WIP
+## /item/get/<UUID> - WIP
 Get detailed information about a listing
