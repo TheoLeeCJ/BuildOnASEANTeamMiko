@@ -78,5 +78,5 @@ FormData fields required:
 | msg.reason | "missing" / "blocked" (if msg.success false) |
 | msg.items | JSON array representing items found, can be zero-lengtj (if msg.success true) |
 
-## /item/get/<UUID> - WIP
+## /item/details/<UUID> - WIP
 Get detailed information about a listing
