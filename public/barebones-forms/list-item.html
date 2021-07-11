@@ -5,6 +5,7 @@
     <style>
       * {
         box-sizing: border-box;
+        font-family: "Segoe UI", "Helvetica", sans-serif;
       }
 
       body {
@@ -38,13 +39,29 @@
       }
     </style>
 
-    <form onsubmit="event.preventDefault(); postRequest(this);" method="post">
-      <input type="text" name="jwt" placeholder="jwt" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FrdXJhbWlrbzM1IiwiaWF0IjoxNjI1OTg3ODY2fQ.8gQIzkpZ017C-4l7bMLSsIVdPdPnH6YGNAAkGEuIDBg" />
-      <input type="text" name="username" value="sakuramiko35" />
-      <input type="password" name="password" value="pekomikoteetee" />
+    <h1>/item/create</h1>
 
-      <!-- not required for login, but required for register -->
-      <input type="email" name="email" value="171274w@student.hci.edu.sg" />
+    <form onsubmit="event.preventDefault(); postRequest(this);" method="post">
+      <input type="text" name="endpoint" placeholder="Endpoint" value="https://xdpj2nme28.execute-api.us-east-1.amazonaws.com/item/create" />
+      <input type="text" name="jwt" placeholder="jwt" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FrdXJhbWlrbzM1IiwiaWF0IjoxNjI1OTg3ODY2fQ.8gQIzkpZ017C-4l7bMLSsIVdPdPnH6YGNAAkGEuIDBg" />
+      
+      <input type="submit" value="Send POST Request" />
+    </form>
+
+    <h1>/item/get-upload-key</h1>
+
+    <form onsubmit="event.preventDefault(); postRequest(this);" method="post">
+      todo: set s3 deletion policy for images that were uploaded but not associated with an item (1 hour)
+      <input type="text" name="endpoint" placeholder="Endpoint" value="https://xdpj2nme28.execute-api.us-east-1.amazonaws.com/item/get-upload-key" />
+      <input type="text" name="jwt" placeholder="jwt" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FrdXJhbWlrbzM1IiwiaWF0IjoxNjI1OTg3ODY2fQ.8gQIzkpZ017C-4l7bMLSsIVdPdPnH6YGNAAkGEuIDBg" />      
+      
+      <input type="submit" value="Send POST Request" />
+    </form>
+
+    <h1>S3 Image Upload</h1>
+
+    <form onsubmit="event.preventDefault(); postImage(this);" method="post">
+      <input type="file" name="file" />
       
       <input type="submit" value="Send POST Request" />
     </form>
@@ -52,6 +69,30 @@
     <div id="output"></div>
 
     <script>
+      let thingy;
+
+      async function postImage(form) {
+        let formData = new FormData();
+        formData.append("key", thingy.msg.imgKey);
+        formData.append("acl", "public-read");
+        formData.append("Content-Type", new FormData(form).get("file").type);
+        for (const field of Object.keys(thingy.msg.presignedPost.fields)) formData.append(field, thingy.msg.presignedPost.fields[field]);
+
+        formData.append("file", new FormData(form).get("file"));
+
+        let responseText = await (
+          await (
+            fetch(thingy.msg.presignedPost.url, {
+              method: "post",
+              mode: "cors",
+              body: formData,
+            })
+          )
+        ).text();
+
+        document.querySelector("#output").innerText = JSON.stringify(JSON.parse(responseText), null, 2);
+      }
+
       async function postRequest(form) {
         let formData = new FormData(form);
         let responseText = await (
@@ -62,6 +103,10 @@
             })
           )
         ).text();
+
+        try { thingy = JSON.parse(responseText); }
+        catch (e) {}
+
         document.querySelector("#output").innerText = JSON.stringify(JSON.parse(responseText), null, 2);
       }
     </script>

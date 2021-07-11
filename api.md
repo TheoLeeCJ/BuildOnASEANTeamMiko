@@ -29,26 +29,28 @@ FormData fields required: jwt
 | msg.reason | "missing" / "no-auth" (if msg.success false) |
 | msg.user | JSON object containing user's info (if msg.success true) |
 
+## /item/get-upload-key
+Undocumented because I'll be writing the interactions with this API. Also because it's actually complicated.
+
 ## /item/create - WIP
 List a new product
 
 FormData fields required:
 - jwt
 - category
-- images (ARRAY)
+- images (ARRAY of URLs)
 - name
 - description
 - price
 - preferredLocations
 - multipleAvailable
-- conditionFieldsImages (ARRAY)
-- conditionFields (JSON string, the answerImg refers to the index of the image in `conditionFieldsImages`)
+- conditionFields (JSON string, the answerImg refers to the URL of the image obtained from /item/get-upload-key)
 ```JSON
 [
   {
     "question": "Do these clothes have any tough stains?",
     "answerTxt": "Yes, on the waist area.",
-    "answerImg": 0
+    "answerImg": "url"
   },
   {
     "question": "How long were these clothes in use?",
