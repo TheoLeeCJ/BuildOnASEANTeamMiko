@@ -3,6 +3,10 @@ const multipartParser = require("lambda-multipart-parser");
 const bcrypt = require("bcryptjs");
 const AWS = require("aws-sdk");
 
+const fields = [""];
+
+const SECRET = "dc7bd8c0-06d6-40b0-8bcf-e09d1b4c9f76";
+
 let db = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10", region: process.env.AWS_REGION });
 
 exports.handler = async (event, context, lambdaCallback) => {
@@ -29,7 +33,7 @@ exports.handler = async (event, context, lambdaCallback) => {
     }
 
     let salt = bcrypt.genSaltSync(10);
-    let hash = bcrypt.hashSync(formFields["username"], salt);
+    let hash = bcrypt.hashSync(formFields["password"], salt);
 
     await db.put({
       TableName: "users",
@@ -38,6 +42,8 @@ exports.handler = async (event, context, lambdaCallback) => {
         password: hash,
         email: formFields["email"],
         greenPts: 0,
+        buyingInterests: [],
+        sellingInterests: [],
       },
     }).promise();
 
@@ -45,13 +51,13 @@ exports.handler = async (event, context, lambdaCallback) => {
       statusCode: 200,
       msg: {
         success: true,
+        jwt: jwt.sign({ "user": formFields["username"] }, SECRET),
       },
     }));
   }
   catch (e) {
     lambdaCallback(null, JSON.stringify({
       statusCode: 400,
-      error: e.toString(),
     }));
   }
 };
