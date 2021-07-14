@@ -148,7 +148,7 @@ h1:first-child {
 
 #daily-recommendations {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   padding: 10px;
   border-radius: 10px;
 }
@@ -159,6 +159,7 @@ h1:first-child {
   grid-row: auto / auto;
   border-radius: 10px;
   overflow: hidden;
+  cursor: pointer;
   transition: box-shadow 0.2s;
 }
 #daily-recommendations .listing:hover {
@@ -270,6 +271,14 @@ h1:first-child {
 #daily-recommendations .listing .listing-action-buttons .like-button {
   margin-left: -2px;
   margin-right: 4px;
+}
+#daily-recommendations .listing .listing-action-buttons .like-button.liked::before {
+  content: "favorite";
+  color: var(--theme-red);
+}
+#daily-recommendations .listing .listing-action-buttons .like-button:not(.liked)::before {
+  content: "favorite_border";
+  color: #000
 }
 
 #daily-recommendations .listing .listing-action-buttons .report-button {
