@@ -1,0 +1,11 @@
+html {
+  --theme-red: #ff2636;
+}
+
+.card {
+  box-shadow: 0 0 10px 0 #aaa;
+}
+
+.profile-picture {
+  border-radius: 50%;
+}

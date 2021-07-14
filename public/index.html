@@ -9,38 +9,125 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/styles/global.css">
   <link rel="stylesheet" href="/styles/index.css">
   
   <title>Carousell Home</title>
 </head>
 <body>
-  <div id="menu-bar">
-    <span>Cars & Property</span>
-    <span>Fashion</span>
-    <span>Home and Living</span>
-    <span>Electronics & Mobiles</span>
-    <span>Hobbies & Games</span>
-    <span>Jobs & Services</span>
-    <span>Others</span>
+  <div id="top-bar">
+    <div id="menu-bar">
+      <span>Cars & Property</span>
+      <span>Fashion</span>
+      <span>Home and Living</span>
+      <span>Electronics & Mobiles</span>
+      <span>Hobbies & Games</span>
+      <span>Jobs & Services</span>
+      <span>Others</span>
+    </div>
+    <div id="title-bar">
+      <img id="carousell-logo" src="/media/carousell-logo.svg" alt="Carousell logo">
+      
+      <form method="post" id="search-form">
+        <input type="text" name="query" id="search-bar" placeholder="Search for an item">
+      </form>
+  
+      <div id="user-actions">
+        <!--ensure profile picture is square (crop before upload? also need to crop server-side just in case)-->
+        <img class="profile-picture" src="/media/placeholder-profile-picture.jpeg" alt="Your profile picture">
+        <span id="user-greeting">Hello, <span id="username">NoobMaster69</span></span>
+        <i class="material-icons">expand_more</i>
+      </div>
+  
+      <div id="sell-button-wrapper">
+        <button id="sell-button">Sell</button>
+      </div>
+    </div>
   </div>
 
-  <div id="title-bar">
-    <img id="carousell-logo" src="/media/carousell-logo.svg" alt="Carousell logo">
-    
-    <form method="post" id="search-form">
-      <input type="text" name="query" id="search-bar" placeholder="Search for an item">
-    </form>
-
-    <div id="user-actions">
-      <!--ensure profile picture is square (crop before upload? also need to crop server-side just in case)-->
-      <img id="profile-picture" src="/media/placeholder-profile-picture.jpeg" alt="Your profile picture">
-      <span id="user-greeting">Hello, <span id="username">NoobMaster69</span></span>
-      <i class="material-icons">expand_more</i>
+  <main>
+    <h1>Explore Carousell</h1>
+    <div id="explore-categories" class="card">
+      <div class="explore-category">
+        <img src="/media/category-placeholder-1.png" alt="Following">
+        <span>Following</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-2.png" alt="Cars">
+        <span>Cars</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-1.png" alt="Home Services">
+        <span>Home Services</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-2.png" alt="Property">
+        <span>Property</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-1.png" alt="Computers & Tech">
+        <span>Computers & Tech</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-2.png" alt="Mobile Phones & Gadgets">
+        <span>Mobile Phones & Gadgets</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-1.png" alt="Following">
+        <span>Following</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-2.png" alt="Cars">
+        <span>Cars</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-1.png" alt="Home Services">
+        <span>Home Services</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-2.png" alt="Property">
+        <span>Property</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-1.png" alt="Computers & Tech">
+        <span>Computers & Tech</span>
+      </div>
+      <div class="explore-category">
+        <img src="/media/category-placeholder-2.png" alt="Mobile Phones & Gadgets">
+        <span>Mobile Phones & Gadgets</span>
+      </div>
     </div>
 
-    <div id="sell-button-wrapper">
-      <button id="sell-button">Sell</button>
+    <h1>Your Daily Picks</h1>
+    <div id="daily-recommendations" class="card">
+      <div class="listing">
+        <div class="listing-info-top">
+          <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture">
+          <div class="listing-info-top-text">
+            <div class="seller-username">Very Very Long Seller Username Very Very Long Seller Username</div>
+            <div class="listing-age">7 hours ago</div>
+          </div>
+        </div>
+        <div class="item-image-wrapper">
+          <img src="/media/placeholder-product-image.png" alt="Product image" class="item-image">
+        </div>
+        <div class="listing-info-bottom">
+          <div class="item-name">Alienware m15 R5 Gaming Laptop With Very Long Title</div>
+          <div class="item-price">S$3999999999999999999999999999999.99</div>
+          <div class="item-description">Dell Alienware gaming laptop with an extremely long item description</div>
+          <div class="item-condition">Absolutely trashed</div>
+        </div>
+        <div class="listing-action-buttons">
+          <button class="like-button material-icons">favorite_border</button>
+          <span class="like-count">18</span>
+          <button class="start-chat">
+            <span>Start chat</span>
+          </button>
+          <button class="report-button material-icons">outlined_flag</button>
+        </div>
+      </div>
     </div>
-  </div>
+  </main>
 </body>
 </html>
