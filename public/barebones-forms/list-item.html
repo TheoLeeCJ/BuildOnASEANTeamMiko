@@ -12,7 +12,7 @@
         margin: 0;
       }
 
-      input[type=text], input[type=email], input[type=password] {
+      input[type=text], input[type=email], input[type=password], select, textarea, input[type=number] {
         width: calc(100% - 32px);
         padding: 8px;
         font-size: 1rem;
@@ -45,13 +45,71 @@
       <input type="text" name="endpoint" placeholder="Endpoint" value="https://xdpj2nme28.execute-api.us-east-1.amazonaws.com/item/create" />
       <input type="text" name="jwt" placeholder="jwt" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FrdXJhbWlrbzM1IiwiaWF0IjoxNjI1OTg3ODY2fQ.8gQIzkpZ017C-4l7bMLSsIVdPdPnH6YGNAAkGEuIDBg" />
       
+      TODO: use autocomplete-dropdown for this in actual UI 
+      <select name="category" type="text"></select>
+
+      <script>
+        // @WingYip remember to keep this variable consistent across all scripts as it is updated,
+        // as categories are stored and transmitted by their index
+        // we can use a constants file
+        const categories = [
+          "Digital Goods",
+          "Furniture & Living",
+          "Computer Parts",
+          "Digital Storage",
+          "Kids & Babies",
+          "Toys",
+          "Electrical Appliances",
+          "Clothes & Apparel",
+          "Books & Magazines",
+          "Physical Storage Management",
+          "Computers and Laptops",
+        ];
+
+        let options = ``;
+        for (let i = 0; i < categories.length; i++) {
+          options += `<option value="${i}">${categories[i]}</option>`;
+        }
+
+        document.querySelector("select[name=category]").innerHTML = options;
+      </script>
+
+      <input type="text" name="images" value='[""]' />
+      ^ JSON array of URLs obtained from the /item/get-upload-key API
+
+      <input type="text" name="name" value="LIMITED TIME!!! FASTER GET!!! BTS Meal Box" />
+
+      <!-- TODO (if timeline permits): store description & condition data in S3 instead of directly in DynamoDB for cost optimisation. -->
+      <textarea rows="5" name="description">The BTS Meal was an earth-shattering sensory experience. The exterior of every one of the nine Chicken McNuggets had an exquisite crunch, contrasting beautifully with the tender, juicy meat contained within. The Sweet Chilli and Cajun sauces that were hand-picked by the members of BTS themselves served as the perfect icing on the metaphorical cake, and the Large McFries were light, fluffy, crispy and flavourful, as if the members of BTS had fed them to me by hand. To top it all off, the Large Coke Original Taste Less Sugar brought a wonderfully refreshing conclusion to what had been the best culinary experience of my life.</textarea>
+      
+      <input type="number" name="price" value="10" />
+      <input type="text" name="preferredLocations" value="Marina Bay Sands (@Theo todo: implement location selector)" />
+      
+      <select name="multipleAvailable">
+        <option value="0">Yes</option>
+        <option value="1">No</option>
+      </select>
+      
+      <textarea rows="10" name="conditionFields" style="font-family: 'Cascadia Code', 'Consolas', monospace;">[
+  {
+    "question": "Do these clothes have any tough stains?",
+    "answerTxt": "Yes, on the waist area.",
+    "answerImg": "img-url"
+  },
+  {
+    "question": "How long were these clothes in use?",
+    "answerTxt": "",
+    "answerImg": null
+  }
+]</textarea>
+      
       <input type="submit" value="Send POST Request" />
     </form>
 
     <h1>/item/get-upload-key</h1>
 
     <form onsubmit="event.preventDefault(); postRequest(this);" method="post">
-      todo: set s3 deletion policy for images that were uploaded but not associated with an item (1 hour)
+      done, testing: set s3 deletion policy for images that were uploaded but not associated with an item (1 hour)
       <input type="text" name="endpoint" placeholder="Endpoint" value="https://xdpj2nme28.execute-api.us-east-1.amazonaws.com/item/get-upload-key" />
       <input type="text" name="jwt" placeholder="jwt" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FrdXJhbWlrbzM1IiwiaWF0IjoxNjI1OTg3ODY2fQ.8gQIzkpZ017C-4l7bMLSsIVdPdPnH6YGNAAkGEuIDBg" />      
       

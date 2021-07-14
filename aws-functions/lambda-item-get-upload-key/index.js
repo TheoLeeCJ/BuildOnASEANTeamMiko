@@ -6,6 +6,7 @@ const short = require('short-uuid');
 
 const fields = ["jwt"];
 
+// TODO: move to environment variables.
 const SECRET = "dc7bd8c0-06d6-40b0-8bcf-e09d1b4c9f76";
 
 let db = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10", region: process.env.AWS_REGION });
@@ -36,7 +37,7 @@ exports.handler = async (event, context, lambdaCallback) => {
       Expires: 600,
       Conditions: [
         ["eq", "$acl", "public-read"],
-        ["eq", "$key", `user-img/${imgId}`],
+        ["eq", "$key", `user-img/pending-${imgId}`],
         ["content-length-range", 1, 5242880],
         ["starts-with", "$Content-Type", "image/"],
       ],
@@ -56,7 +57,7 @@ exports.handler = async (event, context, lambdaCallback) => {
         msg: {
           success: true,
           presignedPost: data,
-          imgKey: `user-img/${imgId}`,
+          imgKey: `user-img/pending-${imgId}`,
         },
       }));
       return;

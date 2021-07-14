@@ -63,7 +63,7 @@ FormData fields required:
 | JSON key | value |
 | --- | --- |
 | msg.success | true / false |
-| msg.reason | "no-auth" / "missing" / "blocked" (if msg.success false) |
+| msg.reason | "no-auth" / "missing" / "blocked" / "no-images (if msg.success false) |
 | msg.id | listing's UUID (if msg.success true) |
 
 ## /item/search - WIP
