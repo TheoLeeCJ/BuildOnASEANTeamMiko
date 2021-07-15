@@ -8,20 +8,33 @@ topBarLoadCallbacks.push(() => {
 });
 
 const resultCount = 111094800000938311n;
-const resultCountString = resultCount.toString();
-let resultCountStringFormatted = "";
-for (let i = resultCountString.length - 1; i >= 0; i--) {
-  resultCountStringFormatted = resultCountString[i] + resultCountStringFormatted;
-  if (i !== 0 && (resultCountString.length - i) % 3 === 0) {
-    resultCountStringFormatted = "," + resultCountStringFormatted;
-  }
-}
-
 document.getElementById("search-results-overview").textContent =
-    `${resultCountStringFormatted} results for "${searchTerm}"`;
+    `${separateThousands(resultCount)} results for "${searchTerm}"`;
 
 for (const filterButton of document.getElementsByClassName("filter-button")) {
   filterButton.addEventListener("click", () => {
     filterButton.parentElement.classList.toggle("filter-dropdown-expanded");
+    if (filterButton.parentElement.classList.contains("filter-dropdown-expanded")) {
+      setTimeout(() => {
+        filterButton.nextElementSibling.style.display = "block";
+      }, 200);
+    } else {
+      setTimeout(() => {
+        filterButton.nextElementSibling.style.display = "none";
+      }, 200);
+    }
+  });
+}
+
+for (const filterOptionsDiv of document.getElementsByClassName("filter-options")) {
+  document.addEventListener("click", (event) => {
+    const filterOptionsDivRect = filterOptionsDiv.getBoundingClientRect();
+    const filterButtonRect = filterOptionsDiv.previousElementSibling
+        .getBoundingClientRect();
+
+    if (!mouseEventIsWithinDOMRect(event, filterOptionsDivRect) &&
+        !mouseEventIsWithinDOMRect(event, filterButtonRect)) {
+      filterOptionsDiv.parentElement.classList.remove("filter-dropdown-expanded");
+    }
   });
 }

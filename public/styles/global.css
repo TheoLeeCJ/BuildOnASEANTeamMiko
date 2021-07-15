@@ -1,5 +1,6 @@
 html {
   --theme-red: #ff2636;
+  --theme-red-transparent: #ff263638;
 }
 
 body {
@@ -50,4 +51,183 @@ main > h1:first-child {
 
 .profile-picture {
   border-radius: 50%;
+}
+
+.full-width-listings-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  row-gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+@media screen and (max-width: 1600px) {
+  .full-width-listings-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .full-width-listings-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media screen and (max-width: 900px) {
+  .full-width-listings-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media screen and (max-width: 430px) {
+  .full-width-listings-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.listing {
+  padding: 15px;
+  grid-column: auto / auto;
+  grid-row: auto / auto;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.listing:hover {
+  box-shadow: 0 0 5px 0 #aaa;
+}
+
+.listing .listing-info-top *,
+.listing .listing-info-bottom * {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.listing .listing-info-top {
+  display: flex;
+  height: 35px;
+  margin-bottom: 15px;
+}
+
+.listing .listing-info-top .listing-info-top-text {
+  width: calc(100% - 45px);
+  margin: auto 0;
+  transform: translateY(-2px);
+}
+
+.listing .listing-info-top .listing-info-top-text .seller-username {
+  margin-bottom: 1px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.listing .listing-info-top .listing-info-top-text .listing-age {
+  font-size: 12px;
+  color: #666;
+}
+
+.listing .listing-info-top .profile-picture {
+  height: 100%;
+  margin-right: 10px;
+}
+
+.listing .item-image-wrapper {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.listing .item-image-wrapper::before {
+  content: "";
+  display: block;
+  margin-top: 100%;
+}
+
+.listing .item-image-wrapper .item-image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.listing .listing-info-bottom {
+  margin-bottom: 10px;
+}
+
+.listing .listing-info-bottom .item-name {
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.listing .item-price {
+  margin-bottom: 4px;
+}
+
+.listing .listing-info-bottom .item-description,
+.listing .listing-info-bottom .item-condition {
+  line-height: 22px;
+  font-size: 14px;
+  color: #666;
+}
+
+.listing .listing-action-buttons {
+  display: flex;
+}
+
+.listing .listing-action-buttons > * {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.listing .listing-action-buttons .like-button,
+.listing .listing-action-buttons .report-button {
+  padding: 0;
+  background-color: #00000000;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.listing .listing-action-buttons .like-button {
+  margin-left: -2px;
+  margin-right: 4px;
+}
+.listing .listing-action-buttons .like-button.liked::before {
+  content: "favorite";
+  color: var(--theme-red);
+}
+.listing .listing-action-buttons .like-button:not(.liked)::before {
+  content: "favorite_border";
+  color: #000
+}
+
+.listing .listing-action-buttons .report-button {
+  margin-right: -2px;
+}
+
+.listing .listing-action-buttons .start-chat {
+  margin-left: auto;
+  margin-right: 10px;
+  padding: 5px 10px;
+  background-color: var(--theme-red);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+}
+.listing .listing-action-buttons .start-chat::before {
+  content: "Start chat";
+}
+@media screen and (min-width: 431px) and (max-width: 480px) {
+  .listing .listing-action-buttons .start-chat::before {
+    content: "Chat";
+  }
 }

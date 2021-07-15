@@ -1,5 +1,6 @@
 #filters {
   display: flex;
+  margin-bottom: 40px;
 }
 
 #filters .filter:not(:last-child) {
@@ -9,11 +10,16 @@
 #filters .filter .filter-button {
   display: flex;
   padding: 7px 9.5px 7px 16px;
-  background-color: #00000000;
+  background-color: #fff;
   border: 1px solid #aaa;
   border-radius: 999999px;
   font-family: inherit;
   font-size: 16px;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+#filters .filter.filter-dropdown-expanded .filter-button {
+  background-color: var(--theme-red-transparent);
+  border-color: var(--theme-red);
 }
 
 #filters .filter .filter-button span {
@@ -27,6 +33,22 @@
   content: "expand_less";
 }
 
-.filter-options {
-  display: none;
+#filters .filter .filter-options {
+  position: absolute;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 7px;
+  background-color: #fff;
+  box-shadow: 0 0 5px 0 #aaa;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#filters .filter.filter-dropdown-expanded .filter-options {
+  opacity: 1;
+}
+
+#search-results {
+  border-radius: 10px;
+  z-index: 1;
 }
