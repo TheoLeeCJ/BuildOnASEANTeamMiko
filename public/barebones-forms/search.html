@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", "Helvetica", sans-serif;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      input[type=text], input[type=email], input[type=password], select, textarea, input[type=number] {
+        width: calc(100% - 32px);
+        padding: 8px;
+        font-size: 1rem;
+        margin: 8px 16px;
+      }
+
+      input[type=submit] {
+        font-size: 1rem;
+        margin: 8px 16px;
+        padding: 8px;
+        font-size: 1rem;
+      }
+
+      #output {
+        width: calc(100% - 32px);
+        margin: 8px 16px;
+        background-color: #f6f6f6;
+        padding: 8px;
+        font-family: 'Cascadia Code', 'Consolas', monospace;
+        white-space: pre-wrap;
+        overflow: hidden;
+        text-overflow: clip;
+        overflow-wrap: break-word;
+      }
+    </style>
+
+    <form onsubmit="event.preventDefault(); postRequest(this);" method="post">
+      <input type="text" name="endpoint" placeholder="Endpoint" value="https://xdpj2nme28.execute-api.us-east-1.amazonaws.com/item/search" />
+
+      <input type="text" name="jwt" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FrdXJhbWlrbzM1IiwiaWF0IjoxNjI1OTg3ODY2fQ.8gQIzkpZ017C-4l7bMLSsIVdPdPnH6YGNAAkGEuIDBg" />
+      ^ eventually, this API should not require auth.
+
+      <input type="number" name="category" value="0" />
+      <input type="text" name="itemName" value="" />
+      
+      <input type="submit" value="Send POST Request" />
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+      function getJWTData(jwt) {
+        return JSON.parse(atob(jwt.split(".")[1]));
+      }
+
+      async function postRequest(form) {
+        let formData = new FormData(form);
+        let responseText = await (
+          await (
+            fetch(formData.get("endpoint"), {
+              method: "post",
+              body: formData,
+            })
+          )
+        ).text();
+        document.querySelector("#output").innerText = JSON.stringify(JSON.parse(responseText), null, 2);
+      }
+    </script>
+  </body>
+</html>
