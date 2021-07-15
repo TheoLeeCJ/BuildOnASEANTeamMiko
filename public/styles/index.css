@@ -110,6 +110,7 @@ h1:first-child {
 }
 
 #top-bar #title-bar #search-form {
+  display: flex;
   flex-grow: 1;
   margin-left: 30px;
 }
@@ -121,6 +122,7 @@ h1:first-child {
 
 #top-bar #title-bar #search-form #search-bar {
   width: calc(100% - 88px); /* on smaller screens, this should expand to fill all the space it can */
+  max-width: 500px;
   height: 100%;
   padding: 0 14px;
   background-color: #e6e6e6;
@@ -133,6 +135,13 @@ h1:first-child {
   #top-bar #title-bar #search-form #search-bar {
     width: calc(100% - 50px);
   }
+}
+
+#top-bar #title-bar #search-form button[type="submit"] {
+  background-color: #00000000;
+  border: none;
+  transform: translateX(calc(-100% - 5px));
+  cursor: pointer;
 }
 
 #top-bar #title-bar #user-actions {
