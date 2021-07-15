@@ -40,6 +40,10 @@ h1 {
   }
 }
 
+main > h1:first-child {
+  margin-top: 0;
+}
+
 .card {
   box-shadow: 0 0 10px 0 #aaa;
 }

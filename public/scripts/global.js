@@ -21,7 +21,7 @@ fetch("/top-bar.html")
       console.error("Failed to fetch/insert top bar HTML:", err);
     });
 
-[...document.querySelectorAll(".listing .like-button")].forEach((likeButton) => {
+for (const likeButton of document.querySelectorAll(".listing .like-button")) {
   for (const elem of [likeButton, likeButton.nextElementSibling]) {
     elem.addEventListener("click", () => {
       likeButton.classList.toggle("liked");
@@ -32,4 +32,4 @@ fetch("/top-bar.html")
       }
     });
   }
-});
+}
