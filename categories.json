@@ -1,0 +1,37 @@
+{
+  "largest": 6,
+  "categories": [
+    {
+      "id": 0,
+      "name": "Cat 1",
+      "sub": [
+        {
+          "id": 1,
+          "name": "Cat 1 Sub 1"
+        },
+        {
+          "id": 4,
+          "name": "Cat 1 Sub 2"
+        },
+        {
+          "id": 5,
+          "name": "Cat 1 Sub 3"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Cat 2",
+      "sub": [
+        {
+          "id": 3,
+          "name": "Cat 2 Sub 1"
+        },
+        {
+          "id": 6,
+          "name": "Cat 2 Sub 2"
+        }
+      ]
+    }
+  ]
+}
