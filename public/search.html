@@ -20,7 +20,7 @@
   <main>
     <h1 id="search-results-overview"></h1>
     <div id="filters">
-      <div class="filter" id="category-filter">
+      <div class="filter filter-dropdown-expanded" id="category-filter">
         <button class="filter-button">
           <span>Category</span>
           <i class="material-icons"></i>
@@ -28,160 +28,174 @@
         <!--use CSS grid to organise options - 8 options high-->
         <!--category search-->
         <div class="filter-options">
-          <input type="text" id="category-search">
+          <div id="category-search-wrapper">
+            <span class="material-icons">search</span>
+            <input type="text" id="category-search" placeholder="Find a category">
+          </div>
+
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
           <div class="filter-option">
-            <button>Category 1</button>
+            <span class="category-name">Category 1</span>
+            <span class="material-icons">chevron_right</span>
             <div class="subcategories">
-              <button>Category 1 Subcategory 1</button>
-              <button>Category 1 Subcategory 2</button>
-              <button>Category 1 Subcategory 3</button>
-              <button>Category 1 Subcategory 4</button>
-              <button>Category 1 Subcategory 5</button>
-              <button>Category 1 Subcategory 6</button>
-              <button>Category 1 Subcategory 7</button>
-              <button>Category 1 Subcategory 8</button>
-              <button>Category 1 Subcategory 9</button>
-              <button>Category 1 Subcategory 10</button>
+              <div>Subcategory 1</div>
+              <div>Subcategory 2</div>
+              <div>Subcategory 3</div>
+              <div>Subcategory 4</div>
+              <div>Subcategory 5</div>
+              <div>Subcategory 6</div>
+              <div>Subcategory 7</div>
+              <div>Subcategory 8</div>
+              <div>Subcategory 9</div>
+              <div>Subcategory 10</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="filter filter-dropdown-expanded" id="sorting-filter">
+      <div class="filter" id="sorting-filter">
         <button class="filter-button">
           <span>Sort by: Best match</span>
           <i class="material-icons"></i>
@@ -199,10 +213,14 @@
           <i class="material-icons"></i>
         </button>
         <div class="filter-options">
-          <input type="checkbox" id="condition-new">
-          <label for="condition-new">New</label>
-          <input type="checkbox" id="condition-used">
-          <label for="condition-used">Used</label>
+          <div class="filter-option">
+            <input type="checkbox" id="condition-new">
+            <label for="condition-new">New</label>
+          </div>
+          <div class="filter-option">
+            <input type="checkbox" id="condition-used">
+            <label for="condition-used">Used</label>
+          </div>
         </div>
       </div>
       <div class="filter">
@@ -211,12 +229,35 @@
           <i class="material-icons"></i>
         </button>
         <div class="filter-options">
-          <input type="checkbox" id="special-filter-value-1">
-          <label for="special-filter-value-1">Value 1</label>
-          <input type="checkbox" id="special-filter-value-2">
-          <label for="special-filter-value-2">Value 2</label>
+          <div class="filter-option">
+            <input type="checkbox" id="special-filter-value-1">
+            <label for="special-filter-value-1">Value 1 VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY LONG</label>
+          </div>
+          <div class="filter-option">
+            <input type="checkbox" id="special-filter-value-2">
+            <label for="special-filter-value-2">Value 2</label>
+          </div>
+          <div class="filter-option">
+            <input type="checkbox" id="special-filter-value-3">
+            <label for="special-filter-value-3">Value 3</label>
+          </div>
+          <div class="filter-option">
+            <input type="checkbox" id="special-filter-value-4">
+            <label for="special-filter-value-4">Value 4</label>
+          </div>
+          <div class="filter-option">
+            <input type="checkbox" id="special-filter-value-5">
+            <label for="special-filter-value-5">Value 5</label>
+          </div>
+          <div class="filter-option">
+            <input type="checkbox" id="special-filter-value-6">
+            <label for="special-filter-value-6">Value 6</label>
+          </div>
         </div>
       </div>
+      <button id="apply-filters">
+        <span>Apply filters</span>
+      </button>
     </div>
 
     <div id="search-results" class="full-width-listings-container card">

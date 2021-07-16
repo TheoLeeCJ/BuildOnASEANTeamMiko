@@ -7,15 +7,26 @@
   margin-right: 15px;
 }
 
-#filters .filter .filter-button {
+#filters button {
+  cursor: pointer;
+}
+
+#filters .filter .filter-button,
+#filters button#apply-filters {
   display: flex;
+  border-radius: 99999px;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+#filters .filter .filter-button {
   padding: 7px 9.5px 7px 16px;
   background-color: #fff;
   border: 1px solid #aaa;
-  border-radius: 999999px;
-  font-family: inherit;
-  font-size: 16px;
   transition: background-color 0.2s, border-color 0.2s;
+}
+#filters .filter .filter-button:hover {
+  background-color: #e0e0e0;
 }
 #filters .filter.filter-dropdown-expanded .filter-button {
   background-color: var(--theme-red-transparent);
@@ -34,18 +45,144 @@
 }
 
 #filters .filter .filter-options {
+  /* display: none; */
   position: absolute;
   margin-top: 10px;
   padding: 10px;
   border-radius: 7px;
   background-color: #fff;
   box-shadow: 0 0 5px 0 #aaa;
-  z-index: 2;
+  z-index: -1;
+  pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s;
 }
 #filters .filter.filter-dropdown-expanded .filter-options {
+  /* display: block; */
+  z-index: 2;
+  pointer-events: auto;
   opacity: 1;
+}
+
+#filters #category-filter .filter-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* height: 300px; */
+  padding: 0;
+  /* overflow-y: auto; */
+}
+
+#filters #category-filter .filter-options #category-search-wrapper {
+  display: flex;
+  grid-column: 1 / -1; /* full width */
+  align-items: center;
+  padding: 11px 13px 12px;
+  background-color: #e6e6e6;
+}
+
+#filters #category-filter .filter-options #category-search-wrapper .material-icons {
+  margin-right: 4px;
+  font-size: 22px;
+}
+
+#filters #category-filter .filter-options #category-search-wrapper #category-search {
+  flex-grow: 1;
+  background-color: inherit;
+  border: none;
+  border-radius: 5px 5px 0 0;
+  outline: none;
+  font-family: inherit;
+  font-size: 16px;
+  transform: translateY(-1px);
+}
+
+#filters #category-filter .filter-options .filter-option {
+  display: flex;
+}
+
+#filters #category-filter .filter-options .filter-option .material-icons {
+  margin-left: 3px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#filters #category-filter .filter-options .filter-option:hover .material-icons {
+  opacity: 1;
+}
+
+#filters #category-filter .filter-options .filter-option .subcategories {
+  display: none;
+  position: absolute;
+  width: fit-content;
+  margin-top: -11px;
+  margin-left: calc(25% - 13px);
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 0 5px 0 #aaa;
+}
+#filters #category-filter .filter-options .filter-option:hover .subcategories {
+  display: block;
+}
+
+#filters #sorting-filter .filter-options {
+  width: 150px;
+  padding: 0;
+}
+
+#filters #category-filter .filter-options .filter-option,
+#filters #category-filter .filter-options .filter-option .subcategories > *,
+#filters #sorting-filter .filter-options .filter-option {
+  margin-top: -1px;
+  padding: 11px 13px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+#filters #category-filter .filter-options .filter-option:hover,
+#filters #category-filter .filter-options .filter-option .subcategories > *:hover,
+#filters #sorting-filter .filter-options .filter-option:hover {
+  background-color: #d6d6d6;
+}
+
+#filters #sorting-filter .filter-options .filter-option:nth-child(1) {
+  border-radius: 7px 7px 0 0;
+}
+
+#filters #sorting-filter .filter-options .filter-option:nth-last-child(1) {
+  border-radius: 0 0 7px 7px;
+}
+
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options {
+  max-width: 400px;
+  padding: 9.5px 13px 10.5px;
+}
+
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options .filter-option:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options .filter-option input[type="checkbox"] {
+  margin: 0 2px 0 0;
+}
+
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options .filter-option label {
+  display: inline-block;
+  transform: translateY(-1px);
+}
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options .filter-option label:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+#filters button#apply-filters {
+  padding: 7px 16px;
+  background-color: var(--theme-red);
+  color: #fff;
+  border: none;
+  transition: background-color 0.15s;
+}
+#filters button#apply-filters:hover {
+  background-color: #e42431;
+}
+#filters button#apply-filters:active {
+  background-color: #cf1e2a;
 }
 
 #search-results {
