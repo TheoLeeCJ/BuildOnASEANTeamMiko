@@ -4,6 +4,10 @@
   z-index: 999999999;
 }
 
+#top-bar .profile-picture {
+  height: 34px !important;
+}
+
 #top-bar #menu-bar {
   display: flex;
   justify-content: center;
@@ -46,6 +50,10 @@
     padding-left: 25px;
     padding-right: 25px;
   }
+}
+
+#top-bar #title-bar #carousell-logo {
+  width: 171px;
 }
 
 #top-bar #title-bar #carousell-logo,
