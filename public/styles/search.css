@@ -65,12 +65,16 @@
 }
 
 #filters #category-filter .filter-options {
-  min-width: 160px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* height: 300px; */
   padding: 0;
+  /* overflow-y: auto; */
 }
 
 #filters #category-filter .filter-options #category-search-wrapper {
   display: flex;
+  grid-column: 1 / -1; /* full width */
   align-items: center;
   padding: 11px 13px 12px;
   background-color: #e6e6e6;
@@ -82,6 +86,7 @@
 }
 
 #filters #category-filter .filter-options #category-search-wrapper #category-search {
+  flex-grow: 1;
   background-color: inherit;
   border: none;
   border-radius: 5px 5px 0 0;
@@ -93,15 +98,29 @@
 
 #filters #category-filter .filter-options .filter-option {
   display: flex;
-  cursor: pointer;
 }
 
 #filters #category-filter .filter-options .filter-option .material-icons {
-  margin-left: auto;
+  margin-left: 3px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#filters #category-filter .filter-options .filter-option:hover .material-icons {
+  opacity: 1;
 }
 
-#filters #category-filter .subcategories {
+#filters #category-filter .filter-options .filter-option .subcategories {
   display: none;
+  position: absolute;
+  width: fit-content;
+  margin-top: -11px;
+  margin-left: calc(25% - 13px);
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 0 5px 0 #aaa;
+}
+#filters #category-filter .filter-options .filter-option:hover .subcategories {
+  display: block;
 }
 
 #filters #sorting-filter .filter-options {
@@ -110,13 +129,15 @@
 }
 
 #filters #category-filter .filter-options .filter-option,
+#filters #category-filter .filter-options .filter-option .subcategories > *,
 #filters #sorting-filter .filter-options .filter-option {
   margin-top: -1px;
   padding: 11px 13px 12px;
   cursor: pointer;
-  transition: background-color 0.1s;
+  transition: background-color 0.15s;
 }
 #filters #category-filter .filter-options .filter-option:hover,
+#filters #category-filter .filter-options .filter-option .subcategories > *:hover,
 #filters #sorting-filter .filter-options .filter-option:hover {
   background-color: #d6d6d6;
 }
@@ -129,24 +150,24 @@
   border-radius: 0 0 7px 7px;
 }
 
-#filters .filter:not(.category-filter, .sorting-filter) .filter-options {
-  max-width: 500px;
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options {
+  max-width: 400px;
   padding: 9.5px 13px 10.5px;
 }
 
-#filters .filter:not(.category-filter, .sorting-filter) .filter-options .filter-option:not(:last-child) {
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options .filter-option:not(:last-child) {
   margin-bottom: 5px;
 }
 
-#filters .filter:not(.category-filter, .sorting-filter) .filter-options .filter-option input[type="checkbox"] {
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options .filter-option input[type="checkbox"] {
   margin: 0 2px 0 0;
 }
 
-#filters .filter:not(.category-filter, .sorting-filter) .filter-options .filter-option label {
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options .filter-option label {
   display: inline-block;
   transform: translateY(-1px);
 }
-#filters .filter:not(.category-filter, .sorting-filter) .filter-options .filter-option label:not(:last-of-type) {
+#filters .filter:not(#category-filter, #sorting-filter) .filter-options .filter-option label:not(:last-of-type) {
   margin-right: 10px;
 }
 
