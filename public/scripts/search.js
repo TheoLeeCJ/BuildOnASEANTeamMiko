@@ -1,5 +1,11 @@
-const queryParams = new URLSearchParams(window.location.search);
+const queryParams = new URLSearchParams(location.search);
 const searchTerm = queryParams.get("searchTerm");
+const searchCat = queryParams.get("cat");
+
+let searchResults = [];
+let resultCount = 0n;
+
+const categoryData = JSON.parse("{\"largest\":9,\"categories\":[{\"id\":0,\"name\":\"Electronic Devices\",\"sub\":[{\"id\":1,\"name\":\"Digital Storage\"},{\"id\":2,\"name\":\"Laptops and PCs\"}]},{\"id\":3,\"name\":\"Toys\",\"sub\":[{\"id\":4,\"name\":\"Kids' Toys\"},{\"id\":5,\"name\":\"Water Toys\"}]},{\"id\":6,\"name\":\"Everything Else\"},{\"id\":7,\"name\":\"Clothes\",\"sub\":[{\"id\":8,\"name\":\"Leggings\"},{\"id\":9,\"name\":\"Shirts\"}]},{\"id\":10,\"name\":\"Figurines\"}]}");
 
 topBarLoadCallbacks.push(() => {
   if (searchTerm !== null) {
@@ -7,110 +13,160 @@ topBarLoadCallbacks.push(() => {
   }
 });
 
-const resultCount = 111094800000938311n;
-const searchResultsOverviewDiv = document.getElementById("search-results-overview");
-if (searchTerm !== null) {
-  searchResultsOverviewDiv.textContent =
-      `${separateThousands(resultCount)} results for "${searchTerm}"`;  
-} else {
-  searchResultsOverviewDiv.textContent = "Enter a search term to get started.";
-}
+topBarLoadCallbacks.push(async () => {
+  let searchFormData = new FormData();
+  searchFormData.append("query", searchTerm);
+  searchFormData.append("refresh", "none");
+  searchFormData.append("page", 0);
+  searchFormData.append("category", searchCat === null ? -1 : parseInt(searchCat));
 
-for (const filterButton of document.getElementsByClassName("filter-button")) {
-  const setFilterInputsTabIndex = () => {
-    for (const elem of filterButton.nextElementSibling.querySelectorAll("button, input")) {
-      if (filterButton.parentElement.classList.contains("filter-dropdown-expanded")) {
-        elem.tabIndex = 0;
-      } else {
-        elem.tabIndex = -1;
-      }
-    }
-  };
+  searchResults = await (await fetch(`${API_ENDPOINT}/item/search`, {
+    method: "post",
+    body: searchFormData,
+  })).json();
 
-  setFilterInputsTabIndex();
+  resultCount = searchResults.length;
 
-  document.addEventListener("click", (event) => {
-    const filterOptionsDivRect = filterButton.nextElementSibling
-        .getBoundingClientRect();
-    const filterButtonRect = filterButton.getBoundingClientRect();
-
-    if (!mouseEventIsWithinDOMRect(event, filterOptionsDivRect) &&
-        !mouseEventIsWithinDOMRect(event, filterButtonRect)) {
-      filterButton.parentElement.classList.remove("filter-dropdown-expanded");
-      setFilterInputsTabIndex();
-    }
-  });
-
-  filterButton.addEventListener("click", () => {
-    filterButton.parentElement.classList.toggle("filter-dropdown-expanded");
-    setFilterInputsTabIndex();
-  });
-
-  // // prevent filter options menu from closing when
-  // // space key is used to toggle checkbox
-  // for (const input of filterButton.nextElementSibling.querySelectorAll("button, input[type='checkbox']")) {
-  //   document.addEventListener("keyup", (event) => {
-  //     if (document.activeElement === input &&
-  //         event.key === " " &&
-  //         !filterButton.parentElement.classList.contains("filter-dropdown-expanded")) {
-  //       console.log(input);
-  //       filterButton.parentElement.classList.add("filter-dropdown-expanded");
-  //       setFilterInputsTabIndex();
-  //     }
-  //   });
-  // }
-}
-
-// for (const filterOptionsDiv of document.getElementsByClassName("filter-options")) {
-//   document.addEventListener("click", (event) => {
-//     const filterOptionsDivRect = filterOptionsDiv.getBoundingClientRect();
-//     const filterButtonRect = filterOptionsDiv.previousElementSibling
-//         .getBoundingClientRect();
-
-//     if (!mouseEventIsWithinDOMRect(event, filterOptionsDivRect) &&
-//         !mouseEventIsWithinDOMRect(event, filterButtonRect)) {
-//       filterOptionsDiv.parentElement.classList.remove("filter-dropdown-expanded");
-//     }
-//   });
-// }
-
-const categoryFilterButton = document
-    .querySelector("#category-filter .filter-button");
-categoryFilterButton.addEventListener("click", (event) => {
-  if (categoryFilterButton.parentElement.classList.contains("filter-dropdown-expanded")) {
-    document.getElementById("category-search").focus();
-  }
+  renderSearchResults();
 });
 
-// const categoryData = await fetch("https://miko-user-img.s3.amazonaws.com/categories.json")
-//     .then((res) => res.json());
-const categoryData = {
-  "largest": 6,
-  "categories": [
+function renderSearchResults() {
+  const searchResultsOverviewDiv = document.getElementById("search-results-overview");
+  if (searchTerm !== null) {
+    searchResultsOverviewDiv.textContent = `${separateThousands(resultCount)} results for "${searchTerm}"`;
+    if (searchCat !== null) {
+      let searchCatDisplay = "Non-Existent Items"
+
+      for (let i = 0; i < categoryData["categories"].length; i++) {
+        if (categoryData["categories"][i]["id"] == searchCat) {
+          searchCatDisplay = categoryData["categories"][i]["name"];
+          break;
+        }
+        if (categoryData["categories"][i]["sub"] === undefined) continue;
+        for (let i2 = 0; i2 < categoryData["categories"][i]["sub"].length; i2++) {
+          if (categoryData["categories"][i]["sub"][i2]["id"] == searchCat) {
+            searchCatDisplay = categoryData["categories"][i]["sub"][i2]["name"];
+            break;
+          }
+        }
+      }
+
+      searchResultsOverviewDiv.textContent += ` in ${searchCatDisplay}`;
+    }
+  } else {
+    location.href = "";
+    // searchResultsOverviewDiv.textContent = "Enter a search term to get started.";
+  }
+
+  for (const filterButton of document.getElementsByClassName("filter-button")) {
+    const setFilterInputsTabIndex = () => {
+      for (const elem of filterButton.nextElementSibling.querySelectorAll("button, input")) {
+        if (filterButton.parentElement.classList.contains("filter-dropdown-expanded")) {
+          elem.tabIndex = 0;
+        } else {
+          elem.tabIndex = -1;
+        }
+      }
+    };
+
+    setFilterInputsTabIndex();
+
+    document.addEventListener("click", (event) => {
+      const filterOptionsDivRect = filterButton.nextElementSibling
+          .getBoundingClientRect();
+      const filterButtonRect = filterButton.getBoundingClientRect();
+
+      if (!mouseEventIsWithinDOMRect(event, filterOptionsDivRect) &&
+          !mouseEventIsWithinDOMRect(event, filterButtonRect)) {
+        filterButton.parentElement.classList.remove("filter-dropdown-expanded");
+        setFilterInputsTabIndex();
+      }
+    });
+
+    filterButton.addEventListener("click", () => {
+      filterButton.parentElement.classList.toggle("filter-dropdown-expanded");
+      setFilterInputsTabIndex();
+    });
+
     {
-      "id": 0,
-      "name": "Cat 1",
-      "sub": [
-        { "id": 1, "name": "Cat 1 Sub 1" },
-        { "id": 4, "name": "Cat 1 Sub 2" },
-        { "id": 5, "name": "Cat 1 Sub 3" },
-      ],
-    },
-    {
-      "id": 2,
-      "name": "Cat 2",
-      "sub": [
-        { "id": 3, "name": "Cat 2 Sub 1" },
-        { "id": 6, "name": "Cat 2 Sub 2" },
-      ],
-    },
-  ],
-};
+      // // prevent filter options menu from closing when
+      // // space key is used to toggle checkbox
+      // for (const input of filterButton.nextElementSibling.querySelectorAll("button, input[type='checkbox']")) {
+      //   document.addEventListener("keyup", (event) => {
+      //     if (document.activeElement === input &&
+      //         event.key === " " &&
+      //         !filterButton.parentElement.classList.contains("filter-dropdown-expanded")) {
+      //       console.log(input);
+      //       filterButton.parentElement.classList.add("filter-dropdown-expanded");
+      //       setFilterInputsTabIndex();
+      //     }
+      //   });
+      // }
+    }
+  }
+
+  {
+    // for (const filterOptionsDiv of document.getElementsByClassName("filter-options")) {
+    //   document.addEventListener("click", (event) => {
+    //     const filterOptionsDivRect = filterOptionsDiv.getBoundingClientRect();
+    //     const filterButtonRect = filterOptionsDiv.previousElementSibling
+    //         .getBoundingClientRect();
+
+    //     if (!mouseEventIsWithinDOMRect(event, filterOptionsDivRect) &&
+    //         !mouseEventIsWithinDOMRect(event, filterButtonRect)) {
+    //       filterOptionsDiv.parentElement.classList.remove("filter-dropdown-expanded");
+    //     }
+    //   });
+    // }
+  }
+
+  const categoryFilterButton = document
+      .querySelector("#category-filter .filter-button");
+  categoryFilterButton.addEventListener("click", (event) => {
+    if (categoryFilterButton.parentElement.classList.contains("filter-dropdown-expanded")) {
+      document.getElementById("category-search").focus();
+    }
+  });
+
+  let resultsHTML = ``;
+
+  searchResults.forEach((item) => {
+    // i know that this is bad practice, but we really don't have time!!!
+    resultsHTML += `<div class="listing">
+  <div class="listing-info-top">
+    <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture">
+    <div class="listing-info-top-text">
+      <div class="seller-username">${item.user}</div>
+      <div class="listing-age">7 hours ago</div>
+    </div>
+  </div>
+  <div class="item-image-wrapper">
+    <img src="${ (item.img.includes("http")) ? item.img : `https://miko-user-img.s3.amazonaws.com/user-img/${item.img}` }" alt="Product image" class="item-image">
+  </div>
+  <div class="listing-info-bottom">
+    <div class="item-name">${item.name}</div>
+    <div class="item-price">${item.cash}</div>
+    <div class="item-description">${item.txt}</div>
+  </div>
+  <div class="listing-action-buttons">
+    <button class="like-button liked material-icons"></button>
+    <span class="like-count">${ item.up ? item.up : 0 }</span>
+    <button class="start-chat primary-button"></button>
+    <button class="report-button material-icons">outlined_flag</button>
+  </div>
+</div>`;
+  });
+
+  document.querySelector("#search-results").innerHTML = resultsHTML;
+}
 
 const categoryOptionsDiv = document.querySelector("#category-filter .filter-options");
 for (const category of categoryData.categories) {
   const categoryOptionDiv = document.createElement("div");
   categoryOptionDiv.className = "filter-option";
+  categoryOptionDiv.addEventListener("click", () => {
+    location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + category.id;
+  });
 
   const categoryNameSpan = document.createElement("span");
   categoryNameSpan.className = "category-name";
@@ -122,9 +178,17 @@ for (const category of categoryData.categories) {
 
   const subcategoriesDiv = document.createElement("div");
   subcategoriesDiv.className = "subcategories";
+
+  if (category.sub === undefined) category.sub = [];
+
   for (const subcategory of category.sub) {
     const subcategoryDiv = document.createElement("div");
     subcategoryDiv.textContent = subcategory.name;
+    subcategoryDiv.addEventListener("click", (event) => {
+      event.stopPropagation();
+      console.log(location.href);
+      location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategory.id;
+    });
 
     subcategoriesDiv.append(subcategoryDiv);
   }
@@ -184,12 +248,13 @@ document.getElementById("category-search").addEventListener("input", (event) => 
       //     `/categories/${parentCategoryName}/${subcategoryMatch.name}`;
       // const parentCategoryUrl =
       //     `/categories/${parentCategoryName}`;
+      console.log(subcategoryMatch);
 
       const subcategorySearchResultDiv = document.createElement("div");
       subcategorySearchResultDiv.className = "category-search-result";
-      // subcategorySearchResultDiv.addEventListener("click", () => {
-      //   window.location.href = subcategoryUrl;
-      // });
+      subcategorySearchResultDiv.addEventListener("click", () => {
+        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat" + subcategoryMatch.id;
+      });
       
       const subcategoryLink = document.createElement("a");
       subcategoryLink.className = "result-name";
@@ -217,12 +282,13 @@ document.getElementById("category-search").addEventListener("input", (event) => 
     }
     for (const categoryMatch of categoryMatches) {
       // const categoryUrl = `/categories/${categoryMatch.name}`;
+      console.log(categoryMatch);
 
       const categorySearchResultDiv = document.createElement("div");
       categorySearchResultDiv.className = "category-search-result";
-      // categorySearchResultDiv.addEventListener("click", () => {
-      //   window.location.href = categoryUrl;
-      // });
+      categorySearchResultDiv.addEventListener("click", () => {
+        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat" + categoryMatch.id;
+      });
 
       const categoryLink = document.createElement("a");
       categoryLink.className = "result-name";

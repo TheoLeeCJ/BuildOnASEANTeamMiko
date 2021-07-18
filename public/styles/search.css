@@ -1,6 +1,17 @@
+body, html {
+  overflow-x: hidden;
+}
+
 #filters {
   display: flex;
   margin-bottom: 40px;
+  max-width: calc(100vw - 60px);
+}
+
+@media screen and (max-width: 701px) {
+  #filters {
+    overflow-x: scroll;
+  }
 }
 
 #filters .filter:not(:last-child) {
@@ -13,6 +24,7 @@
 
 #filters .filter .filter-button,
 #filters button#apply-filters {
+  white-space: nowrap;
   display: flex;
   border-radius: 99999px;
   font-family: inherit;

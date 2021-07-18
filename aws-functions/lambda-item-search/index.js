@@ -5,7 +5,7 @@ const AWS = require("aws-sdk");
 const short = require('short-uuid');
 const { Index } = require("flexsearch");
 
-const fields = ["jwt", "refresh", "page"]; // TODO: remove auth requirement for public search
+const fields = ["refresh", "page"]; // TODO: remove auth requirement for public search
 // OPTIONAL fields: category, sortBy, query
 
 // TODO: move to environment variables.
@@ -64,7 +64,7 @@ exports.handler = async (event, context, lambdaCallback) => {
     }
 
     // TODO: remove auth requirement for public search
-    let jwtData = jwt.verify(formFields["jwt"], SECRET, { "algorithms": ["HS256"] }); // important - verify token with HS256; throws error is tampered with
+    // let jwtData = jwt.verify(formFields["jwt"], SECRET, { "algorithms": ["HS256"] }); // important - verify token with HS256; throws error is tampered with
     
     if (
       indexData == null ||

@@ -58,7 +58,7 @@ exports.handler = async (event, context, lambdaCallback) => {
     for (let i = 0; i < imgData.length; i++) {
       s3.copyObject({
         ACL: "public-read",
-        Bucket: "miko-user-img", 
+        Bucket: "miko-user-img",
         CopySource: `/miko-user-img/user-img/pending-${imgData[i]}`, 
         Key: `user-img/${imgData[i]}`,
       }, (error, data) => {
@@ -94,6 +94,29 @@ exports.handler = async (event, context, lambdaCallback) => {
       },
     }).promise();
 
+    // write to user's profile
+    let userData = await db.query({
+      TableName: "users",
+      KeyConditionExpression: "userId = :userId",
+      ExpressionAttributeValues: {
+        ":userId": jwtData["user"],
+      },
+    }).promise();
+
+    userData = userData.Items[0];
+
+    if (userData["items"] == undefined || userData["items"] == "") userData["items"] = JSON.stringify([]);
+
+    let itemsData = JSON.parse(userData["items"]);
+    itemsData.push(itemId);
+
+    userData["items"] = JSON.stringify(itemsData);
+
+    await db.put({
+      TableName: "users",
+      Item: userData,
+    }).promise();
+
     lambdaCallback(null, JSON.stringify({
       statusCode: 200,
       msg: {
@@ -105,6 +128,7 @@ exports.handler = async (event, context, lambdaCallback) => {
   catch (e) {
     lambdaCallback(null, JSON.stringify({
       statusCode: 400,
+      e: e.toString(),
     }));
   }
 };
