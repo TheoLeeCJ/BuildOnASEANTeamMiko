@@ -57,6 +57,7 @@ exports.handler = async (event, context, lambdaCallback) => {
     // signal that images are related to an item now by removing "pending-" prefix
     for (let i = 0; i < imgData.length; i++) {
       s3.copyObject({
+        ACL: "public-read",
         Bucket: "miko-user-img", 
         CopySource: `/miko-user-img/user-img/pending-${imgData[i]}`, 
         Key: `user-img/${imgData[i]}`,
@@ -77,6 +78,7 @@ exports.handler = async (event, context, lambdaCallback) => {
     await db.put({
       TableName: "items",
       Item: {
+        likes: 0,
         ipAddr: event["headers"]["x-forwarded-for"],
         userId: jwtData["user"],
         price: formFields["price"],

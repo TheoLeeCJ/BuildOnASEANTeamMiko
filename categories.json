@@ -1,37 +1,55 @@
 {
-  "largest": 6,
+  "largest": 9,
   "categories": [
     {
       "id": 0,
-      "name": "Cat 1",
+      "name": "Electronic Devices",
       "sub": [
         {
           "id": 1,
-          "name": "Cat 1 Sub 1"
+          "name": "Digital Storage"
         },
         {
-          "id": 4,
-          "name": "Cat 1 Sub 2"
-        },
-        {
-          "id": 5,
-          "name": "Cat 1 Sub 3"
+          "id": 2,
+          "name": "Laptops and PCs"
         }
       ]
     },
     {
-      "id": 2,
-      "name": "Cat 2",
+      "id": 3,
+      "name": "Toys",
       "sub": [
         {
-          "id": 3,
-          "name": "Cat 2 Sub 1"
+          "id": 4,
+          "name": "Kids' Toys"
         },
         {
-          "id": 6,
-          "name": "Cat 2 Sub 2"
+          "id": 5,
+          "name": "Water Toys"
         }
       ]
+    },
+    {
+      "id": 6,
+      "name": "Everything Else"
+    },
+    {
+      "id": 7,
+      "name": "Clothes",
+      "sub": [
+        {
+          "id": 8,
+          "name": "Leggings"
+        },
+        {
+          "id": 9,
+          "name": "Shirts"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Figurines"
     }
   ]
 }
