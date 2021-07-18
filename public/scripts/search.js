@@ -8,8 +8,13 @@ topBarLoadCallbacks.push(() => {
 });
 
 const resultCount = 111094800000938311n;
-document.getElementById("search-results-overview").textContent =
-    `${separateThousands(resultCount)} results for "${searchTerm}"`;
+const searchResultsOverviewDiv = document.getElementById("search-results-overview");
+if (searchTerm !== null) {
+  searchResultsOverviewDiv.textContent =
+      `${separateThousands(resultCount)} results for "${searchTerm}"`;  
+} else {
+  searchResultsOverviewDiv.textContent = "Enter a search term to get started.";
+}
 
 for (const filterButton of document.getElementsByClassName("filter-button")) {
   const setFilterInputsTabIndex = () => {
