@@ -228,16 +228,6 @@
 
 #filters button#apply-filters {
   padding: 7px 16px;
-  background-color: var(--theme-red);
-  color: #fff;
-  border: none;
-  transition: background-color 0.15s;
-}
-#filters button#apply-filters:hover {
-  background-color: #e42431;
-}
-#filters button#apply-filters:active {
-  background-color: #cf1e2a;
 }
 
 #search-results {

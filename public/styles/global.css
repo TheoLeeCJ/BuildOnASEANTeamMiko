@@ -45,6 +45,19 @@ main > h1:first-child {
   margin-top: 0;
 }
 
+.primary-button {
+  background-color: var(--theme-red);
+  color: #fff;
+  border: none;
+  transition: background-color 0.15s;
+}
+.primary-button:hover {
+  background-color: #e42431;
+}
+.primary-button:active {
+  background-color: #cf1e2a;
+}
+
 .card {
   box-shadow: 0 0 10px 0 #aaa;
 }
@@ -92,6 +105,10 @@ main > h1:first-child {
 }
 .listing:hover {
   box-shadow: 0 0 5px 0 #aaa;
+}
+
+.listing button {
+  cursor: pointer;
 }
 
 .listing .listing-info-top *,
@@ -215,9 +232,6 @@ main > h1:first-child {
   margin-left: auto;
   margin-right: 10px;
   padding: 5px 10px;
-  background-color: var(--theme-red);
-  color: #fff;
-  border: none;
   border-radius: 5px;
   font-family: inherit;
   font-size: 14px;
