@@ -156,24 +156,22 @@
   align-items: center;
 }
 
-#top-bar #title-bar #sell-button-wrapper #sell-button {
+#top-bar #title-bar #sell-button-wrapper a #sell-button {
   margin-left: 20px;
   padding: 5px 25px;
-  background-color: var(--theme-red);
-  color: #fff;
-  border: none;
   border-radius: 5px;
   font-family: inherit;
   font-size: 16px;
   font-weight: 500;
+  cursor: pointer;
 }
 @media screen and (max-width: 840px) {
-  #top-bar #title-bar #sell-button-wrapper #sell-button {
+  #top-bar #title-bar #sell-button-wrapper a #sell-button {
     margin-left: 15px;
   }
 }
 @media screen and (max-width: 500px) {
-  #top-bar #title-bar #sell-button-wrapper #sell-button {
+  #top-bar #title-bar #sell-button-wrapper a #sell-button {
     display: none;
   }
 }
