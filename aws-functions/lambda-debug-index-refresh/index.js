@@ -23,7 +23,7 @@ exports.handler = async (event, context, lambdaCallback) => {
 
   let scanParams = {
     TableName: "items",
-    AttributesToGet: ["itemId", "name", "price", "category"],
+    AttributesToGet: ["itemId", "name", "price", "category", "coverImage", "likes", "summary", "userId"],
   };
 
   try {
@@ -42,6 +42,11 @@ exports.handler = async (event, context, lambdaCallback) => {
         "id": dataset[i]["itemId"],
         "cat": dataset[i]["category"],
         "name": dataset[i]["name"],
+        "cash": dataset[i]["price"],
+        "img": dataset[i]["coverImage"],
+        "up": dataset[i]["likes"],
+        "txt": dataset[i]["summary"],
+        "user": dataset[i]["userId"],
       },
     );
   }

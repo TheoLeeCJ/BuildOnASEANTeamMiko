@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", "Helvetica", sans-serif;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      input[type=text], input[type=email], input[type=password], select, textarea, input[type=number] {
+        width: calc(100% - 32px);
+        padding: 8px;
+        font-size: 1rem;
+        margin: 8px 16px;
+      }
+
+      input[type=submit] {
+        font-size: 1rem;
+        margin: 8px 16px;
+        padding: 8px;
+        font-size: 1rem;
+      }
+
+      #output {
+        width: calc(100% - 32px);
+        margin: 8px 16px;
+        background-color: #f6f6f6;
+        padding: 8px;
+        font-family: 'Cascadia Code', 'Consolas', monospace;
+        white-space: pre-wrap;
+        overflow: hidden;
+        text-overflow: clip;
+        overflow-wrap: break-word;
+      }
+    </style>
+
+    <h1>IMPORT DATASET</h1>
+
+    <form onsubmit="event.preventDefault(); makeRequests();" method="post">
+      <input type="text" name="jwt" placeholder="jwt" />
+      <textarea rows="10" id="dataset" style="font-family: 'Cascadia Code', 'Consolas', monospace;" placeholder="JSON data"></textarea>
+      
+      <input type="submit" value="Send POST Request" />
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+      let thingy;
+
+      async function makeRequests() {
+        let items = JSON.parse(document.querySelector("#dataset").value);
+        let conditionFields = [
+          {
+            question: "Are there printing errors on the product?",
+            answer: "Small defect at area shown in picture",
+          },
+          {
+            question: "Is the figurine chipped anywhere?",
+            answer: "Nope, all solid",
+          },
+          // {
+          //   question: "Are there any torn areas or stains on the clothing?",
+          //   answer: "Torn area",
+          // },
+          // {
+          //   question: "How long has this clothing been in use?",
+          //   answer: "Around 2 months.",
+          // },
+        ];
+
+        for (let i = 0; i < items.length; i++) {
+          let form = new FormData();
+          form.append("category", 10);
+          form.append("preferredLocations", "Waterway Point");
+          form.append("multipleAvailable", false);
+          form.append("conditionFields", JSON.stringify(conditionFields));
+          form.append("price", items[i].price);
+          form.append("description", items[i].desc);
+          form.append("images", JSON.stringify([items[i].coverImg]));
+          form.append("name", items[i].name);
+          form.append("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FrdXJhbWlrbzM1IiwiaWF0IjoxNjI1OTg3ODY2fQ.8gQIzkpZ017C-4l7bMLSsIVdPdPnH6YGNAAkGEuIDBg");
+
+          postRequest(form);
+        }
+      }
+
+      async function postRequest(formData) {
+        let responseText = await (
+          await (
+            fetch("https://xdpj2nme28.execute-api.us-east-1.amazonaws.com/item/create", {
+              method: "post",
+              body: formData,
+            })
+          )
+        ).text();
+
+        try { thingy = JSON.parse(responseText); }
+        catch (e) {}
+
+        document.querySelector("#output").innerText = JSON.stringify(JSON.parse(responseText), null, 2);
+      }
+    </script>
+  </body>
+</html>
