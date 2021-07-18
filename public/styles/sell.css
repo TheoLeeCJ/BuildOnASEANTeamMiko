@@ -1,0 +1,183 @@
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  flex-grow: 1;
+}
+
+h2 {
+  font-weight: 500;
+}
+
+#sell-procedure-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+}
+
+#sell-procedure-progress-indicator {
+  position: relative;
+  width: 62.5%;
+  margin-top: 15px;
+  margin-bottom: 40px;
+}
+
+#progress-markers {
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress-marker {
+  /* position: absolute; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  background-color: #e6e6e6;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 500;
+  z-index: 2;
+}
+
+.progress-marker.progress-marker-complete {
+  background-color: var(--theme-red);
+}
+
+#progress-bars {
+  position: absolute;
+  width: 100%;
+  height: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#progress-bars > div {
+  /* position: absolute; */
+  height: 100%;
+}
+
+#progress-bar {
+  /* position: absolute; */
+  /* height: 8px; */
+  border-radius: 999999px;
+  background-color: #e6e6e6;
+  z-index: 1;
+}
+
+#progress-bar-filler {
+  width: 0;
+  transform: translateY(-100%);
+  background-color: var(--theme-red);
+  z-index: 2;
+  transition: width 1.5s ease-in-out;
+}
+
+.sell-procedure-step {
+  width: 100%;
+  /* padding: 30px; */
+  /* border-radius: 10px; */
+}
+
+.sell-procedure-step h1 {
+  margin: 0;
+}
+
+.halves-wrapper {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+
+.halves-wrapper > .half {
+  flex: 1 0;
+}
+
+.halves-wrapper > .half > input[type="text"] {
+  width: 100%;
+  padding: 10px 11px;
+  font-family: inherit;
+  font-size: 16px;
+  border: 1.5px solid #767676;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#listing-category-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 8.7px 11px 8.7px 10px;
+  border: 1.5px solid #767676;
+  border-radius: 5px;
+}
+
+#listing-category-wrapper > .material-icons {
+  margin-right: 5px;
+}
+
+input#listing-category {
+  flex-grow: 1;
+  padding: 0;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+#attach-photos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  padding: 20px 20px 25px;
+  border: 5px dashed #bbb;
+  border-radius: 10px;
+  user-select: none;
+}
+
+#attach-photos > .material-icons-outlined {
+  margin-bottom: 10px;
+  color: #444;
+  font-size: 60px;
+}
+
+#sell-procedure-navigation-buttons {
+  margin-left: auto;
+  margin-top: 30px;
+}
+
+#sell-procedure-navigation-buttons > button {
+  padding: 5px 20px;
+  border: 1.5px solid var(--theme-red);
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+#sell-procedure-navigation-buttons > button:not(.primary-button) {
+  background-color: #fff;
+  color: var(--theme-red);
+}
+#sell-procedure-navigation-buttons > button:not(:last-child) {
+  margin-right: 7px;
+}
+
+#sell-procedure-navigation-buttons > button > span {
+  display: block;
+  transform: translateY(-1px);
+}

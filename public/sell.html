@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="/styles/top-bar.css">
+  <link rel="stylesheet" href="/styles/sell.css">
+
+  <title>Sell an item</title>
+</head>
+<body>
+  <main>
+    <div id="sell-procedure-wrapper">
+      <div id="sell-procedure-progress-indicator">
+        <div id="progress-markers">
+          <div class="progress-marker progress-marker-complete"></div>
+          <div class="progress-marker"></div>
+          <div class="progress-marker"></div>
+          <div class="progress-marker"></div>
+        </div>
+        <div id="progress-bars">
+          <div id="progress-bar"></div>
+          <div id="progress-bar-filler"></div>
+        </div>
+      </div>
+  
+      <div id="sell-procedure-step-1" class="sell-procedure-step">
+        <h1>What are you selling today?</h1>
+      
+        <div class="halves-wrapper">
+          <div class="half">
+            <h2>Listing title</h2>
+            <input type="text" id="listing-title" placeholder="What do you want your listing to be called?">
+          </div>
+          <div class="half">
+            <h2>Category</h2>
+            <div id="listing-category-wrapper">
+              <span class="material-icons">search</span>
+              <input type="text" id="listing-category" placeholder="Find a category">
+              <div class="category-options"></div>
+            </div>
+          </div>
+        </div>
+  
+        <h2>Attach photos</h2>
+        <div id="attach-photos">
+          <span class="material-icons-outlined">add_a_photo</span>
+          <!-- <button id="select-photos" class="primary-button">Select photos</button> -->
+          <span>Double-click to add a photo, or drag photos here</span>
+        </div>   
+      </div>
+  
+      <div id="sell-procedure-navigation-buttons">
+        <button id="back-button"><span>Back</span></button>
+        <button id="next-button" class="primary-button"><span>Next</span></button>
+      </div>
+    </div>
+  </main>
+
+  <script src="/scripts/global.js"></script>
+  <script src="/scripts/sell.js"></script>
+</body>
+</html>

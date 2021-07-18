@@ -49,7 +49,7 @@ main > h1:first-child {
   background-color: var(--theme-red);
   color: #fff;
   border: none;
-  transition: background-color 0.15s;
+  transition: background-color 0.1s;
 }
 .primary-button:hover {
   background-color: #e42431;
