@@ -5,33 +5,65 @@ html {
 body {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
 }
 
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   flex-grow: 1;
+  padding-bottom: 70px;
 }
 
 h2 {
   font-weight: 500;
 }
 
+input[type="text"] {
+  width: 100%;
+  padding: 10px 11px;
+  font-family: inherit;
+  font-size: 16px;
+  border: 1.5px solid #767676;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+div.select-wrapper {
+  position: relative;
+}
+
+select {
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 16px;
+  appearance: none;
+}
+
+select + span.material-icons {
+  position: absolute;
+  top: 50%;
+  transform: translate(calc(-100% - 7px), -50%);
+  pointer-events: none;
+}
+
 #sell-procedure-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-grow: 1;
   width: 80%;
+  height: 100%;
 }
 
 #sell-procedure-progress-indicator {
   position: relative;
   width: 62.5%;
-  margin-top: 15px;
-  margin-bottom: 40px;
+  margin-top: 10px;
+  margin-bottom: 35px;
 }
 
 #progress-markers {
@@ -52,6 +84,7 @@ h2 {
   font-size: 18px;
   font-weight: 500;
   z-index: 2;
+  transition: background-color 0.5s;
 }
 
 .progress-marker.progress-marker-complete {
@@ -84,17 +117,25 @@ h2 {
   transform: translateY(-100%);
   background-color: var(--theme-red);
   z-index: 2;
-  transition: width 1.5s ease-in-out;
+  transition: width 1s ease-in-out;
 }
 
 .sell-procedure-step {
+  display: none;
+  /* display: flex; */
+  flex-direction: column;
+  flex-grow: 1;
   width: 100%;
+  height: 100%;
   /* padding: 30px; */
   /* border-radius: 10px; */
 }
 
 .sell-procedure-step h1 {
   margin: 0;
+}
+.sell-procedure-step h1:not(:first-of-type) {
+  margin-top: 50px;
 }
 
 .halves-wrapper {
@@ -107,14 +148,29 @@ h2 {
   flex: 1 0;
 }
 
-.halves-wrapper > .half > input[type="text"] {
-  width: 100%;
-  padding: 10px 11px;
-  font-family: inherit;
-  font-size: 16px;
-  border: 1.5px solid #767676;
-  border-radius: 5px;
-  box-sizing: border-box;
+.attach-photos {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  /* margin-top: 10px; */
+  padding: 20px 20px 25px;
+  border: 4px dashed #bbb;
+  border-radius: 10px;
+  user-select: none;
+}
+.attach-photos::after {
+  content: "Double-click to add photos, or drag photos here";
+}
+
+.attach-photos > .material-icons-outlined {
+  margin-bottom: 10px;
+  color: #444;
+  font-size: 60px;
+}
+.attach-photos > .material-icons-outlined::after {
+  content: "add_a_photo";
 }
 
 #listing-category-wrapper {
@@ -133,26 +189,117 @@ input#listing-category {
   flex-grow: 1;
   padding: 0;
   border: none;
+  border-radius: 0;
   outline: none;
   font-family: inherit;
   font-size: 16px;
 }
 
-#attach-photos {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
-  padding: 20px 20px 25px;
-  border: 5px dashed #bbb;
-  border-radius: 10px;
-  user-select: none;
+#price-input-wrapper {
+  position: relative;
 }
 
-#attach-photos > .material-icons-outlined {
-  margin-bottom: 10px;
-  color: #444;
-  font-size: 60px;
+#price-input-wrapper > input[type="text"] {
+  padding-left: 2em;
+}
+
+#currency {
+  position: absolute;
+  top: 50%;
+  transform: translate(11px, calc(-50% - 0.5px));
+}
+
+#listing-description {
+  width: 100%;
+  flex-grow: 1;
+  padding: 10px 11px;
+  border-radius: 5px;
+  resize: none;
+  font-family: inherit;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* .additional-field > h2 {
+  margin-top: 20px;
+} */
+
+#add-field-button {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  padding: 0;
+  width: fit-content;
+  border: none;
+  font-size: 18px;
+  transform: translateX(-2px);
+}
+
+#add-field-button .material-icons {
+  margin-right: 7px;
+  font-size: 28px;
+}
+
+.additional-field {
+  /* position: relative; */
+  margin-bottom: 15px;
+}
+.additional-field:last-of-type {
+  margin-bottom: 5px;
+}
+
+.additional-field > h2 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.additional-field > h2 > button.remove-field {
+  /* display: none; */
+  margin: 0 0 0 12px;
+  padding: 0;
+  background-color: #00000000;
+  color: var(--theme-red);
+  border: none;
+  font-size: 28px;
+  transform: translateY(1px);
+  /* right: 0; */
+}
+/* .additional-field > h2:hover > button.remove-field {
+  display: block;
+} */
+
+.additional-field h3 {
+  /* margin-top: 0; */
+  font-weight: 500;
+}
+
+.additional-field-text {
+  margin-bottom: 20px;
+}
+
+/* .additional-field > h3 {
+  margin-top: 20px;
+} */
+
+#sell-procedure-step-4 {
+  flex-grow: 0;
+}
+
+#sell-procedure-step-4 h2 {
+  margin-bottom: 5px;
+}
+
+#sell-procedure-step-4 h3 {
+  margin: 20px 0 5px;
+}
+
+#sell-procedure-step-4 h4 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+#sell-procedure-step-4 h4:first-of-type {
+  margin-top: 5px;
 }
 
 #sell-procedure-navigation-buttons {
@@ -162,16 +309,9 @@ input#listing-category {
 
 #sell-procedure-navigation-buttons > button {
   padding: 5px 20px;
-  border: 1.5px solid var(--theme-red);
   border-radius: 5px;
-  font-family: inherit;
   font-size: 16px;
   font-weight: 500;
-  cursor: pointer;
-}
-#sell-procedure-navigation-buttons > button:not(.primary-button) {
-  background-color: #fff;
-  color: var(--theme-red);
 }
 #sell-procedure-navigation-buttons > button:not(:last-child) {
   margin-right: 7px;

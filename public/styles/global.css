@@ -45,10 +45,15 @@ main > h1:first-child {
   margin-top: 0;
 }
 
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
 .primary-button {
   background-color: var(--theme-red);
   color: #fff;
-  border: none;
+  border: 1.5px solid var(--theme-red);
   transition: background-color 0.1s;
 }
 .primary-button:hover {
@@ -56,6 +61,12 @@ main > h1:first-child {
 }
 .primary-button:active {
   background-color: #cf1e2a;
+}
+
+.secondary-button {
+  background-color: #fff;
+  color: var(--theme-red);
+  border: 1.5px solid var(--theme-red);
 }
 
 .card {
