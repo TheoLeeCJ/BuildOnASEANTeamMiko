@@ -1,5 +1,5 @@
 const NUM_STEPS = 4
-// let currentStep = 1;
+let currentStep = 1;
 
 const progressMarkersDiv = document.getElementById("progress-markers");
 for (let i = 0; i < NUM_STEPS; i++) {
@@ -116,9 +116,6 @@ addFieldButton.addEventListener("click", () => {
     </div>
   `);
 });
-
-let currentStep = 4;
-showStep(currentStep);
 
 document.getElementById("back-button").addEventListener("click", () => {
   if (currentStep > 1) {
