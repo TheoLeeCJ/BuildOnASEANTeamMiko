@@ -1,3 +1,5 @@
+const API_ENDPOINT = "https://xdpj2nme28.execute-api.us-east-1.amazonaws.com";
+
 const topBarLoadCallbacks = [
   () => {
     document.getElementById("search-form").addEventListener("submit", (event) => {
