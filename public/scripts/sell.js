@@ -1,5 +1,4 @@
 const NUM_STEPS = 4
-let currentStep = 1;
 
 const progressMarkersDiv = document.getElementById("progress-markers");
 for (let i = 0; i < NUM_STEPS; i++) {
@@ -56,7 +55,6 @@ const showStep = (stepNum) => {
       progressMarkers[i].classList.remove("progress-marker-complete");
     }
   }
-  console.log(turnRedTimeoutIds)
 
   const nextButtonText = document.querySelector("#next-button > span");
   if (stepNum === NUM_STEPS) {
@@ -116,6 +114,9 @@ addFieldButton.addEventListener("click", () => {
     </div>
   `);
 });
+
+let currentStep = 1;
+showStep(currentStep);
 
 document.getElementById("back-button").addEventListener("click", () => {
   if (currentStep > 1) {
