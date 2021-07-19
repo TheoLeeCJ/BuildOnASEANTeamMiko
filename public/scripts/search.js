@@ -5,7 +5,11 @@ const searchCat = queryParams.get("cat");
 let searchResults = [];
 let resultCount = 0n;
 
-const categoryData = JSON.parse("{\"largest\":9,\"categories\":[{\"id\":0,\"name\":\"Electronic Devices\",\"sub\":[{\"id\":1,\"name\":\"Digital Storage\"},{\"id\":2,\"name\":\"Laptops and PCs\"}]},{\"id\":3,\"name\":\"Toys\",\"sub\":[{\"id\":4,\"name\":\"Kids' Toys\"},{\"id\":5,\"name\":\"Water Toys\"}]},{\"id\":6,\"name\":\"Everything Else\"},{\"id\":7,\"name\":\"Clothes\",\"sub\":[{\"id\":8,\"name\":\"Leggings\"},{\"id\":9,\"name\":\"Shirts\"}]},{\"id\":10,\"name\":\"Figurines\"}]}");
+let categoryData = JSON.parse("{\"largest\":9,\"categories\":[{\"id\":0,\"name\":\"Electronic Devices\",\"sub\":[{\"id\":1,\"name\":\"Digital Storage\"},{\"id\":2,\"name\":\"Laptops and PCs\"}]},{\"id\":3,\"name\":\"Toys\",\"sub\":[{\"id\":4,\"name\":\"Kids' Toys\"},{\"id\":5,\"name\":\"Water Toys\"}]},{\"id\":6,\"name\":\"Everything Else\"},{\"id\":7,\"name\":\"Clothes\",\"sub\":[{\"id\":8,\"name\":\"Leggings\"},{\"id\":9,\"name\":\"Shirts\"}]},{\"id\":10,\"name\":\"Figurines\"}]}");
+
+topBarLoadCallbacks.push(async () => {
+  categoryData = await fetch("https://miko-user-img.s3.amazonaws.com/categories.json").then((res) => res.json());
+});
 
 topBarLoadCallbacks.push(() => {
   if (searchTerm !== null) {
@@ -31,11 +35,15 @@ topBarLoadCallbacks.push(async () => {
 });
 
 function renderSearchResults() {
+  // render search results
   const searchResultsOverviewDiv = document.getElementById("search-results-overview");
   if (searchTerm !== null) {
     searchResultsOverviewDiv.textContent = `${separateThousands(resultCount)} results for "${searchTerm}"`;
     if (searchCat !== null) {
-      let searchCatDisplay = "Non-Existent Items"
+      let searchCatDisplay = "Non-Existent Items";
+      let searchCatFilters = [];
+
+      let filterHTML = ``;
 
       for (let i = 0; i < categoryData["categories"].length; i++) {
         if (categoryData["categories"][i]["id"] == searchCat) {
@@ -46,10 +54,37 @@ function renderSearchResults() {
         for (let i2 = 0; i2 < categoryData["categories"][i]["sub"].length; i2++) {
           if (categoryData["categories"][i]["sub"][i2]["id"] == searchCat) {
             searchCatDisplay = categoryData["categories"][i]["sub"][i2]["name"];
+            
+            let filters = categoryData["categories"][i]["sub"][i2]["filters"];
+            searchCatFilters = filters == null ? [] : filters;
             break;
           }
         }
       }
+
+      for (let i = 0; i < searchCatFilters.length; i++) {
+        filterHTML += `<div class="filter-option">
+  <input type="checkbox" id="special-filter-value-1">
+  <label for="special-filter-value-1">${searchCatFilters[i]}</label>
+</div>`;
+      }
+
+      if (searchCatFilters.length == 0) {
+        filterHTML += `<div class="filter-option">
+  <label>No filters for this category.</label>
+</div>`;
+      }
+
+      let filterContainer = document.createElement("div");
+      filterContainer.innerHTML = `<div class="filter">
+  <button class="filter-button">
+    <span>Product Condition Filters</span>
+    <i class="material-icons"></i>
+  </button>
+  <div class="filter-options">${filterHTML}</div>
+</div>`;
+
+      document.querySelector("#filters").appendChild(filterContainer);
 
       searchResultsOverviewDiv.textContent += ` in ${searchCatDisplay}`;
     }
@@ -129,6 +164,10 @@ function renderSearchResults() {
   });
 
   let resultsHTML = ``;
+
+  if (searchResults.length == 0) {
+    resultsHTML = `<div style="width: calc(85vw - 20px); text-align: center; display: block; padding-bottom: 24px;"><h1 style="font-weight: bold; color: grey;">Oh no! No items were found!</h1><p>Try searching using less specific search terms, or remove filters.</p></div>`
+  }
 
   searchResults.forEach((item) => {
     // i know that this is bad practice, but we really don't have time!!!
@@ -253,7 +292,7 @@ document.getElementById("category-search").addEventListener("input", (event) => 
       const subcategorySearchResultDiv = document.createElement("div");
       subcategorySearchResultDiv.className = "category-search-result";
       subcategorySearchResultDiv.addEventListener("click", () => {
-        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat" + subcategoryMatch.id;
+        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategoryMatch.id;
       });
       
       const subcategoryLink = document.createElement("a");
@@ -287,7 +326,7 @@ document.getElementById("category-search").addEventListener("input", (event) => 
       const categorySearchResultDiv = document.createElement("div");
       categorySearchResultDiv.className = "category-search-result";
       categorySearchResultDiv.addEventListener("click", () => {
-        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat" + categoryMatch.id;
+        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + categoryMatch.id;
       });
 
       const categoryLink = document.createElement("a");

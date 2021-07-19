@@ -112,8 +112,58 @@
   color: #606060;
 }
 
+#user-actions {
+  cursor: pointer;
+}
+
 #top-bar #title-bar #user-actions > * {
   margin: auto 0;
+}
+
+#user-actions > #user-actions-dropdown {
+  position: absolute;
+  right: 0;
+  margin-left: -100vw;
+  background-color: white;
+  box-shadow: 0 10px 15px -11px #aaa, 0 10px 15px -11px #aaa;
+  opacity: 0;
+  display: none;
+  border-radius: 10px;
+}
+
+#user-actions-dropdown > * {
+  padding: 10px 15px;
+  display: block;
+  text-decoration: none;
+  color: #606060;
+}
+
+#user-actions-dropdown > a > .material-icons {
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#user-actions:hover > #user-actions-dropdown {
+  padding-top: 10px;
+  margin-left: -100vw !important;
+  display: block;
+  animation: user-action-dropdown .2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes user-action-dropdown {
+  from {
+    opacity: 0;
+    top: 20px;
+    transform: scaleY(0.9);
+  }
+
+  to {
+    opacity: 1;
+    top: 45px;
+    transform: scaleY(1);
+  }
 }
 
 #top-bar #title-bar #user-actions .profile-picture {

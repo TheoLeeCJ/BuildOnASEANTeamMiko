@@ -1,5 +1,7 @@
 const API_ENDPOINT = "https://xdpj2nme28.execute-api.us-east-1.amazonaws.com";
 
+let user = (localStorage.getItem("session") == null) ? null : JSON.parse(atob(localStorage.getItem("session").split(".")[1]));
+
 const topBarLoadCallbacks = [
   () => {
     document.getElementById("search-form").addEventListener("submit", (event) => {
@@ -13,10 +15,26 @@ const topBarLoadCallbacks = [
 
 fetch("/top-bar.html")
     .then((res) => res.text())
-    .then((topBarHtml) => {
+    .then(async (topBarHtml) => {
       document.body.insertAdjacentHTML("afterbegin", topBarHtml);
+
+      // show logged in vs logged out menu?!
+      if (user !== null) {
+        [...document.querySelectorAll(".dropdown-for-logged-out")].forEach((elephant) => {
+          elephant.style.display = "none";
+        });
+      }
+      else {
+        [...document.querySelectorAll(".dropdown-for-login")].forEach((elephant) => {
+          elephant.style.display = "none";
+        });
+      }
+
+      // install username
+      (user !== null) ? document.querySelector("#username").innerText = user["user"] : document.querySelector("#username").innerText = "Anonymous";
+
       for (const callback of topBarLoadCallbacks) {
-        callback();
+        await callback();
       }
     })
     .catch((err) => {

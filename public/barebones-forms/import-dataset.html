@@ -60,14 +60,14 @@
           //   question: "Are there any minor leaks on the product?",
           //   answer: "No",
           // },
-          {
-            question: "Does the product have any problem sectors?",
-            answer: "No",
-          },
-          {
-            question: "May you attach a disk health report?",
-            answer: "Not required",
-          },
+          // {
+          //   question: "Does the product have any problem sectors?",
+          //   answer: "No",
+          // },
+          // {
+          //   question: "May you attach a disk health report?",
+          //   answer: "Not required",
+          // },
           // {
           //   question: "Are there printing errors on the product?",
           //   answer: "Small defect at area shown in picture",
@@ -76,20 +76,20 @@
           //   question: "Is the figurine chipped anywhere?",
           //   answer: "Nope, all solid",
           // },
-          // {
-          //   question: "Are there any torn areas or stains on the clothing?",
-          //   answer: "Torn area",
-          // },
-          // {
-          //   question: "How long has this clothing been in use?",
-          //   answer: "Around 2 months.",
-          // },
+          {
+            question: "Are there any torn areas or stains on the clothing?",
+            answer: "Torn area",
+          },
+          {
+            question: "How long has this clothing been in use?",
+            answer: "Around 2 months.",
+          },
         ];
 
         for (let i = 0; i < items.length; i++) {
           let form = new FormData();
-          form.append("category", 1);
-          form.append("preferredLocations", "Heartland Mall");
+          form.append("category", 8);
+          form.append("preferredLocations", "Our Tampines Hub");
           form.append("multipleAvailable", false);
           form.append("conditionFields", JSON.stringify(conditionFields));
           form.append("price", items[i].price);
@@ -101,10 +101,10 @@
           // form.append("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidG9ocnUiLCJpYXQiOjE2MjY2NDU0MjV9.CfehPb_j0J3rw4-KzYDnLOuizBIeA9pdEpTFTG2KC8A");
 
           // pekora
-          // form.append("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicGVrb3JhIiwiaWF0IjoxNjI2NjQ0NzU1fQ.rcHDqo_7pEyMkdJgNr2lOGpir2f5vPQrYUKUz255o9Y");
+          form.append("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicGVrb3JhIiwiaWF0IjoxNjI2NjQ0NzU1fQ.rcHDqo_7pEyMkdJgNr2lOGpir2f5vPQrYUKUz255o9Y");
 
           // gawrgura
-          form.append("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZ2F3cmd1cmEiLCJpYXQiOjE2MjY2NDM3MDF9.pe3tZEU2-dyJEefS6sl31bNxVtHY6UxjOdJhwfHTE5Q");
+          // form.append("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZ2F3cmd1cmEiLCJpYXQiOjE2MjY2NDM3MDF9.pe3tZEU2-dyJEefS6sl31bNxVtHY6UxjOdJhwfHTE5Q");
 
           // sakuramiko35
           // form.append("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FrdXJhbWlrbzM1IiwiaWF0IjoxNjI1OTg3ODY2fQ.8gQIzkpZ017C-4l7bMLSsIVdPdPnH6YGNAAkGEuIDBg");
