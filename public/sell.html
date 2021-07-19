@@ -20,12 +20,7 @@
   <main>
     <div id="sell-procedure-wrapper">
       <div id="sell-procedure-progress-indicator">
-        <div id="progress-markers">
-          <div class="progress-marker progress-marker-complete"></div>
-          <div class="progress-marker"></div>
-          <div class="progress-marker"></div>
-          <div class="progress-marker"></div>
-        </div>
+        <div id="progress-markers"></div>
         <div id="progress-bars">
           <div id="progress-bar"></div>
           <div id="progress-bar-filler"></div>
@@ -51,11 +46,10 @@
         </div>
   
         <h2>Attach photos</h2>
-        <div id="attach-photos">
-          <span class="material-icons-outlined">add_a_photo</span>
+        <div class="attach-photos">
+          <span class="material-icons-outlined"></span>
           <!-- <button id="select-photos" class="primary-button">Select photos</button> -->
-          <span>Double-click to add a photo, or drag photos here</span>
-        </div>   
+        </div>
       </div>
 
       
@@ -65,12 +59,12 @@
         <div class="halves-wrapper">
           <div class="half">
             <h2>Condition</h2>
-            <div id="condition-select-wrapper">
+            <div class="select-wrapper">
               <select id="item-condition">
-                <option value="1">Brand new</option>
-                <option value="2">Like new</option>
-                <option value="3">Lightly used</option>
-                <option value="4">Well-used</option>
+                <option value="brand-new">Brand new</option>
+                <option value="like-new">Like new</option>
+                <option value="lightly-used">Lightly used</option>
+                <option value="well-used">Well-used</option>
               </select>
               <span class="material-icons">expand_more</span>
             </div>
@@ -87,9 +81,29 @@
         <h2>Description</h2>
         <textarea id="item-description" placeholder="Describe what you are selling and include any details that buyers may be interested in. People love items with stories!"></textarea>
       </div>
+
+      <div id="sell-procedure-step-3" class="sell-procedure-step">
+        <h1>Condition details</h1>
+
+        <h2>Text field</h2>
+        <input type="text" id="condition-details-text" placeholder="Provide additional details about the condition of your item">
+
+        <h2>Image upload</h2>
+        <div class="attach-photos">
+          <span class="material-icons-outlined"></span>
+          <!-- <button id="select-photos" class="primary-button">Select photos</button> -->
+        </div>
+
+        <h1>Additional fields (optional)</h1>
+
+        <button id="add-field-button" class="secondary-button">
+          <span class="material-icons">add_circle</span>
+          <span>Add an additional field</span>
+        </button>
+      </div>
   
       <div id="sell-procedure-navigation-buttons">
-        <button id="back-button"><span>Back</span></button>
+        <button id="back-button" class="secondary-button"><span>Back</span></button>
         <button id="next-button" class="primary-button"><span>Next</span></button>
       </div>
     </div>
