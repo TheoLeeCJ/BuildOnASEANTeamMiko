@@ -60,11 +60,11 @@
           <div class="half">
             <h2>Condition</h2>
             <div class="select-wrapper">
-              <select id="item-condition">
-                <option value="brand-new">Brand new</option>
-                <option value="like-new">Like new</option>
-                <option value="lightly-used">Lightly used</option>
-                <option value="well-used">Well-used</option>
+              <select id="listing-condition">
+                <option value="Brand new">Brand new</option>
+                <option value="Like new">Like new</option>
+                <option value="Lightly used">Lightly used</option>
+                <option value="Well-used">Well-used</option>
               </select>
               <span class="material-icons">expand_more</span>
             </div>
@@ -73,20 +73,20 @@
             <h2>Price</h2>
             <div id="price-input-wrapper">
               <span id="currency">S$</span>
-              <input type="text" id="item-price" placeholder="Price of your item">
+              <input type="text" id="listing-price" placeholder="Price of your item">
             </div>
           </div>
         </div>
 
         <h2>Description</h2>
-        <textarea id="item-description" placeholder="Describe what you are selling and include any details that buyers may be interested in. People love items with stories!"></textarea>
+        <textarea id="listing-description" placeholder="Describe what you are selling and include any details that buyers may be interested in. People love items with stories!"></textarea>
       </div>
 
       <div id="sell-procedure-step-3" class="sell-procedure-step">
         <h1>Condition details</h1>
 
-        <h2>Text field</h2>
-        <input type="text" id="condition-details-text" placeholder="Provide additional details about the condition of your item">
+        <h2>Additional information on item condition</h2>
+        <input type="text" id="listing-condition-details" placeholder="Provide additional details about the condition of your item">
 
         <h2>Image upload</h2>
         <div class="attach-photos">
@@ -100,6 +100,48 @@
           <span class="material-icons">add_circle</span>
           <span>Add an additional field</span>
         </button>
+      </div>
+
+      <div id="sell-procedure-step-4" class="sell-procedure-step">
+        <h1>Almost done!</h1>
+        <h2>Before you post, review the details of your listing.</h2>
+        
+        <div class="halves-wrapper">
+          <div class="half">
+            <h3 id="summary-title">Title</h3>
+            <div>Legion 5 Pro</div>
+          </div>
+          <div class="half">
+            <h3 id="summary-category">Category</h3>
+            <div>Laptops in Computers & Tech</div>
+          </div>
+        </div>
+        <div class="halves-wrapper">
+          <div class="half">
+            <h3 id="summary-condition">Condition</h3>
+            <div>Lightly used</div>
+          </div>
+          <div class="half">
+            <h3 id="summary-price">Price</h3>
+            <div>S$2799.99</div>
+          </div>
+        </div>
+        <div class="halves-wrapper">
+          <div class="half">
+            <h3 id="summary-description">Description</h3>
+            <div>Really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long description</div>
+          </div>
+          <div class="half">
+            <h3 id="summary-condition-details">Condition details</h3>
+            <div>Really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long description</div>
+          </div>
+        </div>
+
+        <h3 id="summary-additional-fields">Additional fields</h3>
+        <h4>Does the laptop turn on?</h4>
+        <div>No.</div>
+        <h4>Is this a scam?</h4>
+        <div>I dunno, buy it to find out!</div>
       </div>
   
       <div id="sell-procedure-navigation-buttons">

@@ -11,6 +11,26 @@ for (let i = 0; i < NUM_STEPS; i++) {
   progressMarkersDiv.append(progressMarker);
 }
 
+const performStepActions = (stepNum) => {
+  if (stepNum === 4) {
+    const listingFieldElementMappings = [
+      ["listing-title", "summary-title"],
+      ["listing-category", "summary-category"],
+      ["listing-condition", "summary-condition"],
+      ["listing-price", "summary-price"],
+      ["listing-description", "summary-description"],
+      ["listing-condition-details", "summary-condition-details"],
+    ];
+
+    for (const [srcElementId, summaryElementId] of listingFieldElementMappings) {
+      document.querySelector(`#${summaryElementId} + div`).textContent =
+          document.getElementById(srcElementId).value;
+    }
+  }
+};
+
+const turnRedTimeoutIds = [];
+
 const showStep = (stepNum) => {
   for (const stepElem of document.getElementsByClassName("sell-procedure-step")) {
     stepElem.style.display = "none";
@@ -25,21 +45,37 @@ const showStep = (stepNum) => {
   for (let i = 0; i < progressMarkers.length; i++) {
     if (i < stepNum) {
       // delay turning red by 800ms
-      setTimeout(() => {
+      turnRedTimeoutIds[i] = setTimeout(() => {
         progressMarkers[i].classList.add("progress-marker-complete");
       }, 800);
     } else {
+      if (turnRedTimeoutIds[i] !== null) {
+        clearTimeout(turnRedTimeoutIds[i]);
+        turnRedTimeoutIds[i] = null;
+      }
       progressMarkers[i].classList.remove("progress-marker-complete");
     }
   }
+  console.log(turnRedTimeoutIds)
+
+  const nextButtonText = document.querySelector("#next-button > span");
+  if (stepNum === NUM_STEPS) {
+    nextButtonText.textContent = "Post";
+  } else {
+    nextButtonText.textContent = "Next";
+  }
+
+  performStepActions(stepNum);
 };
 
 const priceInput = document.querySelector("#price-input-wrapper > input[type='text']");
+
 priceInput.addEventListener("keypress", (event) => {
   if (event.key !== "." && (event.key < "0" || event.key > "9")) {
     event.preventDefault();
   }
 });
+
 priceInput.addEventListener("change", () => {
   const [integralPart, decimalPart] = priceInput.value.split(".");
   if (typeof decimalPart !== "undefined") {
@@ -81,7 +117,7 @@ addFieldButton.addEventListener("click", () => {
   `);
 });
 
-let currentStep = 3;
+let currentStep = 4;
 showStep(currentStep);
 
 document.getElementById("back-button").addEventListener("click", () => {
