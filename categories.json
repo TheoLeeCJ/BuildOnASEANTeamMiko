@@ -7,7 +7,9 @@
       "sub": [
         {
           "id": 1,
-          "name": "Digital Storage"
+          "name": "Digital Storage",
+          "filters": ["Some Bad Sectors?", "< 50% Terabytes Written?", "Disk health report?"],
+          "questions": ["Does this product have any bad sectors?", "How much of the product's TBW rating been consumed?", "Do you have a hard drive health report?"]
         },
         {
           "id": 2,
@@ -25,7 +27,9 @@
         },
         {
           "id": 5,
-          "name": "Water Toys"
+          "name": "Water Toys",
+          "filters": ["Small Stains?", "Minor Leaks?", "Inflatable?"],
+          "questions": ["Does this product have minor stains?", "Does it have minor leaks?", "Is it an inflatable, or a foam-based float?"]
         }
       ]
     },
@@ -39,17 +43,44 @@
       "sub": [
         {
           "id": 8,
-          "name": "Leggings"
+          "name": "Leggings",
+          "filters": ["Denim?", "Machine-Washable?", "Minor Tears?"],
+          "questions": ["Is it made of denim?", "Is it machine-washable?", "Are there any tears / rips on this product?"]
         },
         {
           "id": 9,
-          "name": "Shirts"
+          "name": "Shirts",
+          "filters": ["Minor Tears?"]
         }
       ]
     },
     {
       "id": 10,
-      "name": "Figurines"
+      "name": "Anime Merch",
+      "sub": [
+        {
+          "id": 11,
+          "name": "Figurines",
+          "filters": ["Small", "Tall"],
+          "questions": ["Small figurine?", "Large / tall figurine?"]
+        },
+        {
+          "id": 12,
+          "name": "Cosplays"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Electrical Appliances",
+      "sub": [
+        {
+          "id": 14,
+          "name": "Electric Fans",
+          "filters": ["Cleaning required?", "Remote Controlled?"],
+          "questions": ["Does the buyer need to dust it off?", "Is the fan remote-controlled?"]
+        }
+      ]
     }
   ]
 }

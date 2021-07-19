@@ -19,11 +19,20 @@
       <button type="submit" class="material-icons">search</button>
     </form>
 
-    <div id="user-actions">
+    <div id="user-actions" style="position: relative;">
       <!--ensure profile picture is square (crop before upload? also need to crop server-side just in case)-->
       <img class="profile-picture" src="/media/placeholder-profile-picture.jpeg" alt="Your profile picture">
-      <span id="user-greeting">Hello, <span id="username">NoobMaster69</span></span>
+      <span id="user-greeting">Hello, <span id="username">User</span></span>
       <i class="material-icons">expand_more</i>
+
+      <div id="user-actions-dropdown">
+        <div style="font-weight: bold;">Actions</div>
+        <a href="#" class="dropdown-for-logged-out"><i class="material-icons">login</i><span>Login / Register</span></a>
+        <a href="#" class="dropdown-for-login"><i class="material-icons">account_circle</i><span>Profile</span></a>
+        <a href="#" class="dropdown-for-login"><i class="material-icons">park</i><span>GreenRank</span></a>
+        <a href="#" class="dropdown-for-login"><i class="material-icons">chat</i><span>Chats</span></a>
+        <a href="#" class="dropdown-for-login"><i class="material-icons">logout</i><span>Logout</span></a>
+      </div>
     </div>
 
     <div id="sell-button-wrapper">
