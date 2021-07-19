@@ -12,8 +12,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   flex-grow: 1;
+  padding-bottom: 70px;
 }
 
 h2 {
@@ -25,13 +25,14 @@ h2 {
   flex-direction: column;
   align-items: center;
   width: 80%;
+  height: 100%;
 }
 
 #sell-procedure-progress-indicator {
   position: relative;
   width: 62.5%;
-  margin-top: 15px;
-  margin-bottom: 40px;
+  margin-top: 10px;
+  margin-bottom: 35px;
 }
 
 #progress-markers {
@@ -84,17 +85,25 @@ h2 {
   transform: translateY(-100%);
   background-color: var(--theme-red);
   z-index: 2;
-  transition: width 1.5s ease-in-out;
+  transition: width 1s ease-in-out;
 }
 
 .sell-procedure-step {
+  display: none;
+  /* display: flex; */
+  flex-direction: column;
   width: 100%;
+  height: 100%;
   /* padding: 30px; */
   /* border-radius: 10px; */
 }
 
 .sell-procedure-step h1 {
   margin: 0;
+}
+
+#sell-procedure-step-1 {
+  display: block;
 }
 
 .halves-wrapper {
@@ -107,7 +116,7 @@ h2 {
   flex: 1 0;
 }
 
-.halves-wrapper > .half > input[type="text"] {
+.halves-wrapper > .half input[type="text"] {
   width: 100%;
   padding: 10px 11px;
   font-family: inherit;
@@ -141,8 +150,9 @@ input#listing-category {
 #attach-photos {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   align-items: center;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   padding: 20px 20px 25px;
   border: 5px dashed #bbb;
   border-radius: 10px;
@@ -153,6 +163,51 @@ input#listing-category {
   margin-bottom: 10px;
   color: #444;
   font-size: 60px;
+}
+
+#condition-select-wrapper {
+  position: relative;
+}
+
+#item-condition {
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 16px;
+  appearance: none;
+}
+
+#item-condition + span.material-icons {
+  position: absolute;
+  top: 50%;
+  transform: translate(calc(-100% - 7px), -50%);
+  pointer-events: none;
+}
+
+#price-input-wrapper {
+  position: relative;
+}
+
+#price-input-wrapper > input[type="text"] {
+  padding-left: 2em;
+}
+
+#currency {
+  position: absolute;
+  top: 50%;
+  transform: translate(11px, calc(-50% - 0.5px));
+}
+
+#item-description {
+  width: 100%;
+  flex-grow: 1;
+  padding: 10px 11px;
+  border-radius: 5px;
+  resize: none;
+  font-family: inherit;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 #sell-procedure-navigation-buttons {
