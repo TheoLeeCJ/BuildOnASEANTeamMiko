@@ -1,14 +1,17 @@
-const queryParams = new URLSearchParams(location.search);
+let queryParams = new URLSearchParams(location.search);
 const searchTerm = queryParams.get("searchTerm");
 const searchCat = queryParams.get("cat");
+const searchPage = queryParams.get("page");
+const searchFilter = queryParams.get("filter");
 
 let searchResults = [];
 let resultCount = 0n;
 
-let categoryData = JSON.parse("{\"largest\":9,\"categories\":[{\"id\":0,\"name\":\"Electronic Devices\",\"sub\":[{\"id\":1,\"name\":\"Digital Storage\"},{\"id\":2,\"name\":\"Laptops and PCs\"}]},{\"id\":3,\"name\":\"Toys\",\"sub\":[{\"id\":4,\"name\":\"Kids' Toys\"},{\"id\":5,\"name\":\"Water Toys\"}]},{\"id\":6,\"name\":\"Everything Else\"},{\"id\":7,\"name\":\"Clothes\",\"sub\":[{\"id\":8,\"name\":\"Leggings\"},{\"id\":9,\"name\":\"Shirts\"}]},{\"id\":10,\"name\":\"Figurines\"}]}");
+let categoryData = [];
 
 topBarLoadCallbacks.push(async () => {
   categoryData = await fetch("https://miko-user-img.s3.amazonaws.com/categories.json").then((res) => res.json());
+  renderCategories();
 });
 
 topBarLoadCallbacks.push(() => {
@@ -21,8 +24,11 @@ topBarLoadCallbacks.push(async () => {
   let searchFormData = new FormData();
   searchFormData.append("query", searchTerm);
   searchFormData.append("refresh", "none");
-  searchFormData.append("page", 0);
+  searchFormData.append("page", searchPage === null ? 0 : parseInt(searchPage));
   searchFormData.append("category", searchCat === null ? -1 : parseInt(searchCat));
+  searchFormData.append("customFilter", searchFilter === null ? "" : searchFilter);
+
+  (user !== null) ? searchFormData.append("jwt", localStorage.getItem("session")) : "";
 
   searchResults = await (await fetch(`${API_ENDPOINT}/item/search`, {
     method: "post",
@@ -34,7 +40,29 @@ topBarLoadCallbacks.push(async () => {
   renderSearchResults();
 });
 
+function nextPage() {
+  queryParams.set("page", searchPage === null ? 1 : parseInt(searchPage) + 1);
+  location.href = location.href.substring(0, location.href.indexOf("?")) + "?" + queryParams.toString();
+}
+
+function addFilter(caller, name) {
+  let a = JSON.parse(atob(searchFilter === null ? "W10=" : searchFilter));
+  
+  if (caller.checked) {
+    if (!a.includes(name)) a.push(name);
+  }
+  else {
+    if (a.indexOf(name) !== -1) a.splice(a.indexOf(name), 1);
+  }
+
+  queryParams.set("filter", btoa(JSON.stringify(a)));
+  location.href = location.href.substring(0, location.href.indexOf("?")) + "?" + queryParams.toString();
+}
+
 function renderSearchResults() {
+  let filters = JSON.parse(atob(searchFilter === null ? "W10=" : searchFilter));
+  for (let i = 0; i < filters.length; i++) filters[i] = atob(filters[i]);
+
   // render search results
   const searchResultsOverviewDiv = document.getElementById("search-results-overview");
   if (searchTerm !== null) {
@@ -63,9 +91,11 @@ function renderSearchResults() {
       }
 
       for (let i = 0; i < searchCatFilters.length; i++) {
+        let isChecked = "";
+        if (filters.includes(searchCatFilters[i])) isChecked = " checked";
         filterHTML += `<div class="filter-option">
-  <input type="checkbox" id="special-filter-value-1">
-  <label for="special-filter-value-1">${searchCatFilters[i]}</label>
+  <input type="checkbox" id="special-filter-value-${i}" onchange="addFilter(this, '${btoa(searchCatFilters[i])}');"${isChecked}>
+  <label for="special-filter-value-${i}">${searchCatFilters[i]}</label>
 </div>`;
       }
 
@@ -78,7 +108,7 @@ function renderSearchResults() {
       let filterContainer = document.createElement("div");
       filterContainer.innerHTML = `<div class="filter">
   <button class="filter-button">
-    <span>Product Condition Filters</span>
+    <span>Category-Specific Filters</span>
     <i class="material-icons"></i>
   </button>
   <div class="filter-options">${filterHTML}</div>
@@ -176,7 +206,7 @@ function renderSearchResults() {
     <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture">
     <div class="listing-info-top-text">
       <div class="seller-username">${item.user}</div>
-      <div class="listing-age">7 hours ago</div>
+      <div class="listing-age">1 day ago</div>
     </div>
   </div>
   <div class="item-image-wrapper">
@@ -190,7 +220,7 @@ function renderSearchResults() {
   <div class="listing-action-buttons">
     <button class="like-button liked material-icons"></button>
     <span class="like-count">${ item.up ? item.up : 0 }</span>
-    <button class="start-chat primary-button"></button>
+    <button class="start-chat primary-button" onclick="startChat('${item.cat}-${item.id}');"></button>
     <button class="report-button material-icons">outlined_flag</button>
   </div>
 </div>`;
@@ -199,150 +229,149 @@ function renderSearchResults() {
   document.querySelector("#search-results").innerHTML = resultsHTML;
 }
 
-const categoryOptionsDiv = document.querySelector("#category-filter .filter-options");
-for (const category of categoryData.categories) {
-  const categoryOptionDiv = document.createElement("div");
-  categoryOptionDiv.className = "filter-option";
-  categoryOptionDiv.addEventListener("click", () => {
-    location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + category.id;
-  });
-
-  const categoryNameSpan = document.createElement("span");
-  categoryNameSpan.className = "category-name";
-  categoryNameSpan.textContent = category.name;
-
-  const rightArrowIconSpan = document.createElement("span");
-  rightArrowIconSpan.className = "material-icons";
-  rightArrowIconSpan.textContent = "chevron_right";
-
-  const subcategoriesDiv = document.createElement("div");
-  subcategoriesDiv.className = "subcategories";
-
-  if (category.sub === undefined) category.sub = [];
-
-  for (const subcategory of category.sub) {
-    const subcategoryDiv = document.createElement("div");
-    subcategoryDiv.textContent = subcategory.name;
-    subcategoryDiv.addEventListener("click", (event) => {
-      event.stopPropagation();
-      console.log(location.href);
-      location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategory.id;
+function renderCategories() {
+  const categoryOptionsDiv = document.querySelector("#category-filter .filter-options");
+  for (const category of categoryData.categories) {
+    const categoryOptionDiv = document.createElement("div");
+    categoryOptionDiv.className = "filter-option";
+    categoryOptionDiv.addEventListener("click", () => {
+      location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + category.id;
     });
 
-    subcategoriesDiv.append(subcategoryDiv);
-  }
+    const categoryNameSpan = document.createElement("span");
+    categoryNameSpan.className = "category-name";
+    categoryNameSpan.textContent = category.name;
 
-  categoryOptionDiv.append(categoryNameSpan, rightArrowIconSpan, subcategoriesDiv);
-  categoryOptionsDiv.append(categoryOptionDiv);
-}
+    const rightArrowIconSpan = document.createElement("span");
+    rightArrowIconSpan.className = "material-icons";
+    rightArrowIconSpan.textContent = "chevron_right";
 
-const categorySearchResultsDiv = document.getElementById("category-search-results");
-document.getElementById("category-search").addEventListener("input", (event) => {
-  // use querySelectorAll instead of getElementsByClassName
-  // because getElementsByClassName returns a **live** list of elements which shortens when an element is removed
-  // decreasing the length of the element list during iteration will result in some elements not being removed
-  for (const categorySearchResultDiv of document.querySelectorAll(".category-search-result")) {
-    categorySearchResultDiv.remove();
-  }
+    const subcategoriesDiv = document.createElement("div");
+    subcategoriesDiv.className = "subcategories";
 
-  const searchQuery = event.target.value.toLowerCase();
-  if (searchQuery === "") {
-    categorySearchResultsDiv.style.display = "none";
-    for (const filterOption of document.querySelectorAll("#category-search-results ~ .filter-option")) {
-      filterOption.style.display = "flex";
-    }
-  } else {
-    categorySearchResultsDiv.style.display = "block";
-    for (const filterOption of document.querySelectorAll("#category-search-results ~ .filter-option")) {
-      filterOption.style.display = "none";
+    if (category.sub === undefined) category.sub = [];
+
+    for (const subcategory of category.sub) {
+      const subcategoryDiv = document.createElement("div");
+      subcategoryDiv.textContent = subcategory.name;
+      subcategoryDiv.addEventListener("click", (event) => {
+        event.stopPropagation();
+        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategory.id;
+      });
+
+      subcategoriesDiv.append(subcategoryDiv);
     }
 
-    const categoryMatches = [];
-    const subcategoryMatches = [];
-    for (const category of categoryData.categories) {
-      if (category.name.toLowerCase().includes(searchQuery)) {
-        categoryMatches.push(category);
+    categoryOptionDiv.append(categoryNameSpan, rightArrowIconSpan, subcategoriesDiv);
+    categoryOptionsDiv.append(categoryOptionDiv);
+  }
+
+  const categorySearchResultsDiv = document.getElementById("category-search-results");
+  document.getElementById("category-search").addEventListener("input", (event) => {
+    // use querySelectorAll instead of getElementsByClassName
+    // because getElementsByClassName returns a **live** list of elements which shortens when an element is removed
+    // decreasing the length of the element list during iteration will result in some elements not being removed
+    for (const categorySearchResultDiv of document.querySelectorAll(".category-search-result")) {
+      categorySearchResultDiv.remove();
+    }
+
+    const searchQuery = event.target.value.toLowerCase();
+    if (searchQuery === "") {
+      categorySearchResultsDiv.style.display = "none";
+      for (const filterOption of document.querySelectorAll("#category-search-results ~ .filter-option")) {
+        filterOption.style.display = "flex";
+      }
+    } else {
+      categorySearchResultsDiv.style.display = "block";
+      for (const filterOption of document.querySelectorAll("#category-search-results ~ .filter-option")) {
+        filterOption.style.display = "none";
       }
 
-      for (const subcategory of category.sub) {
-        if (subcategory.name.toLowerCase().includes(searchQuery)) {
-          subcategoryMatches.push({
-            subcategoryMatch: subcategory,
-            parentCategoryName: category.name,
-          });
+      const categoryMatches = [];
+      const subcategoryMatches = [];
+      for (const category of categoryData.categories) {
+        if (category.name.toLowerCase().includes(searchQuery)) {
+          categoryMatches.push(category);
+        }
+
+        for (const subcategory of category.sub) {
+          if (subcategory.name.toLowerCase().includes(searchQuery)) {
+            subcategoryMatches.push({
+              subcategoryMatch: subcategory,
+              parentCategoryName: category.name,
+            });
+          }
         }
       }
+
+      const noCategorySearchResultsDiv = document
+          .getElementById("no-category-search-results");
+      if (categoryMatches.length === 0 && subcategoryMatches.length === 0) {
+        noCategorySearchResultsDiv.style.display = "block";
+      } else {
+        noCategorySearchResultsDiv.style.display = "none";
+      }
+
+      for (const { subcategoryMatch, parentCategoryName } of subcategoryMatches) {
+        // const subcategoryUrl =
+        //     `/categories/${parentCategoryName}/${subcategoryMatch.name}`;
+        // const parentCategoryUrl =
+        //     `/categories/${parentCategoryName}`;
+
+        const subcategorySearchResultDiv = document.createElement("div");
+        subcategorySearchResultDiv.className = "category-search-result";
+        subcategorySearchResultDiv.addEventListener("click", () => {
+          location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategoryMatch.id;
+        });
+        
+        const subcategoryLink = document.createElement("a");
+        subcategoryLink.className = "result-name";
+        // subcategoryLink.href = subcategoryUrl;
+        subcategoryLink.textContent = subcategoryMatch.name;
+
+        const parentCategorySpan = document.createElement("span");
+        parentCategorySpan.className = "result-parent-category";
+
+        const parentCategoryLink = document.createElement("a");
+        // parentCategoryLink.href = parentCategoryUrl;
+        parentCategoryLink.textContent = parentCategoryName;
+        
+        parentCategorySpan.append("in ", parentCategoryLink);
+
+        // const rightArrowIconDiv = document.createElement("div");
+        // rightArrowIconDiv.className = "material-icons";
+        // const rightArrowIconSpan = document.createElement("span");
+        // rightArrowIconSpan.textContent = "chevron_right";
+        // rightArrowIconDiv.append(rightArrowIconSpan);
+
+        subcategorySearchResultDiv.append(subcategoryLink, parentCategorySpan);
+        
+        categorySearchResultsDiv.append(subcategorySearchResultDiv);
+      }
+      for (const categoryMatch of categoryMatches) {
+        // const categoryUrl = `/categories/${categoryMatch.name}`;
+
+        const categorySearchResultDiv = document.createElement("div");
+        categorySearchResultDiv.className = "category-search-result";
+        categorySearchResultDiv.addEventListener("click", () => {
+          location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + categoryMatch.id;
+        });
+
+        const categoryLink = document.createElement("a");
+        categoryLink.className = "result-name";
+        // categoryLink.href = categoryUrl;
+        categoryLink.textContent = categoryMatch.name;
+
+        // const rightArrowIconDiv = document.createElement("div");
+        // rightArrowIconDiv.className = "material-icons";
+        // const rightArrowIconSpan = document.createElement("span");
+        // rightArrowIconSpan.textContent = "chevron_right";
+        // rightArrowIconDiv.append(rightArrowIconSpan);
+
+        categorySearchResultDiv.append(categoryLink);
+
+        categorySearchResultsDiv.append(categorySearchResultDiv);
+      }
     }
-
-    const noCategorySearchResultsDiv = document
-        .getElementById("no-category-search-results");
-    if (categoryMatches.length === 0 && subcategoryMatches.length === 0) {
-      noCategorySearchResultsDiv.style.display = "block";
-    } else {
-      noCategorySearchResultsDiv.style.display = "none";
-    }
-
-    for (const { subcategoryMatch, parentCategoryName } of subcategoryMatches) {
-      // const subcategoryUrl =
-      //     `/categories/${parentCategoryName}/${subcategoryMatch.name}`;
-      // const parentCategoryUrl =
-      //     `/categories/${parentCategoryName}`;
-      console.log(subcategoryMatch);
-
-      const subcategorySearchResultDiv = document.createElement("div");
-      subcategorySearchResultDiv.className = "category-search-result";
-      subcategorySearchResultDiv.addEventListener("click", () => {
-        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategoryMatch.id;
-      });
-      
-      const subcategoryLink = document.createElement("a");
-      subcategoryLink.className = "result-name";
-      // subcategoryLink.href = subcategoryUrl;
-      subcategoryLink.textContent = subcategoryMatch.name;
-
-      const parentCategorySpan = document.createElement("span");
-      parentCategorySpan.className = "result-parent-category";
-
-      const parentCategoryLink = document.createElement("a");
-      // parentCategoryLink.href = parentCategoryUrl;
-      parentCategoryLink.textContent = parentCategoryName;
-      
-      parentCategorySpan.append("in ", parentCategoryLink);
-
-      // const rightArrowIconDiv = document.createElement("div");
-      // rightArrowIconDiv.className = "material-icons";
-      // const rightArrowIconSpan = document.createElement("span");
-      // rightArrowIconSpan.textContent = "chevron_right";
-      // rightArrowIconDiv.append(rightArrowIconSpan);
-
-      subcategorySearchResultDiv.append(subcategoryLink, parentCategorySpan);
-      
-      categorySearchResultsDiv.append(subcategorySearchResultDiv);
-    }
-    for (const categoryMatch of categoryMatches) {
-      // const categoryUrl = `/categories/${categoryMatch.name}`;
-      console.log(categoryMatch);
-
-      const categorySearchResultDiv = document.createElement("div");
-      categorySearchResultDiv.className = "category-search-result";
-      categorySearchResultDiv.addEventListener("click", () => {
-        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + categoryMatch.id;
-      });
-
-      const categoryLink = document.createElement("a");
-      categoryLink.className = "result-name";
-      // categoryLink.href = categoryUrl;
-      categoryLink.textContent = categoryMatch.name;
-
-      // const rightArrowIconDiv = document.createElement("div");
-      // rightArrowIconDiv.className = "material-icons";
-      // const rightArrowIconSpan = document.createElement("span");
-      // rightArrowIconSpan.textContent = "chevron_right";
-      // rightArrowIconDiv.append(rightArrowIconSpan);
-
-      categorySearchResultDiv.append(categoryLink);
-
-      categorySearchResultsDiv.append(categorySearchResultDiv);
-    }
-  }
-});
+  });
+}

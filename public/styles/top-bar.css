@@ -18,7 +18,12 @@
   }
 }
 
-#top-bar #menu-bar span:not(:last-child) {
+#menu-bar > a {
+  text-decoration: none;
+  color: white;
+}
+
+#top-bar #menu-bar a:not(:last-child) {
   margin-right: 3vw;
 }
 
@@ -136,6 +141,11 @@
   display: block;
   text-decoration: none;
   color: #606060;
+  transition: .2s;
+}
+
+#user-actions-dropdown > a:hover {
+  background-color: #f6f6f6;
 }
 
 #user-actions-dropdown > a > .material-icons {

@@ -13,60 +13,36 @@
   <link rel="stylesheet" href="/styles/global.css">
   <link rel="stylesheet" href="/styles/top-bar.css">
   <link rel="stylesheet" href="/styles/index.css">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="/media/category-placeholder-1.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-title" content="Used Items Marketplace">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon-precomposed" href="/media/category-placeholder-1.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="/media/category-placeholder-1.png">
+  <meta name="msapplication-TileColor" content="#f6f6f6">
+
+  <link rel="icon" href="/media/category-placeholder-1.png">
+
+  <!-- Include manifest file in the page -->
+  <link rel="manifest" href="/manifest.json">
   
   <title>Carousell Home</title>
 </head>
 <body>
   <main>
-    <h1>Explore Carousell</h1>
+    <h1 style="text-align: center;">Explore Our Used Item Marketplace</h1>
     <div id="explore-categories" class="card">
       <div class="explore-category">
-        <img src="/media/category-placeholder-1.png" alt="Following">
-        <span>Following</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-2.png" alt="Cars">
-        <span>Cars</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-1.png" alt="Home Services">
-        <span>Home Services</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-2.png" alt="Property">
-        <span>Property</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-1.png" alt="Computers & Tech">
-        <span>Computers & Tech</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-2.png" alt="Mobile Phones & Gadgets">
-        <span>Mobile Phones & Gadgets</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-1.png" alt="Following">
-        <span>Following</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-2.png" alt="Cars">
-        <span>Cars</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-1.png" alt="Home Services">
-        <span>Home Services</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-2.png" alt="Property">
-        <span>Property</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-1.png" alt="Computers & Tech">
-        <span>Computers & Tech</span>
-      </div>
-      <div class="explore-category">
-        <img src="/media/category-placeholder-2.png" alt="Mobile Phones & Gadgets">
-        <span>Mobile Phones & Gadgets</span>
+        <img src="/media/loader.gif" alt="Following">
+        <span>Loading...</span>
       </div>
     </div>
 
@@ -316,5 +292,54 @@
   </main>
 
   <script src="/scripts/global.js"></script>
+
+  <!-- Move to file later -->
+  <script>
+    function registerServiceWorker() {
+      return navigator.serviceWorker.register('/sw.js')
+        .then(function(registration) {
+          console.log('Service worker successfully registered.');
+          return registration;
+        })
+        .catch(function(err) {
+          console.error('Unable to register service worker.', err);
+        });
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+      var padding = '='.repeat((4 - base64String.length % 4) % 4);
+      var base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+      var rawData = window.atob(base64);
+      var outputArray = new Uint8Array(rawData.length);
+
+      for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+
+    function subscribeUser() {
+      return navigator.serviceWorker.register('/sw.js')
+        .then(function(registration) {
+          const subscribeOptions = {
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(
+              'BFuEzfLArTeOYWVKHoGnTFNYx_Wy8QdEZqUDtjFfkFh0Sj17pnWeBn79DksHp7eq-8Zqoeixd-uQzLtDNQYmhaQ'
+            ),
+          };
+
+          return registration.pushManager.subscribe(subscribeOptions);
+        })
+        .then(function(pushSubscription) {
+          console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
+          console.log(JSON.parse(JSON.stringify(pushSubscription)));
+          document.querySelector("pre").innerHTML = JSON.stringify(pushSubscription);
+          return pushSubscription;
+        });
+    }
+  </script>
 </body>
 </html>

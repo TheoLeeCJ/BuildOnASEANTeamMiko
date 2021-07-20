@@ -12,6 +12,7 @@ const fields = ["refresh", "page"]; // TODO: remove auth requirement for public 
 const SECRET = "dc7bd8c0-06d6-40b0-8bcf-e09d1b4c9f76";
 
 let s3 = new AWS.S3({ apiVersion: "2006-03-01", region: process.env.AWS_REGION });
+let db = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10", region: process.env.AWS_REGION });
   
 let indexData, index, catData;
 
@@ -63,8 +64,9 @@ exports.handler = async (event, context, lambdaCallback) => {
       }
     }
 
-    // TODO: remove auth requirement for public search
-    // let jwtData = jwt.verify(formFields["jwt"], SECRET, { "algorithms": ["HS256"] }); // important - verify token with HS256; throws error is tampered with
+    // now, the JWT is only used to update buying interests - if it is present
+    let jwtData = null;
+    if (formFields["jwt"] !== undefined) jwtData = jwt.verify(formFields["jwt"], SECRET, { "algorithms": ["HS256"] }); // important - verify token with HS256; throws error is tampered with
     
     if (
       indexData == null ||
@@ -72,18 +74,53 @@ exports.handler = async (event, context, lambdaCallback) => {
     ) await loadIndex();
 
     let selectCats = [];
+    let customFilters = [];
     let rawCat = -1;
     let page = formFields["page"];
 
     try {
       rawCat = parseInt(formFields["category"]);
+      
+      // update buying interests if user is signed in
+      if (rawCat !== -1 && jwtData !== null) {
+        let user = await db.query({
+          TableName: "users",
+          KeyConditionExpression: "userId = :userId",
+          ExpressionAttributeValues: {
+            ":userId": jwtData["user"],
+          },
+        }).promise();
+        user = user.Items[0];
+
+        let catKey = `cat${rawCat}`;
+
+        if (user["buyingInterests"][0] !== "{") {
+          let buyingInterests = {};
+          buyingInterests[catKey] = 3;
+          user["buyingInterests"] = JSON.stringify(buyingInterests);
+        }
+        else {
+          let buyingInterests = JSON.parse(user["buyingInterests"]);
+          if (Object.keys(buyingInterests).includes(catKey)) buyingInterests[catKey] += 1;
+          else buyingInterests[catKey] = 3;
+          user["buyingInterests"] = JSON.stringify(buyingInterests);
+        }
+        
+        await db.update({
+          TableName: "users",
+          Key: { userId: user["userId"], greenPts: user["greenPts"], },
+          UpdateExpression: "set #buy = :buyData",
+          ExpressionAttributeNames: { "#buy": "buyingInterests" },
+          ExpressionAttributeValues: { ":buyData": user["buyingInterests"], },
+        }).promise();
+      }
     }
     catch (e) {
       rawCat = -1;
     }
 
-    // build category filter
     if (rawCat !== -1) {
+      // build category filter
       selectCats = [rawCat];
 
       for (let i = 0; i < catData.length; i++) {
@@ -91,6 +128,14 @@ exports.handler = async (event, context, lambdaCallback) => {
           if (!catData[i]["sub"]) break;
           for (let i2 = 0; i2 < catData[i]["sub"].length; i2++) selectCats.push(catData[i]["sub"][i2]["id"]);
           break;
+        }
+      }
+
+      // build fields filter
+      if (formFields["customFilter"] !== undefined && formFields["customFilter"].length > 2) {
+        customFilters = JSON.parse(new Buffer(formFields["customFilter"], "base64").toString("ascii"));
+        for (let i = 0; i < customFilters.length; i++) {
+          customFilters[i] = new Buffer(customFilters[i], "base64").toString("ascii");
         }
       }
     }
@@ -101,7 +146,18 @@ exports.handler = async (event, context, lambdaCallback) => {
       let resultSet = [];
       for (let i = 0; i < indexData.length; i++) {
         if (resultSet.length > (12 + (page * 12))) break;
-        if (selectCats.includes(indexData[i]["cat"])) resultSet.push(indexData[i]);
+        if (selectCats.includes(indexData[i]["cat"])) {
+          if (customFilters.length > 0) {
+            let filtersSatisfied = 0;
+            for (let i2 = 0; i2 < customFilters.length; i2++) {
+              if (indexData[i]["cond"][customFilters[i2]] == "Yes") filtersSatisfied++;
+            }
+            if (filtersSatisfied == customFilters.length) resultSet.push(indexData[i]);
+          }
+          else {
+            resultSet.push(indexData[i]);
+          }
+        }
       }
   
       lambdaCallback(null, resultSet.slice(page * 12));
@@ -114,7 +170,18 @@ exports.handler = async (event, context, lambdaCallback) => {
         if (resultSet.length > (12 + (page * 12))) break;
 
         if (rawCat !== -1) {
-          if (selectCats.includes(indexData[rawResultSet[i]]["cat"])) resultSet.push(indexData[rawResultSet[i]]);
+          if (selectCats.includes(indexData[rawResultSet[i]]["cat"])) {
+            if (customFilters.length > 0) {
+              let filtersSatisfied = 0;
+              for (let i2 = 0; i2 < customFilters.length; i2++) {
+                if (indexData[i]["cond"][customFilters[i2]] == "Yes") filtersSatisfied++;
+              }
+              if (filtersSatisfied == customFilters.length) resultSet.push(indexData[i]);
+            }
+            else {
+              resultSet.push(indexData[i]);
+            }
+          }
         }
         else {
           resultSet.push(indexData[rawResultSet[i]]);
