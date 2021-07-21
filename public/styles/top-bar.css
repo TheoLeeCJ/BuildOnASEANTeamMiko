@@ -166,17 +166,17 @@
   }
 }
 
-#top-bar #title-bar #user-actions .profile-picture {
+#top-bar #title-bar #user-actions .profile-picture-small {
   height: 33px;
   margin-right: 9px;
 }
 @media screen and (max-width: 840px) {
-  #top-bar #title-bar #user-actions .profile-picture {
+  #top-bar #title-bar #user-actions .profile-picture-small {
     margin-right: 3px;
   }
 }
 @media screen and (max-width: 500px) {
-  #top-bar #title-bar #user-actions .profile-picture {
+  #top-bar #title-bar #user-actions .profile-picture-small {
     margin-right: 0;
   } 
 }
@@ -197,7 +197,7 @@
   } 
 }
 
-#top-bar #title-bar #user-actions #user-greeting #username {
+#top-bar #title-bar #user-actions #user-greeting #top-bar-username {
   font-weight: bold;
 }
 

@@ -31,7 +31,7 @@ fetch("/top-bar.html")
       }
 
       // install username
-      (user !== null) ? document.querySelector("#username").innerText = user["user"] : document.querySelector("#username").innerText = "Anonymous";
+      (user !== null) ? document.querySelector("#top-bar-username").innerText = user["user"] : document.querySelector("#top-bar-username").innerText = "Anonymous";
 
       for (const callback of topBarLoadCallbacks) {
         await callback();

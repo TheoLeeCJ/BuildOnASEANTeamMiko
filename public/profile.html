@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="/styles/top-bar.css">
+  <link rel="stylesheet" href="/styles/profile.css">
+
+  <title>Your Profile | Carousell</title>
+</head>
+<body>
+  <main>
+    <!-- <div id="profile-banner"></div> -->
+    <img src="/media/placeholder-profile-banner.jpg" alt="Profile banner" id="profile-banner">
+    <div id="profile-menu-bar">
+      <img id="profile-menu-bar-profile-picture" src="/media/placeholder-profile-picture.jpeg" alt="Profile picture">
+      <div id="profile-menu-bar-actions" class="card">
+        <div class="profile-tab-switcher"><span>Listings</span></div>
+        <div class="profile-tab-switcher"><span>Reviews</span></div>
+        <div class="profile-tab-switcher"><span>Coins</span></div>
+        <div class="profile-tab-switcher profile-tab-switcher-selected"><span>Balance</span></div>
+        <div class="profile-tab-switcher"><span>CarouBiz</span></div>
+        <div class="profile-tab-switcher"><span>Green Points</span></div>
+        <div class="profile-tab-switcher"><span>Analytics</span></div>
+        <!-- <button id="edit-profile" class="primary-button"><span>Edit profile</span></button> -->
+      </div>
+    </div>
+
+    <div id="profile-main">
+      <div id="user-info">
+        <h1 id="username">NoobMaster69 Long Long Long Long Long Long Username</h1>
+      <!-- <div id="user-rating-info">
+        <span id="user-rating-score">5.0</span>
+        <span id="user-rating-num-reviews">(10)</span>
+        TODO: 5 stars here (they act as transparent windows into background div which fills them up)
+        <span id="user-rating-reviews-link" class="material-icons">chevron_right</span>
+      </div> -->
+        <p>
+          <span id="user-location">Singapore</span>
+          &middot;
+          <span id="user-account-age">Joined 10y 10m</span>
+        </p>
+        <p>
+          <span id="user-verified-status">Verified</span>
+          <span id="user-verified-via-email" class="material-icons">mail_outline</span>
+          <span id="user-verified-via-phone" class="material-icons">phone</span>
+        </p>
+        <p>
+          <span id="follower-count">128 followers</span>
+          &middot;
+          <span id="following-count">256 following</span>
+        </p>
+
+        <div id="profile-views-info" class="card">
+          <p>
+            <span class="material-icons-outlined">visibility</span>
+            <span id="profile-view-count">4096</span>
+          </p>
+          <p>
+            <span>people viewed your profile today</span>
+          </p>
+          <p>
+            <span class="material-icons-outlined">campaign</span> 
+            <span id="profile-promotion-status-sidebar">Profile promotion is inactive</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/scripts/global.js"></script>
+  <script src="/scripts/profile.js"></script>
+</body>
+</html>

@@ -173,7 +173,7 @@ function renderSearchResults() {
     // i know that this is bad practice, but we really don't have time!!!
     resultsHTML += `<div class="listing">
   <div class="listing-info-top">
-    <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture">
+    <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
     <div class="listing-info-top-text">
       <div class="seller-username">${item.user}</div>
       <div class="listing-age">7 hours ago</div>
