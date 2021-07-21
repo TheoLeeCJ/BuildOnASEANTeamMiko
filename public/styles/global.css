@@ -249,7 +249,7 @@ button {
   font-weight: 600;
 }
 .listing .listing-action-buttons .start-chat::before {
-  content: "Start chat";
+  content: "Chat";
 }
 @media screen and (min-width: 431px) and (max-width: 480px) {
   .listing .listing-action-buttons .start-chat::before {

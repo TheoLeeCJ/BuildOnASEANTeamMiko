@@ -1,6 +1,7 @@
 const API_ENDPOINT = "https://xdpj2nme28.execute-api.us-east-1.amazonaws.com";
 
 let user = (localStorage.getItem("session") == null) ? null : JSON.parse(atob(localStorage.getItem("session").split(".")[1]));
+let notificationsEnabled = (localStorage.getItem("notifications") == null) ? false : true;
 
 const topBarLoadCallbacks = [
   () => {
