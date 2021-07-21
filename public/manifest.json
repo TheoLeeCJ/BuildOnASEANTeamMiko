@@ -1,0 +1,13 @@
+{
+  "name": "Used Items Marketplace",
+  "short_name": "Used Market",
+  "icons": [
+    {
+      "src": "/media/category-placeholder-1.png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "gcm_sender_id": "627570164425"
+}
