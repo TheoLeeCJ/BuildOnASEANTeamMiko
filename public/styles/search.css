@@ -4,6 +4,13 @@
   max-width: calc(100vw - 60px);
 }
 
+#filters .filter .filter-button .material-icons::after {
+  content: "expand_more";
+}
+#filters .filter.filter-dropdown-expanded .filter-button .material-icons::after {
+  content: "expand_less";
+}
+
 @media screen and (max-width: 701px) {
   #filters {
     overflow-x: scroll;

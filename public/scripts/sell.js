@@ -15,15 +15,12 @@ const performStepActions = (stepNum) => {
     const listingFieldElementMappings = [
       ["listing-title", "summary-title"],
       ["listing-category", "summary-category"],
-      ["listing-condition", "summary-condition"],
       ["listing-price", "summary-price"],
       ["listing-description", "summary-description"],
-      ["listing-condition-details", "summary-condition-details"],
     ];
 
     for (const [srcElementId, summaryElementId] of listingFieldElementMappings) {
-      document.querySelector(`#${summaryElementId} + div`).textContent =
-          document.getElementById(srcElementId).value;
+      document.querySelector(`#${summaryElementId} + div`).textContent = document.getElementById(srcElementId).value;
     }
   }
 };
@@ -34,8 +31,7 @@ const showStep = (stepNum) => {
   for (const stepElem of document.getElementsByClassName("sell-procedure-step")) {
     stepElem.style.display = "none";
   }
-  document.getElementById(`sell-procedure-step-${stepNum}`).style.display =
-      "flex";
+  document.getElementById(`sell-procedure-step-${stepNum}`).style.display = "flex";
       
   const progressBarFiller = document.getElementById("progress-bar-filler");
   progressBarFiller.style.width = `${(currentStep - 1) / (NUM_STEPS - 1) * 100}%`
@@ -65,6 +61,180 @@ const showStep = (stepNum) => {
 
   performStepActions(stepNum);
 };
+
+topBarLoadCallbacks.push(async () => {
+  categoryData = await fetch("https://miko-user-img.s3.amazonaws.com/categories.json").then((res) => res.json());
+
+  const filterButton = document.querySelector("#listing-category-wrapper");
+
+  document.addEventListener("click", (event) => {
+    const filterOptionsDivRect = filterButton.nextElementSibling.getBoundingClientRect();
+    const filterButtonRect = filterButton.getBoundingClientRect();
+
+    console.log(filterButton);
+    console.log(filterButton.nextElementSibling);
+
+    if (!mouseEventIsWithinDOMRect(event, filterOptionsDivRect) && !mouseEventIsWithinDOMRect(event, filterButtonRect)) {
+      console.log("i am working");
+      filterButton.parentElement.classList.remove("filter-dropdown-expanded");
+    }
+  });
+
+  filterButton.addEventListener("click", () => {
+    console.log(filterButton);
+    filterButton.parentElement.classList.toggle("filter-dropdown-expanded");
+  });
+
+  renderCategories();
+});
+
+function renderCategories() {
+  const categoryOptionsDiv = document.querySelector("#category-filter .filter-options");
+  for (const category of categoryData.categories) {
+    const categoryOptionDiv = document.createElement("div");
+    categoryOptionDiv.className = "filter-option";
+    categoryOptionDiv.addEventListener("click", () => {
+      document.querySelector("#listing-category").value = category.name;
+      document.querySelector("#listing-category-wrapper").parentElement.classList.remove("filter-dropdown-expanded");
+    });
+
+    const categoryNameSpan = document.createElement("span");
+    categoryNameSpan.className = "category-name";
+    categoryNameSpan.textContent = category.name;
+
+    const rightArrowIconSpan = document.createElement("span");
+    rightArrowIconSpan.className = "material-icons";
+    rightArrowIconSpan.textContent = "chevron_right";
+
+    const subcategoriesDiv = document.createElement("div");
+    subcategoriesDiv.className = "subcategories";
+
+    if (category.sub === undefined) category.sub = [];
+
+    for (const subcategory of category.sub) {
+      const subcategoryDiv = document.createElement("div");
+      subcategoryDiv.textContent = subcategory.name;
+      subcategoryDiv.addEventListener("click", (event) => {
+        event.stopPropagation();
+        document.querySelector("#listing-category").value = subcategory.name;
+        document.querySelector("#listing-category-wrapper").parentElement.classList.remove("filter-dropdown-expanded");
+      });
+
+      subcategoriesDiv.append(subcategoryDiv);
+    }
+
+    categoryOptionDiv.append(categoryNameSpan, rightArrowIconSpan, subcategoriesDiv);
+    categoryOptionsDiv.append(categoryOptionDiv);
+  }
+
+  const categorySearchResultsDiv = document.getElementById("category-search-results");
+  document.getElementById("listing-category").addEventListener("input", (event) => {
+    // use querySelectorAll instead of getElementsByClassName
+    // because getElementsByClassName returns a **live** list of elements which shortens when an element is removed
+    // decreasing the length of the element list during iteration will result in some elements not being removed
+    for (const categorySearchResultDiv of document.querySelectorAll(".category-search-result")) {
+      categorySearchResultDiv.remove();
+    }
+
+    const searchQuery = event.target.value.toLowerCase();
+    if (searchQuery === "") {
+      categorySearchResultsDiv.style.display = "none";
+      for (const filterOption of document.querySelectorAll("#category-search-results ~ .filter-option")) {
+        filterOption.style.display = "flex";
+      }
+    } else {
+      categorySearchResultsDiv.style.display = "block";
+      for (const filterOption of document.querySelectorAll("#category-search-results ~ .filter-option")) {
+        filterOption.style.display = "none";
+      }
+
+      const categoryMatches = [];
+      const subcategoryMatches = [];
+      for (const category of categoryData.categories) {
+        if (category.name.toLowerCase().includes(searchQuery)) {
+          categoryMatches.push(category);
+        }
+
+        for (const subcategory of category.sub) {
+          if (subcategory.name.toLowerCase().includes(searchQuery)) {
+            subcategoryMatches.push({
+              subcategoryMatch: subcategory,
+              parentCategoryName: category.name,
+            });
+          }
+        }
+      }
+
+      const noCategorySearchResultsDiv = document.getElementById("no-category-search-results");
+      if (categoryMatches.length === 0 && subcategoryMatches.length === 0) {
+        noCategorySearchResultsDiv.style.display = "block";
+      } else {
+        noCategorySearchResultsDiv.style.display = "none";
+      }
+
+      for (const { subcategoryMatch, parentCategoryName } of subcategoryMatches) {
+        // const subcategoryUrl =
+        //     `/categories/${parentCategoryName}/${subcategoryMatch.name}`;
+        // const parentCategoryUrl =
+        //     `/categories/${parentCategoryName}`;
+
+        const subcategorySearchResultDiv = document.createElement("div");
+        subcategorySearchResultDiv.className = "category-search-result";
+        subcategorySearchResultDiv.addEventListener("click", () => {
+          location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategoryMatch.id;
+        });
+        
+        const subcategoryLink = document.createElement("a");
+        subcategoryLink.className = "result-name";
+        // subcategoryLink.href = subcategoryUrl;
+        subcategoryLink.textContent = subcategoryMatch.name;
+
+        const parentCategorySpan = document.createElement("span");
+        parentCategorySpan.className = "result-parent-category";
+
+        const parentCategoryLink = document.createElement("a");
+        // parentCategoryLink.href = parentCategoryUrl;
+        parentCategoryLink.textContent = parentCategoryName;
+        
+        parentCategorySpan.append("in ", parentCategoryLink);
+
+        // const rightArrowIconDiv = document.createElement("div");
+        // rightArrowIconDiv.className = "material-icons";
+        // const rightArrowIconSpan = document.createElement("span");
+        // rightArrowIconSpan.textContent = "chevron_right";
+        // rightArrowIconDiv.append(rightArrowIconSpan);
+
+        subcategorySearchResultDiv.append(subcategoryLink, parentCategorySpan);
+        
+        categorySearchResultsDiv.append(subcategorySearchResultDiv);
+      }
+      for (const categoryMatch of categoryMatches) {
+        // const categoryUrl = `/categories/${categoryMatch.name}`;
+
+        const categorySearchResultDiv = document.createElement("div");
+        categorySearchResultDiv.className = "category-search-result";
+        categorySearchResultDiv.addEventListener("click", () => {
+          location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + categoryMatch.id;
+        });
+
+        const categoryLink = document.createElement("a");
+        categoryLink.className = "result-name";
+        // categoryLink.href = categoryUrl;
+        categoryLink.textContent = categoryMatch.name;
+
+        // const rightArrowIconDiv = document.createElement("div");
+        // rightArrowIconDiv.className = "material-icons";
+        // const rightArrowIconSpan = document.createElement("span");
+        // rightArrowIconSpan.textContent = "chevron_right";
+        // rightArrowIconDiv.append(rightArrowIconSpan);
+
+        categorySearchResultDiv.append(categoryLink);
+
+        categorySearchResultsDiv.append(categorySearchResultDiv);
+      }
+    }
+  });
+}
 
 const priceInput = document.querySelector("#price-input-wrapper > input[type='text']");
 
