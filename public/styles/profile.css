@@ -29,7 +29,7 @@ main {
 
 #profile-menu-bar-actions {
   display: flex;
-  padding-left: 20%;
+  padding-left: calc(20% + 2px);
   /* gap: 30px; */
 }
 /* #profile-menu-bar-actions::before {
@@ -102,7 +102,7 @@ main {
 #user-info {
   flex-basis: 20%;
   flex-shrink: 0;
-  margin-right: 15px;
+  margin-right: 30px;
 }
 
 #username {
@@ -119,7 +119,7 @@ main {
 #edit-profile {
   display: flex;
   align-items: center;
-  margin-top: 13px;
+  margin-top: 17px;
   padding: 6px 11px 6px 9.5px;
   border-radius: 5px;
   font-family: inherit;
@@ -183,7 +183,7 @@ main {
   display: block;
 }
 #listings {
-  margin: -10px 0 0 -2px;
+  margin: -10px 0 0 -15px;
   padding: 0;
 }
 #listings.profile-tab-content-selected {
