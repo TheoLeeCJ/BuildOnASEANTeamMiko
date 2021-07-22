@@ -196,7 +196,7 @@ function renderSearchResults() {
   let resultsHTML = ``;
 
   if (searchResults.length == 0) {
-    resultsHTML = `<div style="width: calc(85vw - 20px); text-align: center; display: block; padding-bottom: 24px;"><h1 style="font-weight: bold; color: grey;">Oh no! No items were found!</h1><p>Try searching using less specific search terms, or remove filters.</p></div>`
+    resultsHTML = `<div style="grid-column: 1 / -1; text-align: center; display: block; padding-bottom: 24px;"><h1 style="font-weight: bold; color: grey;">Oh no! No items were found!</h1><p>Try searching using less specific search terms, or remove filters.</p></div>`
   }
 
   searchResults.forEach((item) => {

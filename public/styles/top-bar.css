@@ -118,6 +118,7 @@
 }
 
 #user-actions {
+  position: relative;
   cursor: pointer;
 }
 
@@ -142,6 +143,10 @@
   text-decoration: none;
   color: #606060;
   transition: .2s;
+}
+
+#user-actions-title {
+  font-weight: 500;
 }
 
 #user-actions-dropdown > a:hover {
