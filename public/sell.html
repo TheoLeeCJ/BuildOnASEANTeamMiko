@@ -12,6 +12,7 @@
 
   <link rel="stylesheet" href="/styles/global.css">
   <link rel="stylesheet" href="/styles/top-bar.css">
+  <link rel="stylesheet" href="/styles/search.css">
   <link rel="stylesheet" href="/styles/sell.css">
 
   <title>Sell an item | Carousell</title>
@@ -35,12 +36,18 @@
             <h2>Listing title</h2>
             <input type="text" id="listing-title" placeholder="What do you want your listing to be called?">
           </div>
-          <div class="half">
+          <div class="half" id="category-filter">
             <h2>Category</h2>
             <div id="listing-category-wrapper">
               <span class="material-icons">search</span>
               <input type="text" id="listing-category" placeholder="Find a category">
-              <div class="category-options"></div>
+            </div>
+
+            <!-- default category picker -->
+            <div class="filter-options">
+              <div id="category-search-results">
+                <div id="no-category-search-results">No categories found.</div>
+              </div>
             </div>
           </div>
         </div>
@@ -48,7 +55,7 @@
         <h2>Attach photos</h2>
         <div class="attach-photos">
           <span class="material-icons-outlined"></span>
-          <!-- <button id="select-photos" class="primary-button">Select photos</button> -->
+          <input type="file" />
         </div>
       </div>
 
@@ -56,7 +63,7 @@
       <div id="sell-procedure-step-2" class="sell-procedure-step">
         <h1>About the item</h1>
 
-        <div class="halves-wrapper">
+        <!-- <div class="halves-wrapper">
           <div class="half">
             <h2>Condition</h2>
             <div class="select-wrapper">
@@ -76,30 +83,44 @@
               <input type="text" id="listing-price" placeholder="Price of your item">
             </div>
           </div>
-        </div>
+        </div> -->
 
         <h2>Description</h2>
         <textarea id="listing-description" placeholder="Describe what you are selling and include any details that buyers may be interested in. People love items with stories!"></textarea>
-      </div>
 
-      <div id="sell-procedure-step-3" class="sell-procedure-step">
-        <h1>Condition details</h1>
+        <h2>Provide details about item condition</h2>
+        <div>Having more information about item condition helps your item sell faster.</div>
 
-        <h2>Additional information on item condition</h2>
-        <input type="text" id="listing-condition-details" placeholder="Provide additional details about the condition of your item">
-
-        <h2>Image upload</h2>
-        <div class="attach-photos">
-          <span class="material-icons-outlined"></span>
-          <!-- <button id="select-photos" class="primary-button">Select photos</button> -->
+        <div class="additional-field">
+          <h2>
+            <span>Additional field 1</span>
+            <button onclick="removeAdditionalField(this)" title="Delete this field" class="remove-field material-icons">delete_outline</button>
+          </h2>
+          <h3>Field title</h3>
+          <input type="text" class="additional-field-title" placeholder="Name of the field (e.g. item material, stains on the item, etc)">
+          <h3>Field value</h3>
+          <input type="text" class="additional-field-text" placeholder="Details">
+          <div class="attach-photos">
+            <span class="material-icons-outlined"></span>
+          </div>
         </div>
-
-        <h1>Additional fields (optional)</h1>
 
         <button id="add-field-button" class="secondary-button">
           <span class="material-icons">add_circle</span>
-          <span>Add an additional field</span>
+          <span>Add a field</span>
         </button>
+      </div>
+
+      <div id="sell-procedure-step-3" class="sell-procedure-step">
+        <h1>Pricing it right!</h1>
+
+        <div class="">
+          <h2>Price</h2>
+          <div id="price-input-wrapper">
+            <span id="currency">S$</span>
+            <input type="text" id="listing-price" placeholder="Price of your item">
+          </div>
+        </div>
       </div>
 
       <div id="sell-procedure-step-4" class="sell-procedure-step">
@@ -118,24 +139,13 @@
         </div>
         <div class="halves-wrapper">
           <div class="half">
-            <h3 id="summary-condition">Condition</h3>
-            <div>Lightly used</div>
-          </div>
-          <div class="half">
             <h3 id="summary-price">Price</h3>
             <div>S$2799.99</div>
           </div>
         </div>
-        <div class="halves-wrapper">
-          <div class="half">
-            <h3 id="summary-description">Description</h3>
-            <div>Really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long description</div>
-          </div>
-          <div class="half">
-            <h3 id="summary-condition-details">Condition details</h3>
-            <div>Really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long description</div>
-          </div>
-        </div>
+
+        <h3 id="summary-description">Description</h3>
+        <div>Really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long description</div>
 
         <h3 id="summary-additional-fields">Additional fields</h3>
         <h4>Does the laptop turn on?</h4>
@@ -153,5 +163,6 @@
 
   <script src="/scripts/global.js"></script>
   <script src="/scripts/sell.js"></script>
+  <script src="/scripts/utils.js"></script>
 </body>
 </html>

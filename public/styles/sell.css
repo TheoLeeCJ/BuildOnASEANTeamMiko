@@ -16,6 +16,14 @@ main {
   padding-bottom: 70px;
 }
 
+#category-filter .filter-options .filter-option {
+  max-width: 100px;
+}
+
+.category-search-result {
+  width: 150px;
+}
+
 h2 {
   font-weight: 500;
 }
