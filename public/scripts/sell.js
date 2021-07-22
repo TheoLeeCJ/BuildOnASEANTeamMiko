@@ -251,7 +251,7 @@ priceInput.addEventListener("change", () => {
   }
 });
 
-let numAdditionalFields = 0;
+let numAdditionalFields = 1;
 
 const removeAdditionalField = (removeFieldButton) => {
   removeFieldButton.closest(".additional-field").remove();
