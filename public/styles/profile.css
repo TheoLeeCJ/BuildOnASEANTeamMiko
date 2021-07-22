@@ -2,6 +2,10 @@ main {
   padding-top: 0;
 }
 
+#profile-top-section {
+  border-radius: 0 0 10px 10px;
+}
+
 #profile-banner {
   position: relative;
   display: block;
@@ -24,11 +28,8 @@ main {
 }
 
 #profile-menu-bar-actions {
-  position: relative;
   display: flex;
-  width: 100%;
-  margin: 0 auto;
-  justify-content: center;
+  padding-left: 20%;
   /* gap: 30px; */
 }
 /* #profile-menu-bar-actions::before {
@@ -41,10 +42,6 @@ main {
   z-index: 1;
 } */
 
-#profile-menu-bar-actions * {
-  z-index: 2;
-}
-
 .profile-tab-switcher {
   padding: 15px 28px;
   font-size: 16px;
@@ -52,7 +49,7 @@ main {
   overflow: hidden;
   cursor: pointer;
   user-select: none;
-  /* transition: background-color 0.2s; */
+  transition: background-color 0.15s;
 }
 .profile-tab-switcher:hover {
   background-color: #ff26342d;
@@ -88,22 +85,15 @@ main {
   opacity: 1;
 }
 
-#edit-profile {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 3.5px 15px;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
 #profile-main {
+  display: flex;
   margin-top: 40px;
 }
 
 #user-info {
-  width: 20%;
+  flex-basis: 20%;
+  flex-shrink: 0;
+  margin-right: 15px;
 }
 
 #username {
@@ -117,6 +107,28 @@ main {
   margin: 5px 0;
 }
 
+#edit-profile {
+  display: flex;
+  align-items: center;
+  margin-top: 13px;
+  padding: 6px 11px 6px 9.5px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+#edit-profile > .material-icons-outlined {
+  margin-right: 7px;
+}
+
+#edit-profile > :not(.material-icons-outlined) {
+  transform: translateY(-1px);
+}
+
+#user-info hr {
+  margin: 19px 0 17px;
+}
+
 /* #user-info p .material-icons,
 #user-info p .material-icons-outlined {
   margin-right: -3px;
@@ -127,8 +139,8 @@ main {
 } */
 
 #profile-views-info {
-  margin-top: 21.5px;
-  padding: 13px;
+  /* margin-top: 21.5px; */
+  /* padding: 13px; */
   border-radius: 7.5px;
 }
 
@@ -153,5 +165,19 @@ main {
 }
 
 #profile-views-info > p:last-child {
-  margin-top: 10px;
+  margin-top: 7.5px;
+}
+
+.profile-tab-content {
+  display: none;
+  flex-grow: 1;
+  margin-left: -2px;
+}
+.profile-tab-content.profile-tab-content-selected {
+  display: block;
+}
+#user-listings.profile-tab-content-selected {
+  display: grid;
+  margin-top: -10px;
+  padding: 0;
 }

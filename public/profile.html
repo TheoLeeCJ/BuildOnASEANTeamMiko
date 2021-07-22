@@ -19,34 +19,36 @@
 <body>
   <main>
     <!-- <div id="profile-banner"></div> -->
-    <img src="/media/placeholder-profile-banner.jpg" alt="Profile banner" id="profile-banner">
-    <div id="profile-menu-bar">
-      <img id="profile-menu-bar-profile-picture" src="/media/placeholder-profile-picture.jpeg" alt="Profile picture">
-      <div id="profile-menu-bar-actions" class="card">
-        <div class="profile-tab-switcher"><span>Listings</span></div>
-        <div class="profile-tab-switcher"><span>Reviews</span></div>
-        <div class="profile-tab-switcher"><span>Coins</span></div>
-        <div class="profile-tab-switcher profile-tab-switcher-selected"><span>Balance</span></div>
-        <div class="profile-tab-switcher"><span>CarouBiz</span></div>
-        <div class="profile-tab-switcher"><span>Green Points</span></div>
-        <div class="profile-tab-switcher"><span>Analytics</span></div>
-        <!-- <button id="edit-profile" class="primary-button"><span>Edit profile</span></button> -->
+    <div id="profile-top-section" class="card">
+      <img src="/media/placeholder-profile-banner.jpg" alt="Profile banner" id="profile-banner">
+      <div id="profile-menu-bar">
+        <img id="profile-menu-bar-profile-picture" src="/media/placeholder-profile-picture.jpeg" alt="Profile picture">
+        <div id="profile-menu-bar-actions">
+          <div class="profile-tab-switcher profile-tab-switcher-selected"><span>Listings</span></div>
+          <!-- <div class="profile-tab-switcher"><span>Reviews</span></div> -->
+          <div class="profile-tab-switcher"><span>Coins</span></div>
+          <!-- <div class="profile-tab-switcher"><span>Balance</span></div> -->
+          <!-- <div class="profile-tab-switcher"><span>CarouBiz</span></div> -->
+          <div class="profile-tab-switcher"><span>Green Points</span></div>
+          <div class="profile-tab-switcher"><span>Analytics</span></div>
+          <!-- <button id="edit-profile" class="primary-button"><span>Edit profile</span></button> -->
+        </div>
       </div>
     </div>
 
     <div id="profile-main">
       <div id="user-info">
         <h1 id="username">NoobMaster69 Long Long Long Long Long Long Username</h1>
-      <!-- <div id="user-rating-info">
-        <span id="user-rating-score">5.0</span>
-        <span id="user-rating-num-reviews">(10)</span>
-        TODO: 5 stars here (they act as transparent windows into background div which fills them up)
-        <span id="user-rating-reviews-link" class="material-icons">chevron_right</span>
-      </div> -->
+        <!-- <div id="user-rating-info">
+          <span id="user-rating-score">5.0</span>
+          <span id="user-rating-num-reviews">(10)</span>
+          TODO: 5 stars here (they act as transparent windows into background div which fills them up)
+          <span id="user-rating-reviews-link" class="material-icons">chevron_right</span>
+        </div> -->
         <p>
           <span id="user-location">Singapore</span>
           &middot;
-          <span id="user-account-age">Joined 10y 10m</span>
+          <span id="user-account-age">Joined 10y 10m ago</span>
         </p>
         <p>
           <span id="user-verified-status">Verified</span>
@@ -59,7 +61,14 @@
           <span id="following-count">256 following</span>
         </p>
 
-        <div id="profile-views-info" class="card">
+        <button id="edit-profile" class="secondary-button">
+          <span class="material-icons-outlined">edit</span>
+          <span>Edit profile</span>
+        </button>
+        
+        <hr>
+
+        <div id="profile-views-info">
           <p>
             <span class="material-icons-outlined">visibility</span>
             <span id="profile-view-count">4096</span>
@@ -72,6 +81,157 @@
             <span id="profile-promotion-status-sidebar">Profile promotion is inactive</span>
           </p>
         </div>
+      </div>
+
+      <div id="user-listings" class="profile-tab-content profile-tab-content-selected full-width-listings-container">
+        <div class="listing">
+          <div class="listing-info-top">
+            <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
+            <div class="listing-info-top-text">
+              <div class="seller-username">Very Very Long Seller Username Very Very Long Seller Username</div>
+              <div class="listing-age">7 hours ago</div>
+            </div>
+          </div>
+          <div class="item-image-wrapper">
+            <img src="/media/placeholder-product-image.png" alt="Product image" class="item-image">
+          </div>
+          <div class="listing-info-bottom">
+            <div class="item-name">Alienware m15 R5 Gaming Laptop With Very Long Title</div>
+            <div class="item-price">S$3999999999999999999999999999999.99</div>
+            <div class="item-description">Dell Alienware gaming laptop with an extremely long item description</div>
+            <div class="item-condition">Absolutely trashed</div>
+          </div>
+          <div class="listing-action-buttons">
+            <button class="like-button liked material-icons"></button>
+            <span class="like-count">18</span>
+            <button class="start-chat primary-button"></button>
+            <button class="report-button material-icons">outlined_flag</button>
+          </div>
+        </div>
+        <div class="listing">
+          <div class="listing-info-top">
+            <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
+            <div class="listing-info-top-text">
+              <div class="seller-username">Very Very Long Seller Username Very Very Long Seller Username</div>
+              <div class="listing-age">7 hours ago</div>
+            </div>
+          </div>
+          <div class="item-image-wrapper">
+            <img src="/media/placeholder-product-image.png" alt="Product image" class="item-image">
+          </div>
+          <div class="listing-info-bottom">
+            <div class="item-name">Alienware m15 R5 Gaming Laptop With Very Long Title</div>
+            <div class="item-price">S$3999999999999999999999999999999.99</div>
+            <div class="item-description">Dell Alienware gaming laptop with an extremely long item description</div>
+            <div class="item-condition">Absolutely trashed</div>
+          </div>
+          <div class="listing-action-buttons">
+            <button class="like-button liked material-icons"></button>
+            <span class="like-count">18</span>
+            <button class="start-chat primary-button"></button>
+            <button class="report-button material-icons">outlined_flag</button>
+          </div>
+        </div>
+        <div class="listing">
+          <div class="listing-info-top">
+            <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
+            <div class="listing-info-top-text">
+              <div class="seller-username">Very Very Long Seller Username Very Very Long Seller Username</div>
+              <div class="listing-age">7 hours ago</div>
+            </div>
+          </div>
+          <div class="item-image-wrapper">
+            <img src="/media/placeholder-product-image.png" alt="Product image" class="item-image">
+          </div>
+          <div class="listing-info-bottom">
+            <div class="item-name">Alienware m15 R5 Gaming Laptop With Very Long Title</div>
+            <div class="item-price">S$3999999999999999999999999999999.99</div>
+            <div class="item-description">Dell Alienware gaming laptop with an extremely long item description</div>
+            <div class="item-condition">Absolutely trashed</div>
+          </div>
+          <div class="listing-action-buttons">
+            <button class="like-button liked material-icons"></button>
+            <span class="like-count">18</span>
+            <button class="start-chat primary-button"></button>
+            <button class="report-button material-icons">outlined_flag</button>
+          </div>
+        </div>
+        <div class="listing">
+          <div class="listing-info-top">
+            <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
+            <div class="listing-info-top-text">
+              <div class="seller-username">Very Very Long Seller Username Very Very Long Seller Username</div>
+              <div class="listing-age">7 hours ago</div>
+            </div>
+          </div>
+          <div class="item-image-wrapper">
+            <img src="/media/placeholder-product-image.png" alt="Product image" class="item-image">
+          </div>
+          <div class="listing-info-bottom">
+            <div class="item-name">Alienware m15 R5 Gaming Laptop With Very Long Title</div>
+            <div class="item-price">S$3999999999999999999999999999999.99</div>
+            <div class="item-description">Dell Alienware gaming laptop with an extremely long item description</div>
+            <div class="item-condition">Absolutely trashed</div>
+          </div>
+          <div class="listing-action-buttons">
+            <button class="like-button liked material-icons"></button>
+            <span class="like-count">18</span>
+            <button class="start-chat primary-button"></button>
+            <button class="report-button material-icons">outlined_flag</button>
+          </div>
+        </div>
+        <div class="listing">
+          <div class="listing-info-top">
+            <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
+            <div class="listing-info-top-text">
+              <div class="seller-username">Very Very Long Seller Username Very Very Long Seller Username</div>
+              <div class="listing-age">7 hours ago</div>
+            </div>
+          </div>
+          <div class="item-image-wrapper">
+            <img src="/media/placeholder-product-image.png" alt="Product image" class="item-image">
+          </div>
+          <div class="listing-info-bottom">
+            <div class="item-name">Alienware m15 R5 Gaming Laptop With Very Long Title</div>
+            <div class="item-price">S$3999999999999999999999999999999.99</div>
+            <div class="item-description">Dell Alienware gaming laptop with an extremely long item description</div>
+            <div class="item-condition">Absolutely trashed</div>
+          </div>
+          <div class="listing-action-buttons">
+            <button class="like-button liked material-icons"></button>
+            <span class="like-count">18</span>
+            <button class="start-chat primary-button"></button>
+            <button class="report-button material-icons">outlined_flag</button>
+          </div>
+        </div>
+        <div class="listing">
+          <div class="listing-info-top">
+            <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
+            <div class="listing-info-top-text">
+              <div class="seller-username">Very Very Long Seller Username Very Very Long Seller Username</div>
+              <div class="listing-age">7 hours ago</div>
+            </div>
+          </div>
+          <div class="item-image-wrapper">
+            <img src="/media/placeholder-product-image.png" alt="Product image" class="item-image">
+          </div>
+          <div class="listing-info-bottom">
+            <div class="item-name">Alienware m15 R5 Gaming Laptop With Very Long Title</div>
+            <div class="item-price">S$3999999999999999999999999999999.99</div>
+            <div class="item-description">Dell Alienware gaming laptop with an extremely long item description</div>
+            <div class="item-condition">Absolutely trashed</div>
+          </div>
+          <div class="listing-action-buttons">
+            <button class="like-button liked material-icons"></button>
+            <span class="like-count">18</span>
+            <button class="start-chat primary-button"></button>
+            <button class="report-button material-icons">outlined_flag</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="user-coins" class="profile-tab-content">
+        Test
       </div>
     </div>
   </main>
