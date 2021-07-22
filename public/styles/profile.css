@@ -54,6 +54,9 @@ main {
 .profile-tab-switcher:hover {
   background-color: #ff26342d;
 }
+#green-points-profile-tab-switcher:hover {
+  background-color: #00b32d30;
+}
 .profile-tab-switcher:hover,
 .profile-tab-switcher.profile-tab-switcher-selected {
   color: #f12331;
@@ -67,6 +70,9 @@ main {
 .profile-tab-switcher.profile-tab-switcher-selected > span {
   color: var(--theme-red);
 }
+#green-points-profile-tab-switcher.profile-tab-switcher-selected > span {
+  color: var(--theme-green);
+}
 .profile-tab-switcher > span::after {
   content: "";
   position: absolute;
@@ -79,6 +85,9 @@ main {
   background-color: var(--theme-red);
   opacity: 0;
   transition: width 0.15s, opacity 0.15s;
+}
+#green-points-profile-tab-switcher > span::after {
+  background-color: var(--theme-green);
 }
 .profile-tab-switcher.profile-tab-switcher-selected > span::after {
   width: 100%;
@@ -138,16 +147,14 @@ main {
   margin-top: 14px;
 } */
 
-#profile-views-info {
-  /* margin-top: 21.5px; */
-  /* padding: 13px; */
-  border-radius: 7.5px;
-}
-
 #profile-views-info > p:first-child,
 #profile-views-info > p:nth-child(2) {
   margin: 0;
   color: var(--theme-red);
+}
+
+#profile-views-info > p:first-child {
+  font-weight: 500;
 }
 
 #profile-views-info > p:last-child {
@@ -171,13 +178,123 @@ main {
 .profile-tab-content {
   display: none;
   flex-grow: 1;
-  margin-left: -2px;
 }
 .profile-tab-content.profile-tab-content-selected {
   display: block;
 }
-#user-listings.profile-tab-content-selected {
-  display: grid;
-  margin-top: -10px;
+#listings {
+  margin: -10px 0 0 -2px;
   padding: 0;
+}
+#listings.profile-tab-content-selected {
+  display: grid;
+}
+
+#green-points-summary {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding: 15px 22px;
+  border-radius: 10px;
+}
+
+#green-points-summary > img {
+  width: 60px;
+  margin-right: 18px;
+}
+
+#green-points-summary-text {
+  transform: translateY(-2px);
+}
+
+#green-points-count {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+#redeem-rewards {
+  display: flex;
+  align-items: center;
+  margin-left: 38px;
+  padding: 6px 12px 6px 11px;
+  height: fit-content;
+  background-color: var(--theme-green);
+  border-color: var(--theme-green);
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 16px;
+}
+#redeem-rewards:hover {
+  background-color: #009c27;
+}
+#redeem-rewards:active {
+  background-color: #008521;
+}
+
+#redeem-rewards > .material-icons-outlined {
+  margin-right: 7px;
+}
+
+#green-points > h2 {
+  margin: 32px 0 25px;
+  font-weight: 500;
+}
+
+#green-points-redemption-history {
+  /* padding: 15px; */
+  border-radius: 10px;
+}
+
+#green-points-redemption-history > table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+#green-points-redemption-history > table th {
+  padding: 8px 13px 10px;
+  background-color: #ddd;
+  font-weight: 500;
+  text-align: left;
+}
+
+#green-points-redemption-history > table tr {
+  position: relative;
+}
+
+#green-points-redemption-history > table td {
+  padding: 10px 13px 12px;
+}
+#green-points-redemption-history > table td:first-child {
+  width: 60%;
+}
+
+#green-points-redemption-history > table th,
+#green-points-redemption-history > table td {
+  background-clip: padding-box;
+}
+
+#green-points-redemption-history > table th,
+#green-points-redemption-history > table tr:not(:last-child) > td {
+  border-bottom: 1px solid #000;
+}
+
+#green-points-redemption-history > table th:not(:last-child),
+#green-points-redemption-history > table td:not(:last-child) {
+  border-right: 1px solid #000;
+}
+
+#green-points-redemption-history > table td:nth-child(3) {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+#green-points-redemption-history > table td:nth-child(3) > img {
+  margin-left: 6px;
+  height: 18px;
+  transform: translateY(1px);
 }

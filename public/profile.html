@@ -24,12 +24,12 @@
       <div id="profile-menu-bar">
         <img id="profile-menu-bar-profile-picture" src="/media/placeholder-profile-picture.jpeg" alt="Profile picture">
         <div id="profile-menu-bar-actions">
-          <div class="profile-tab-switcher profile-tab-switcher-selected"><span>Listings</span></div>
+          <div class="profile-tab-switcher"><span>Listings</span></div>
           <!-- <div class="profile-tab-switcher"><span>Reviews</span></div> -->
           <div class="profile-tab-switcher"><span>Coins</span></div>
           <!-- <div class="profile-tab-switcher"><span>Balance</span></div> -->
           <!-- <div class="profile-tab-switcher"><span>CarouBiz</span></div> -->
-          <div class="profile-tab-switcher"><span>Green Points</span></div>
+          <div id="green-points-profile-tab-switcher" class="profile-tab-switcher profile-tab-switcher-selected"><span>Green Points</span></div>
           <div class="profile-tab-switcher"><span>Analytics</span></div>
           <!-- <button id="edit-profile" class="primary-button"><span>Edit profile</span></button> -->
         </div>
@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <div id="user-listings" class="profile-tab-content profile-tab-content-selected full-width-listings-container">
+      <div id="listings" class="profile-tab-content full-width-listings-container">
         <div class="listing">
           <div class="listing-info-top">
             <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
@@ -230,8 +230,57 @@
         </div>
       </div>
 
-      <div id="user-coins" class="profile-tab-content">
-        Test
+      <div id="coins" class="profile-tab-content">
+        TODO: implement user coins UI
+      </div>
+
+      <div id="green-points" class="profile-tab-content profile-tab-content-selected">
+        <div id="green-points-summary" class="card">
+          <img src="/media/green-points.svg" alt="Green Points logo">
+          <div id="green-points-summary-text">
+            <div id="green-points-count">65536</div>
+            <div>Green Points</div>
+          </div>
+          <button id="redeem-rewards" class="primary-button">
+            <span class="material-icons-outlined">redeem</span>
+            Redeem rewards
+          </button>
+        </div>
+        
+        <h2>Redemption history</h2>
+        <div id="green-points-redemption-history" class="card">
+          <table>
+            <tbody>
+              <th>Item</th>
+              <th>Date</th>
+              <th>Points used</th>
+              <tr>
+                <td>Alienware m15 R5</td>
+                <td>22 Jul 2021</td>
+                <td>
+                  100
+                  <img src="/media/green-points.svg" alt="Green points logo">
+                </td>
+              </tr>
+              <tr>
+                <td>Alienware m15 R5</td>
+                <td>22 Jul 2021</td>
+                <td>
+                  100
+                  <img src="/media/green-points.svg" alt="Green points logo">
+                </td>
+              </tr>
+              <tr>
+                <td>Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 </td>
+                <td>22 Jul 2021</td>
+                <td>
+                  100
+                  <img src="/media/green-points.svg" alt="Green points logo">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </main>
