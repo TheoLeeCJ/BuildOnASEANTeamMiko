@@ -3,6 +3,22 @@ const API_ENDPOINT = "https://xdpj2nme28.execute-api.us-east-1.amazonaws.com";
 let user = (localStorage.getItem("session") == null) ? null : JSON.parse(atob(localStorage.getItem("session").split(".")[1]));
 let notificationsEnabled = (localStorage.getItem("notifications") == null) ? false : true;
 
+function SaferHTML(templateData) {
+  var s = templateData[0];
+  for (var i = 1; i < arguments.length; i++) {
+    var arg = String(arguments[i]);
+
+    // Escape special characters in the substitution.
+    s += arg.replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    // Don't escape special characters in the template.
+    s += templateData[i];
+  }
+  return s;
+}
+
 const topBarLoadCallbacks = [
   () => {
     document.getElementById("search-form").addEventListener("submit", (event) => {

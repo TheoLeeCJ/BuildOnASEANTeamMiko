@@ -201,7 +201,7 @@ function renderSearchResults() {
 
   searchResults.forEach((item) => {
     // i know that this is bad practice, but we really don't have time!!!
-    resultsHTML += `<div class="listing">
+    resultsHTML += SaferHTML`<div class="listing">
   <div class="listing-info-top">
     <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
     <div class="listing-info-top-text">

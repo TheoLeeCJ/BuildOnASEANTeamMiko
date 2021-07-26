@@ -8,6 +8,13 @@ for (const filePicker of filePickers) {
   filePicker.addEventListener("change", addPhoto);
 }
 
+function submitFirstPhotoForAnalysis() {
+  // 1. AWS Rekognition if product is in supported categories (Digital Storage, Clothes)
+  //    - reveal auto-populated additional fields with VIGOUR and STYLE.
+  // 2. Reverse Image Search API (shh) to check if cover image is a stock image, and suggest the user take their own picture if so
+  // That's all, then the seller experience page shld be ready so submit to the endpoint
+}
+
 function addPhoto(event) {
   console.log(event.target);
   
@@ -35,7 +42,8 @@ function addPhoto(event) {
   </div>
 </div>`;
     document.querySelector(`#picker-${picker}`).appendChild(imgEl);
-    
+
+    files[i].__blobUrl = URL.createObjectURL(files[i]);
     imgPickersData[picker].push(files[i]);
   }
 
@@ -52,6 +60,8 @@ function removePhoto(caller) {
 
   let toRemove = document.querySelector(`#picker-${picker}`).children[index];
   document.querySelector(`#picker-${picker}`).removeChild(toRemove);
+
+  // TODO: re-number img's data-img attributes to avoid a bug
 }
 
 const progressMarkersDiv = document.getElementById("progress-markers");
@@ -65,6 +75,14 @@ for (let i = 0; i < NUM_STEPS; i++) {
 }
 
 const performStepActions = (stepNum) => {
+  if (stepNum === 2) {
+    if (imgPickersData["itemImg"].length === 0) {
+      alert("Please attach images of your product.");
+      return false;
+    }
+
+    submitFirstPhotoForAnalysis();
+  }
   if (stepNum === 4) {
     const listingFieldElementMappings = [
       ["listing-title", "summary-title"],
@@ -74,16 +92,49 @@ const performStepActions = (stepNum) => {
     ];
 
     for (const [srcElementId, summaryElementId] of listingFieldElementMappings) {
+      if (document.getElementById(srcElementId).value === "") {
+        alert("Please fill in all the required information to list your product.");
+        return false;
+      }
       document.querySelector(`#${summaryElementId} + div`).textContent = document.getElementById(srcElementId).value;
     }
 
+    if (imgPickersData["itemImg"].length === 0) {
+      alert("Please attach images of your product.");
+      return false;
+    }
+
+    let imgOutput = "";
+    for (let i = 0; i < imgPickersData["itemImg"].length; i++) {
+      imgOutput += SaferHTML`<img src="${imgPickersData["itemImg"][i].__blobUrl}" />`;
+    }
+    document.querySelector(`#summary-img + div`).innerHTML = imgOutput;
+
+    let fieldNames = document.querySelectorAll(".additional-field-title");
+    let fieldTexts = document.querySelectorAll(".additional-field-text");
+    let fieldIds = Object.keys(imgPickersData).filter((id) => { return id.includes("field"); });
+
+    let fieldsOutput = ``;
     
+    for (let i = 0; i < fieldIds.length; i++) {
+      if (fieldNames[i] == "" || fieldTexts[i] == "") continue;
+      fieldsOutput += SaferHTML`<h4>${fieldNames[i].value}</h4><p>${fieldTexts[i].value}</p>`;
+
+      for (const img of imgPickersData[fieldIds[i]]) {
+        console.log(img);
+        fieldsOutput += SaferHTML`<img src="${img.__blobUrl}" />`;
+      }
+    }
+
+    document.querySelector(`#summary-additional-fields + div`).innerHTML = fieldsOutput;
   }
 };
 
 const turnRedTimeoutIds = [];
 
 const showStep = (stepNum) => {
+  // moved performStepActions to button event handlers
+  
   for (const stepElem of document.getElementsByClassName("sell-procedure-step")) {
     stepElem.style.display = "none";
   }
@@ -114,8 +165,6 @@ const showStep = (stepNum) => {
   } else {
     nextButtonText.textContent = "Next";
   }
-
-  performStepActions(stepNum);
 };
 
 topBarLoadCallbacks.push(async () => {
@@ -316,6 +365,7 @@ function reNumberFields() {
 
 const removeAdditionalField = (removeFieldButton) => {
   removeFieldButton.closest(".additional-field").remove();
+  delete imgPickersData[`field-${removeFieldButton.getAttribute("data-img-field")}`];
   // numAdditionalFields--; // i'm sorry,
   // but i've already stored all img picker data in a format that kinda relies on the index,
   // so we'll treat them like this internally.
@@ -330,7 +380,7 @@ addFieldButton.addEventListener("click", () => {
     <div class="additional-field">
       <h2>
         <span>Additional field ${numAdditionalFields}</span>
-        <button onclick="removeAdditionalField(this)" title="Delete this field" class="remove-field material-icons">delete_outline</button>
+        <button onclick="removeAdditionalField(this)" data-img-field="${numAdditionalFields}" title="Delete this field" class="remove-field material-icons">delete_outline</button>
       </h2>
       <h3>Field title</h3>
       <input type="text" class="additional-field-title" placeholder="Name of the field you want to specify">
@@ -352,6 +402,10 @@ showStep(currentStep);
 document.getElementById("back-button").addEventListener("click", () => {
   if (currentStep > 1) {
     currentStep--;
+    if (performStepActions(currentStep) === false) {
+      currentStep++;
+      return;
+    }
     showStep(currentStep);
   }
 });
@@ -359,6 +413,10 @@ document.getElementById("back-button").addEventListener("click", () => {
 document.getElementById("next-button").addEventListener("click", () => {
   if (currentStep < NUM_STEPS) {
     currentStep++;
+    if (performStepActions(currentStep) === false) {
+      currentStep--;
+      return;
+    }
     showStep(currentStep);
   }
 });

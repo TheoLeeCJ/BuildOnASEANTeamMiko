@@ -206,7 +206,7 @@ select + span.material-icons {
   border-radius: 10px;
   display: inline-block;
   overflow: hidden;
-  box-shadow: 0 0 5px 1px  #aaa; /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0 0 5px 1px #aaa; /* offset-x | offset-y | blur-radius | spread-radius | color */
 }
 
 .attach-photos .photos > div.add {
@@ -258,7 +258,7 @@ select + span.material-icons {
 }
 
 .attach-photos .photos > div.img > div > div > div {
-  transition: .18s;
+  transition: .25s;
 }
 
 .attach-photos .photos > div.img > div:hover > div > * {
@@ -401,7 +401,7 @@ input#listing-category {
 
 #sell-procedure-step-4 h4 {
   margin-top: 20px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 #sell-procedure-step-4 h4:first-of-type {
   margin-top: 5px;
@@ -425,4 +425,19 @@ input#listing-category {
 #sell-procedure-navigation-buttons > button > span {
   display: block;
   transform: translateY(-1px);
+}
+
+#summary-additional-fields + div > div {
+  display: inline-block;
+  width: 50%;
+}
+
+#summary-additional-fields + div img, #summary-img + div img {
+  margin: 10px;
+  display: inline-block;
+  width: 120px; height: 120px;
+  object-fit: cover;
+  box-shadow: 0 0 5px 1px #aaa; /* offset-x | offset-y | blur-radius | spread-radius | color */
+  overflow: hidden;
+  border-radius: 5px;
 }
