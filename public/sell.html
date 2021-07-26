@@ -55,7 +55,8 @@
         <h2>Attach photos</h2>
         <div class="attach-photos">
           <span class="material-icons-outlined"></span>
-          <input type="file" accept="image/*" />
+          <input multiple data-target="itemImg" type="file" accept="image/*" />
+          <div class="photos" id="picker-itemImg"></div>
         </div>
       </div>
 
@@ -102,6 +103,8 @@
           <input type="text" class="additional-field-text" placeholder="Details">
           <div class="attach-photos">
             <span class="material-icons-outlined"></span>
+            <input multiple data-target="field-1" type="file" accept="image/*" />
+            <div class="photos" id="picker-field-1"></div>
           </div>
         </div>
 

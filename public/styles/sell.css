@@ -169,23 +169,111 @@ select + span.material-icons {
   user-select: none;
   position: relative;
 }
-.attach-photos::after {
-  content: "Click to add photos, or drag photos here";
-}
-
-.attach-photos input[type=file] {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-}
 
 .attach-photos > .material-icons-outlined {
   margin-bottom: 10px;
   color: #444;
   font-size: 60px;
 }
+
 .attach-photos > .material-icons-outlined::after {
   content: "add_a_photo";
+}
+
+.attach-photos:not(.hide-desc)::after {
+  content: "Click / tap to add photos, or drag photos here";
+}
+
+.attach-photos input[type=file] {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+}
+
+.attach-photos .photos {
+  /* position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%; */
+  pointer-events: none;
+  padding: 5px;
+}
+
+.attach-photos .photos > div {
+  position: relative;
+  margin: 15px;
+  width: 150px; height: 150px;
+  border-radius: 10px;
+  display: inline-block;
+  overflow: hidden;
+  box-shadow: 0 0 5px 1px  #aaa; /* offset-x | offset-y | blur-radius | spread-radius | color */
+}
+
+.attach-photos .photos > div.add {
+  text-align: center;
+  background-color: lightgrey;
+}
+
+.attach-photos .photos > div.add > i {
+  padding-top: 36px;
+  font-size: 3rem;
+}
+
+.attach-photos .photos > div.img > div {
+  opacity: 0;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  transition: .2s;
+  cursor: pointer;
+  pointer-events: all;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.65); color: white;
+  text-align: center;
+  z-index: 3;
+  backdrop-filter: blur(0);
+}
+
+.attach-photos .photos > div.img > div:hover {
+  opacity: 1;
+  backdrop-filter: blur(4px);
+}
+
+.attach-photos .photos > div.img > div > div {
+  transition: .5s;
+  transform: scale(1.2);
+  transform-origin: bottom;
+}
+
+.attach-photos .photos > div.img > div:hover > div {
+  transform: scale(1);
+}
+
+.attach-photos .photos > div.img > div > div > * {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.attach-photos .photos > div.img > div > div > i {
+  transition: .1s;
+}
+
+.attach-photos .photos > div.img > div > div > div {
+  transition: .18s;
+}
+
+.attach-photos .photos > div.img > div:hover > div > * {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.attach-photos .photos > div.img > div > div > i {
+  padding-top: 36px;
+  font-size: 3rem;
+}
+
+.attach-photos .photos > div.img > img {
+  width: 150px; height: 150px;
+  object-fit: cover;
 }
 
 #listing-category-wrapper {

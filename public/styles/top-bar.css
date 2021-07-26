@@ -130,11 +130,25 @@
   position: absolute;
   right: 0;
   margin-left: -100vw;
+  padding-top: 10px;
   background-color: white;
   box-shadow: 0 10px 15px -11px #aaa, 0 10px 15px -11px #aaa;
-  opacity: 0;
-  display: none;
+  display: block;
   border-radius: 10px;
+  transition: .18s;
+
+  /* properties that are changed by hover  */
+  pointer-events: none;
+
+  opacity: 0;
+  transform: scaleY(0.9) translateY(20px);
+}
+
+#user-actions:hover > #user-actions-dropdown {
+  pointer-events: all;
+
+  opacity: 1;
+  transform: scaleY(1) translateY(45px);
 }
 
 #user-actions-dropdown > * {
@@ -146,7 +160,8 @@
 }
 
 #user-actions-title {
-  font-weight: 500;
+  cursor: default;
+  font-weight: bold;
 }
 
 #user-actions-dropdown > a:hover {
@@ -157,28 +172,6 @@
   margin-right: 10px;
   display: inline-block;
   vertical-align: middle;
-}
-
-#user-actions:hover > #user-actions-dropdown {
-  padding-top: 10px;
-  margin-left: -100vw !important;
-  display: block;
-  animation: user-action-dropdown .2s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes user-action-dropdown {
-  from {
-    opacity: 0;
-    top: 20px;
-    transform: scaleY(0.9);
-  }
-
-  to {
-    opacity: 1;
-    top: 45px;
-    transform: scaleY(1);
-  }
 }
 
 #top-bar #title-bar #user-actions .profile-picture-small {

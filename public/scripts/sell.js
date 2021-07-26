@@ -1,4 +1,58 @@
 const NUM_STEPS = 4
+let imgUrls = [];
+let fields = [];
+let imgPickersData = { "itemImg": [], 'field-1': [] };
+
+const filePickers = document.querySelectorAll(".attach-photos input[type=file]");
+for (const filePicker of filePickers) {
+  filePicker.addEventListener("change", addPhoto);
+}
+
+function addPhoto(event) {
+  console.log(event.target);
+  
+  let files = event.target.files;
+  let picker = event.target.getAttribute("data-target");
+
+  if (files.length > 0 && imgPickersData[picker].length == 0) {
+    document.querySelector(`#picker-${picker}`).parentElement.querySelector(".material-icons-outlined").style.display = "none";
+    document.querySelector(`#picker-${picker}`).parentElement.classList.add("hide-desc");
+  }
+
+  let toRemove = document.querySelectorAll(`#picker-${picker} > div.add`);
+  [...toRemove].forEach((el) => {
+    document.querySelector(`#picker-${picker}`).removeChild(el);
+  });
+
+  for (let i = 0; i < files.length; i++) {
+    let imgEl = document.createElement("div");
+    imgEl.className = "img";
+    imgEl.innerHTML = `<img src="${URL.createObjectURL(files[i])}" />
+<div onclick="removePhoto(this);" data-target="${picker}" data-img="${i}">
+  <div>
+    <i class="material-icons">close</i>
+    <div>Remove Photo</div>
+  </div>
+</div>`;
+    document.querySelector(`#picker-${picker}`).appendChild(imgEl);
+    
+    imgPickersData[picker].push(files[i]);
+  }
+
+  let addEl = document.createElement("div");
+  addEl.className = "add";
+  addEl.innerHTML = `<i class="material-icons">add</i><div>Add Photo</div>`;
+  document.querySelector(`#picker-${picker}`).appendChild(addEl);
+}
+
+function removePhoto(caller) {
+  let picker = caller.getAttribute("data-target");
+  let index = parseInt(caller.getAttribute("data-img"));
+  imgPickersData[picker].splice(index, 1);
+
+  let toRemove = document.querySelector(`#picker-${picker}`).children[index];
+  document.querySelector(`#picker-${picker}`).removeChild(toRemove);
+}
 
 const progressMarkersDiv = document.getElementById("progress-markers");
 for (let i = 0; i < NUM_STEPS; i++) {
@@ -22,6 +76,8 @@ const performStepActions = (stepNum) => {
     for (const [srcElementId, summaryElementId] of listingFieldElementMappings) {
       document.querySelector(`#${summaryElementId} + div`).textContent = document.getElementById(srcElementId).value;
     }
+
+    
   }
 };
 
@@ -71,11 +127,7 @@ topBarLoadCallbacks.push(async () => {
     const filterOptionsDivRect = filterButton.nextElementSibling.getBoundingClientRect();
     const filterButtonRect = filterButton.getBoundingClientRect();
 
-    console.log(filterButton);
-    console.log(filterButton.nextElementSibling);
-
     if (!mouseEventIsWithinDOMRect(event, filterOptionsDivRect) && !mouseEventIsWithinDOMRect(event, filterButtonRect)) {
-      console.log("i am working");
       filterButton.parentElement.classList.remove("filter-dropdown-expanded");
     }
   });
@@ -253,21 +305,27 @@ priceInput.addEventListener("change", () => {
 
 let numAdditionalFields = 1;
 
-const removeAdditionalField = (removeFieldButton) => {
-  removeFieldButton.closest(".additional-field").remove();
-  numAdditionalFields--;
-
+function reNumberFields() {
   // re-number remaining fields
   let fieldNum = 1;
   for (const additionalFieldTitle of document.querySelectorAll(".additional-field > h2 > span")) {
     additionalFieldTitle.textContent = `Additional field ${fieldNum}`;
     fieldNum++;
   }
+}
+
+const removeAdditionalField = (removeFieldButton) => {
+  removeFieldButton.closest(".additional-field").remove();
+  // numAdditionalFields--; // i'm sorry,
+  // but i've already stored all img picker data in a format that kinda relies on the index,
+  // so we'll treat them like this internally.
+  reNumberFields();
 };
 
 const addFieldButton = document.getElementById("add-field-button");
 addFieldButton.addEventListener("click", () => {
   numAdditionalFields++;
+  imgPickersData[`field-${numAdditionalFields}`] = [];
   addFieldButton.insertAdjacentHTML("beforebegin", `        
     <div class="additional-field">
       <h2>
@@ -280,9 +338,12 @@ addFieldButton.addEventListener("click", () => {
       <input type="text" class="additional-field-text" placeholder="Value of the field you want to specify">
       <div class="attach-photos">
         <span class="material-icons-outlined"></span>
+        <input onchange="addPhoto(event);" multiple data-target="field-${numAdditionalFields}" type="file" accept="image/*" />
+        <div class="photos" id="picker-field-${numAdditionalFields}"></div>
       </div>
     </div>
   `);
+  reNumberFields();
 });
 
 let currentStep = 1;
