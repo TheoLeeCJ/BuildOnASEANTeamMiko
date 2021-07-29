@@ -1,3 +1,8 @@
+
+const refreshWithNewQueryParams = (newQueryParams) => {
+  window.location.search = newQueryParams.toString();
+};
+
 const separateThousands = (num, separator = ",") => {
   const numStr = num.toString();
   let numStrFormatted = "";

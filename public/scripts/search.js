@@ -9,18 +9,10 @@ let resultCount = 0n;
 
 let categoryData = [];
 
-topBarLoadCallbacks.push(async () => {
+(async () => {
   categoryData = await fetch("https://miko-user-img.s3.amazonaws.com/categories.json").then((res) => res.json());
   renderCategories();
-});
 
-topBarLoadCallbacks.push(() => {
-  if (searchTerm !== null) {
-    document.getElementById("search-bar").value = searchTerm;
-  }
-});
-
-topBarLoadCallbacks.push(async () => {
   let searchFormData = new FormData();
   searchFormData.append("query", searchTerm);
   searchFormData.append("refresh", "none");
@@ -38,11 +30,17 @@ topBarLoadCallbacks.push(async () => {
   resultCount = searchResults.length;
 
   renderSearchResults();
+})();
+
+topBarLoadCallbacks.push(() => {
+  if (searchTerm !== null) {
+    document.getElementById("search-bar").value = searchTerm;
+  }
 });
 
 function nextPage() {
   queryParams.set("page", searchPage === null ? 1 : parseInt(searchPage) + 1);
-  location.href = location.href.substring(0, location.href.indexOf("?")) + "?" + queryParams.toString();
+  refreshWithNewQueryParams(queryParams);
 }
 
 function addFilter(caller, name) {
@@ -56,7 +54,7 @@ function addFilter(caller, name) {
   }
 
   queryParams.set("filter", btoa(JSON.stringify(a)));
-  location.href = location.href.substring(0, location.href.indexOf("?")) + "?" + queryParams.toString();
+  refreshWithNewQueryParams(queryParams);
 }
 
 function renderSearchResults() {
@@ -229,13 +227,19 @@ function renderSearchResults() {
   document.querySelector("#search-results").innerHTML = resultsHTML;
 }
 
+const searchWithCategoryId = (categoryId) => {
+  queryParams.set("cat", categoryId);
+  refreshWithNewQueryParams(queryParams);
+}
+
 function renderCategories() {
   const categoryOptionsDiv = document.querySelector("#category-filter .filter-options");
   for (const category of categoryData.categories) {
     const categoryOptionDiv = document.createElement("div");
     categoryOptionDiv.className = "filter-option";
     categoryOptionDiv.addEventListener("click", () => {
-      location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + category.id;
+      queryParams.set("cat", category.id);
+      refreshWithNewQueryParams(queryParams);
     });
 
     const categoryNameSpan = document.createElement("span");
@@ -256,7 +260,9 @@ function renderCategories() {
       subcategoryDiv.textContent = subcategory.name;
       subcategoryDiv.addEventListener("click", (event) => {
         event.stopPropagation();
-        location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategory.id;
+
+        queryParams.set("cat", subcategory.id);
+        refreshWithNewQueryParams(queryParams);
       });
 
       subcategoriesDiv.append(subcategoryDiv);
@@ -298,7 +304,7 @@ function renderCategories() {
           if (subcategory.name.toLowerCase().includes(searchQuery)) {
             subcategoryMatches.push({
               subcategoryMatch: subcategory,
-              parentCategoryName: category.name,
+              parentCategory: category,
             });
           }
         }
@@ -312,7 +318,7 @@ function renderCategories() {
         noCategorySearchResultsDiv.style.display = "none";
       }
 
-      for (const { subcategoryMatch, parentCategoryName } of subcategoryMatches) {
+      for (const { subcategoryMatch, parentCategory } of subcategoryMatches) {
         // const subcategoryUrl =
         //     `/categories/${parentCategoryName}/${subcategoryMatch.name}`;
         // const parentCategoryUrl =
@@ -321,20 +327,26 @@ function renderCategories() {
         const subcategorySearchResultDiv = document.createElement("div");
         subcategorySearchResultDiv.className = "category-search-result";
         subcategorySearchResultDiv.addEventListener("click", () => {
-          location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategoryMatch.id;
+          searchWithCategoryId(subcategoryMatch.id);
         });
         
         const subcategoryLink = document.createElement("a");
         subcategoryLink.className = "result-name";
-        // subcategoryLink.href = subcategoryUrl;
+        subcategoryLink.addEventListener("click", (event) => {
+          event.stopPropagation();
+          searchWithCategoryId(subcategoryMatch.id);
+        });
         subcategoryLink.textContent = subcategoryMatch.name;
 
         const parentCategorySpan = document.createElement("span");
         parentCategorySpan.className = "result-parent-category";
 
         const parentCategoryLink = document.createElement("a");
-        // parentCategoryLink.href = parentCategoryUrl;
-        parentCategoryLink.textContent = parentCategoryName;
+        parentCategoryLink.addEventListener("click", (event) => {
+          event.stopPropagation();
+          searchWithCategoryId(parentCategory.id);
+        })
+        parentCategoryLink.textContent = parentCategory.name;
         
         parentCategorySpan.append("in ", parentCategoryLink);
 
@@ -353,8 +365,9 @@ function renderCategories() {
 
         const categorySearchResultDiv = document.createElement("div");
         categorySearchResultDiv.className = "category-search-result";
-        categorySearchResultDiv.addEventListener("click", () => {
-          location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + categoryMatch.id;
+        categorySearchResultDiv.addEventListener("click", (event) => {
+          event.stopPropagation();
+          searchWithCategoryId(categoryMatch.id)
         });
 
         const categoryLink = document.createElement("a");
