@@ -82,8 +82,7 @@ const performStepActions = (stepNum) => {
     }
 
     submitFirstPhotoForAnalysis();
-  }
-  if (stepNum === 4) {
+  } else if (stepNum === 4) {
     const listingFieldElementMappings = [
       ["listing-title", "summary-title"],
       ["listing-category", "summary-category"],
@@ -210,7 +209,7 @@ function renderCategories() {
     const subcategoriesDiv = document.createElement("div");
     subcategoriesDiv.className = "subcategories";
 
-    if (category.sub === undefined) category.sub = [];
+    if (typeof category.sub === "undefined") category.sub = [];
 
     for (const subcategory of category.sub) {
       const subcategoryDiv = document.createElement("div");
