@@ -191,7 +191,7 @@ categorySearchInput.addEventListener("input", () => {
         event.stopPropagation();
         onCategorySelected(parentCategory);
       });
-      parentCategoryLink.textContent = parentCategory.Name;
+      parentCategoryLink.textContent = parentCategory.name;
       
       parentCategorySpan.append("in ", parentCategoryLink);
 
@@ -231,6 +231,25 @@ categorySearchInput.addEventListener("input", () => {
     }
   }
 });
+
+const graphStartDate = new Date("2021-07-17T00:00:00")
+// const graphEndDate = 
+const prices = [
+  13.2,
+  14.3,
+  16.9,
+  23.2,
+  21.8,
+  23.3,
+  20.6,
+  19.3,
+  18,
+  20.9,
+  23.4,
+  23.7,
+  24.4,
+  25.5,
+]
 
 const priceGraphCanvas = document.getElementById("price-graph");
 const ctx = priceGraphCanvas.getContext("2d");
