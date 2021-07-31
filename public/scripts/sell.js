@@ -2,14 +2,69 @@ const NUM_STEPS = 4
 let imgUrls = [];
 let fields = [];
 let imgPickersData = { "itemImg": [], 'field-1': [] };
+let selectedCat = -1;
+let selectedCatQns = [];
+let prevFileName = "";
+let prevFileRes = {};
+
+// un-autofill category
+setTimeout(() => { document.querySelector("#listing-category").value = ""; }, 1000);
 
 const filePickers = document.querySelectorAll(".attach-photos input[type=file]");
 for (const filePicker of filePickers) {
   filePicker.addEventListener("change", addPhoto);
 }
 
-function submitFirstPhotoForAnalysis() {
-  // 1. AWS Rekognition if product is in supported categories (Digital Storage, Clothes)
+async function submitFirstPhotoForAnalysis() {
+  let fileToSend = imgPickersData["itemImg"][0];
+  if (fileToSend.name === prevFileName) {
+    return prevFileRes;
+  }
+  prevFileName = fileToSend.name;
+
+  // get image upload key
+  let searchFormData = new FormData();
+  (user !== null) ? searchFormData.append("jwt", localStorage.getItem("session")) : "";
+  let thingy = await (await fetch(`${API_ENDPOINT}/item/get-upload-key`, {
+    method: "post",
+    body: searchFormData,
+  })).json();
+
+  // post image to S3 bucket (temporary, pending-*)
+  let formData = new FormData();
+  formData.append("key", thingy.msg.imgKey);
+  formData.append("acl", "public-read");
+  formData.append("Content-Type", fileToSend.type);
+  for (const field of Object.keys(thingy.msg.presignedPost.fields)) formData.append(field, thingy.msg.presignedPost.fields[field]);
+
+  formData.append("file", fileToSend);
+
+  try {
+    // AWS S3 doesn't send CORS for img upload endpoint, hence try-catch
+    await fetch(thingy.msg.presignedPost.url, {
+      method: "post",
+      mode: "cors",
+      body: formData,
+    });
+  }
+  catch (e) {
+
+  }
+
+  // request to analyse image
+  let analyseForm = new FormData();
+  (user !== null) ? analyseForm.append("jwt", localStorage.getItem("session")) : "";
+  analyseForm.append("key", thingy.msg.imgKey);
+  analyseForm.append("category", selectedCat);
+  let analyseRes = await (await fetch(`${API_ENDPOINT}/item/process-cover`, {
+    method: "post",
+    body: analyseForm,
+  })).json();
+
+  prevFileRes = analyseRes;
+  return prevFileRes;
+  
+  // 1. AWS Rekognition if product is in supported categories (Digital Storage, Clothes, Water Toys)
   //    - reveal auto-populated additional fields with VIGOUR and STYLE.
   // 2. Reverse Image Search API (shh) to check if cover image is a stock image, and suggest the user take their own picture if so
   // That's all, then the seller experience page shld be ready so submit to the endpoint
@@ -74,15 +129,22 @@ for (let i = 0; i < NUM_STEPS; i++) {
   progressMarkersDiv.append(progressMarker);
 }
 
-const performStepActions = (stepNum) => {
+const performStepActions = async (stepNum) => {
   if (stepNum === 2) {
+    if (document.querySelector("#listing-category").value.trim() === "") {
+      alert("Please select a category.");
+      return false;
+    }
     if (imgPickersData["itemImg"].length === 0) {
       alert("Please attach images of your product.");
       return false;
     }
 
-    submitFirstPhotoForAnalysis();
-  } else if (stepNum === 4) {
+    alert(selectedCatQns);
+
+    console.log(await submitFirstPhotoForAnalysis());
+  }
+  else if (stepNum === 4) {
     const listingFieldElementMappings = [
       ["listing-title", "summary-title"],
       ["listing-category", "summary-category"],
@@ -194,6 +256,7 @@ function renderCategories() {
     const categoryOptionDiv = document.createElement("div");
     categoryOptionDiv.className = "filter-option";
     categoryOptionDiv.addEventListener("click", () => {
+      selectedCat = category.id;
       document.querySelector("#listing-category").value = category.name;
       document.querySelector("#listing-category-wrapper").parentElement.classList.remove("filter-dropdown-expanded");
     });
@@ -216,6 +279,8 @@ function renderCategories() {
       subcategoryDiv.textContent = subcategory.name;
       subcategoryDiv.addEventListener("click", (event) => {
         event.stopPropagation();
+        selectedCat = subcategory.id;
+        if (subcategory.questions !== undefined) selectedCatQns = subcategory.questions;
         document.querySelector("#listing-category").value = subcategory.name;
         document.querySelector("#listing-category-wrapper").parentElement.classList.remove("filter-dropdown-expanded");
       });
@@ -229,9 +294,6 @@ function renderCategories() {
 
   const categorySearchResultsDiv = document.getElementById("category-search-results");
   document.getElementById("listing-category").addEventListener("input", (event) => {
-    // use querySelectorAll instead of getElementsByClassName
-    // because getElementsByClassName returns a **live** list of elements which shortens when an element is removed
-    // decreasing the length of the element list during iteration will result in some elements not being removed
     for (const categorySearchResultDiv of document.querySelectorAll(".category-search-result")) {
       categorySearchResultDiv.remove();
     }
@@ -273,60 +335,43 @@ function renderCategories() {
       }
 
       for (const { subcategoryMatch, parentCategoryName } of subcategoryMatches) {
-        // const subcategoryUrl =
-        //     `/categories/${parentCategoryName}/${subcategoryMatch.name}`;
-        // const parentCategoryUrl =
-        //     `/categories/${parentCategoryName}`;
-
         const subcategorySearchResultDiv = document.createElement("div");
         subcategorySearchResultDiv.className = "category-search-result";
         subcategorySearchResultDiv.addEventListener("click", () => {
-          location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + subcategoryMatch.id;
+          selectedCat = subcategoryMatch.id;
+          if (subcategoryMatch.questions !== undefined) selectedCatQns = subcategoryMatch.questions;
+          document.querySelector("#listing-category").value = subcategoryMatch.name;
+          document.querySelector("#listing-category-wrapper").parentElement.classList.remove("filter-dropdown-expanded");
         });
         
         const subcategoryLink = document.createElement("a");
         subcategoryLink.className = "result-name";
-        // subcategoryLink.href = subcategoryUrl;
         subcategoryLink.textContent = subcategoryMatch.name;
 
         const parentCategorySpan = document.createElement("span");
         parentCategorySpan.className = "result-parent-category";
 
         const parentCategoryLink = document.createElement("a");
-        // parentCategoryLink.href = parentCategoryUrl;
         parentCategoryLink.textContent = parentCategoryName;
         
         parentCategorySpan.append("in ", parentCategoryLink);
-
-        // const rightArrowIconDiv = document.createElement("div");
-        // rightArrowIconDiv.className = "material-icons";
-        // const rightArrowIconSpan = document.createElement("span");
-        // rightArrowIconSpan.textContent = "chevron_right";
-        // rightArrowIconDiv.append(rightArrowIconSpan);
 
         subcategorySearchResultDiv.append(subcategoryLink, parentCategorySpan);
         
         categorySearchResultsDiv.append(subcategorySearchResultDiv);
       }
       for (const categoryMatch of categoryMatches) {
-        // const categoryUrl = `/categories/${categoryMatch.name}`;
-
         const categorySearchResultDiv = document.createElement("div");
         categorySearchResultDiv.className = "category-search-result";
         categorySearchResultDiv.addEventListener("click", () => {
-          location.href = location.href.substring(0, location.href.indexOf("&cat") == -1 ? location.href.length : location.href.indexOf("&cat")) + "&cat=" + categoryMatch.id;
+          selectedCat = categoryMatch.id;
+          document.querySelector("#listing-category").value = categoryMatch.name;
+          document.querySelector("#listing-category-wrapper").parentElement.classList.remove("filter-dropdown-expanded");
         });
 
         const categoryLink = document.createElement("a");
         categoryLink.className = "result-name";
-        // categoryLink.href = categoryUrl;
         categoryLink.textContent = categoryMatch.name;
-
-        // const rightArrowIconDiv = document.createElement("div");
-        // rightArrowIconDiv.className = "material-icons";
-        // const rightArrowIconSpan = document.createElement("span");
-        // rightArrowIconSpan.textContent = "chevron_right";
-        // rightArrowIconDiv.append(rightArrowIconSpan);
 
         categorySearchResultDiv.append(categoryLink);
 
