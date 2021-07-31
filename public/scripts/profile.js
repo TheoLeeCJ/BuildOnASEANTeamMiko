@@ -232,26 +232,91 @@ categorySearchInput.addEventListener("input", () => {
   }
 });
 
-const graphStartDate = new Date("2021-07-17T00:00:00")
-// const graphEndDate = 
+const graphStartDate = new Date("2021-07-17T00:00:00");
+const graphEndDate = new Date("2021-07-30T00:00:00");
 const prices = [
-  13.2,
-  14.3,
-  16.9,
-  23.2,
-  21.8,
-  23.3,
-  20.6,
-  19.3,
+  132,
+  143,
+  169,
+  232,
+  218,
+  233,
+  322.3913,
+  193,
   18,
-  20.9,
-  23.4,
-  23.7,
-  24.4,
-  25.5,
-]
+  209,
+  4,
+  237,
+  244,
+  255,
+];
+const numDays = prices.length;
+const maxPrice = Math.max(...prices);
+const minPrice = Math.min(...prices);
 
-const priceGraphCanvas = document.getElementById("price-graph");
-const ctx = priceGraphCanvas.getContext("2d");
-ctx.fillStyle ="#00ff00";
-ctx.fillRect(0, 0, 150, 150);
+const priceGraphSVG = document.getElementById("price-graph");
+
+const verticalAxis = document.getElementById("vertical-axis");
+const horizontalAxis = document.getElementById("horizontal-axis");
+
+const graphX1 = maxPrice.toFixed(2).length * 9;
+verticalAxis.x1.baseVal.value = graphX1;
+verticalAxis.x2.baseVal.value = graphX1;
+horizontalAxis.x1.baseVal.value = graphX1;
+// verticalAxis.x1 = verticalAxis.x2 = `${Math.round(maxPrice).toString().length}em`;
+
+// const graphX1 = verticalAxis.x1.baseVal.value;
+const graphY1 = verticalAxis.y1.baseVal.value;
+const graphX2 = horizontalAxis.x2.baseVal.value;
+const graphY2 = horizontalAxis.y2.baseVal.value;
+
+const NUM_VERTICAL_MARKINGS = 6;
+const markingPriceInterval = (maxPrice - minPrice) / (NUM_VERTICAL_MARKINGS - 1);
+
+const SVG_NAMESPACE_URI = "http://www.w3.org/2000/svg";
+
+const topMarkingYCoord = graphY1 + 20;
+const bottomMarkingYCoord = graphY2;
+
+for (let i = 0; i < NUM_VERTICAL_MARKINGS; i++) {
+  // marking line
+  const markingLine = document.createElementNS(SVG_NAMESPACE_URI, "line");
+  markingLine.classList.add("price-marking-line");
+
+  markingLine.setAttribute("x1", graphX1);
+  markingLine.setAttribute("x2", "100%");
+
+  const markingLineYCoord = topMarkingYCoord +
+      (bottomMarkingYCoord - topMarkingYCoord) * i / (NUM_VERTICAL_MARKINGS - 1);
+  markingLine.setAttribute("y1", markingLineYCoord);
+  markingLine.setAttribute("y2", markingLineYCoord);
+
+  // marking price text box
+  const markingText = document.createElementNS(SVG_NAMESPACE_URI, "text");
+  markingText.classList.add("price-marking-text");
+
+  markingText.setAttribute("x", graphX1 - 10);
+  markingText.setAttribute("y", markingLineYCoord + 4);
+
+  markingText.textContent = (maxPrice - markingPriceInterval * i).toFixed(2);
+
+  priceGraphSVG.append(markingLine, markingText);
+}
+
+// const ctx = priceGraphCanvas.getContext("2d");
+
+// priceGraphCanvas.width = 3840;
+// priceGraphCanvas.height = 2160;
+
+// vertical axis label
+// ctx.font = "100px Segoe UI";
+// ctx.fillText("Price (S$)", 0, 100);
+
+// // vertical axis
+// ctx.beginPath();
+// ctx.moveTo(0, 0);
+// ctx.lineTo(0, 400);
+// ctx.stroke();
+
+// ctx.fillStyle ="#00ff00";
+// ctx.fillRect(0, 0, 300, 400);

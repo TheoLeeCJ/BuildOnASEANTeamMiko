@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/styles/global.css">
   <link rel="stylesheet" href="/styles/top-bar.css">
   <link rel="stylesheet" href="/styles/profile.css">
+  <link rel="stylesheet" href="/styles/profile-analytics-price-graph.css">
 
   <title>Your Profile | Carousell</title>
 </head>
@@ -297,16 +298,19 @@
           <div id="category-options"></div>
         </div>
         <div id="price-graph-wrapper" class="card">
-          <canvas id="price-graph">
-            
-          </canvas>
+          <svg id="price-graph">
+            <text x="0" y="12" id="vertical-axis-label">Price (S$)</text>
+            <line y1="28" y2="calc(100% - 2em)" id="vertical-axis"></line>
+            <line y1="calc(100% - 2em)" x2="100%" y2="calc(100% - 2em)" id="horizontal-axis"></line>
+
+          </svg>
         </div>
       </div>
     </div>
   </main>
 
   <script src="/scripts/global.js"></script>
-  <script src="/scripts/profile.js"></script>
+  <script src="/scripts/profile.js" defer></script>
   <script src="/scripts/utils.js"></script>
 </body>
 </html>
