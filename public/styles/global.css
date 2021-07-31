@@ -46,6 +46,11 @@ main > h1:first-child {
   margin-top: 0;
 }
 
+
+h2 {
+  font-weight: 500;
+}
+
 button {
   font-family: inherit;
   cursor: pointer;
@@ -95,20 +100,25 @@ button {
 }
 @media screen and (max-width: 1600px) {
   .full-width-listings-container {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 @media screen and (max-width: 1200px) {
   .full-width-listings-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 @media screen and (max-width: 900px) {
   .full-width-listings-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (max-width: 600px) {
+  .full-width-listings-container {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 400px) {
   .full-width-listings-container {
     grid-template-columns: 1fr;
   }

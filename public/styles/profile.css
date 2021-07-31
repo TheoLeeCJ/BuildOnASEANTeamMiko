@@ -2,6 +2,10 @@ main {
   padding-top: 0;
 }
 
+h2:first-child {
+  margin-top: 0;
+}
+
 #profile-top-section {
   border-radius: 0 0 10px 10px;
 }
@@ -29,7 +33,7 @@ main {
 
 #profile-menu-bar-actions {
   display: flex;
-  padding-left: calc(20% + 2px);
+  padding-left: calc(20% + 7px);
   /* gap: 30px; */
 }
 /* #profile-menu-bar-actions::before {
@@ -100,9 +104,9 @@ main {
 }
 
 #user-info {
-  flex-basis: 20%;
+  max-width: 20%;
   flex-shrink: 0;
-  margin-right: 30px;
+  margin-right: 35px;
 }
 
 #username {
@@ -237,7 +241,6 @@ main {
 
 #green-points > h2 {
   margin: 32px 0 25px;
-  font-weight: 500;
 }
 
 #green-points-redemption-history {
@@ -297,4 +300,178 @@ main {
   margin-left: 6px;
   height: 18px;
   transform: translateY(1px);
+}
+
+#category-search {
+  position: relative;
+  margin: 20px 0;
+  padding: 0;
+  border-radius: 7px;
+  transition: border-radius 0.2s;
+  /* overflow: hidden; */
+}
+#category-search.search-active {
+  border-radius: 7px 7px 0 0;
+}
+
+#category-search-input-wrapper {
+  position: relative;
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  padding: 9px 12px 10px;
+  border-radius: 7px;
+  background-color: #e6e6e6;
+  box-shadow: 0 0 5px 0 #aaa;
+  z-index: 2;
+  transition: border-radius 0.2s;
+}
+#category-search.search-active > #category-search-input-wrapper {
+  border-radius: 7px 7px 0 0;
+}
+
+#category-search-input-wrapper > .material-icons {
+  margin-right: 4px;
+  font-size: 22px;
+  transform: translateY(1px);
+}
+
+#category-search-input-wrapper > input[type="text"] {
+  flex-grow: 1;
+  background-color: #00000000;
+  border: none;
+  /* border-radius: 5px 5px 0 0; */
+  outline: none;
+  font-family: inherit;
+  font-size: 16px;
+  z-index: 2;
+}
+
+#category-search-results {
+  position: absolute;
+  display: none;
+  width: 100%;
+  background-color: #fff;
+  /* grid-column: 1 / -1; */
+  box-shadow: 0 0 5px 0 #aaa;
+  border-radius: 0 0 7px 7px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#category-search.search-active > #category-search-results {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.category-search-result {
+  position: relative;
+  padding: 11px 13px 12px;
+  cursor: pointer;
+}
+.category-search-result:hover {
+  background-color: #d6d6d6;
+}
+
+.result-name {
+  display: block;
+  margin-bottom: 1px;
+  color: #000;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.result-parent-category {
+  color: #444;
+  font-size: 14px;
+}
+
+.result-name:hover, .result-parent-category > a:hover {
+  text-decoration: underline;
+}
+
+#no-category-search-results {
+  display: none;
+  padding: 11px 13px 12px;
+}
+
+#category-options {
+  position: absolute;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(6, 1fr);
+  background-color: #fff;
+  border-radius: 0 0 7px 7px;
+  box-shadow: 0 0 5px 0 #aaa;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#category-search.search-active > #category-options {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.category-option {
+  position: relative;
+  display: flex;
+  /* margin-top: -1px; */
+  padding: 11px 13px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.category-option:hover {
+  background-color: #d6d6d6;
+}
+
+.category-option > .material-icons {
+  margin-left: 3px;
+  margin-right: -6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.category-option:hover > .material-icons {
+  opacity: 1;
+}
+
+.subcategories {
+  position: absolute;
+  display: none;
+  top: 1px;
+  left: 100%;
+  width: fit-content;
+  /* margin-top: -10px;
+  margin-left: calc(25% - 13px); */
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 0 5px 0 #aaa;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.category-option:hover > .subcategories {
+  display: block;
+}
+
+.subcategories > div {
+  margin-top: 1px;
+  padding: 11px 13px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.subcategories > div:hover {
+  background-color: #d6d6d6;
+}
+
+#price-graph-wrapper {
+  width: 100%;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+#price-graph {
+  display: block;
 }
