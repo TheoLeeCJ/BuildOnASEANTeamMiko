@@ -250,12 +250,14 @@ const prices = [
   244,
   255,
 ];
+if (prices.length !== ((graphEndDate - graphStartDate) / 1000 / 60 / 60 / 24) + 1) {
+  throw Error("Number of prices does not match difference between start and end date");
+}
 const numDays = prices.length;
 const maxPrice = Math.max(...prices);
 const minPrice = Math.min(...prices);
 
 const priceGraphSVG = document.getElementById("price-graph");
-
 const verticalAxis = document.getElementById("vertical-axis");
 const horizontalAxis = document.getElementById("horizontal-axis");
 
@@ -271,36 +273,68 @@ const graphX2 = horizontalAxis.x2.baseVal.value;
 const graphY2 = horizontalAxis.y2.baseVal.value;
 
 const NUM_VERTICAL_MARKINGS = 6;
-const markingPriceInterval = (maxPrice - minPrice) / (NUM_VERTICAL_MARKINGS - 1);
+const priceMarkingInterval = (maxPrice - minPrice) / (NUM_VERTICAL_MARKINGS - 1);
 
 const SVG_NAMESPACE_URI = "http://www.w3.org/2000/svg";
 
-const topMarkingYCoord = graphY1 + 20;
-const bottomMarkingYCoord = graphY2;
+const topPriceMarkingYCoord = graphY1 + 20;
+const bottomPriceMarkingYCoord = graphY2;
 
 for (let i = 0; i < NUM_VERTICAL_MARKINGS; i++) {
-  // marking line
-  const markingLine = document.createElementNS(SVG_NAMESPACE_URI, "line");
-  markingLine.classList.add("price-marking-line");
+  const priceMarkingLine = document.createElementNS(SVG_NAMESPACE_URI, "line");
+  priceMarkingLine.classList.add("price-marking-line");
 
-  markingLine.setAttribute("x1", graphX1);
-  markingLine.setAttribute("x2", "100%");
+  priceMarkingLine.setAttribute("x1", graphX1);
+  priceMarkingLine.setAttribute("x2", "100%");
 
-  const markingLineYCoord = topMarkingYCoord +
-      (bottomMarkingYCoord - topMarkingYCoord) * i / (NUM_VERTICAL_MARKINGS - 1);
-  markingLine.setAttribute("y1", markingLineYCoord);
-  markingLine.setAttribute("y2", markingLineYCoord);
+  const priceMarkingYCoord = topPriceMarkingYCoord +
+      (bottomPriceMarkingYCoord - topPriceMarkingYCoord) *
+      i / (NUM_VERTICAL_MARKINGS - 1);
+  priceMarkingLine.setAttribute("y1", priceMarkingYCoord);
+  priceMarkingLine.setAttribute("y2", priceMarkingYCoord);
 
-  // marking price text box
-  const markingText = document.createElementNS(SVG_NAMESPACE_URI, "text");
-  markingText.classList.add("price-marking-text");
+  const priceMarkingText = document.createElementNS(SVG_NAMESPACE_URI, "text");
+  priceMarkingText.classList.add("price-marking-text");
 
-  markingText.setAttribute("x", graphX1 - 10);
-  markingText.setAttribute("y", markingLineYCoord + 4);
+  priceMarkingText.setAttribute("x", graphX1 - 10);
+  priceMarkingText.setAttribute("y", priceMarkingYCoord + 4);
 
-  markingText.textContent = (maxPrice - markingPriceInterval * i).toFixed(2);
+  priceMarkingText.textContent = (maxPrice - priceMarkingInterval * i).toFixed(2);
 
-  priceGraphSVG.append(markingLine, markingText);
+  priceGraphSVG.append(priceMarkingLine, priceMarkingText);
+}
+
+const leftDateMarkingXCoord = graphX1 + 20;
+const rightDateMarkingXCoord = graphX2 - 50;
+
+const maxDatesShown = 7;
+for (let i = numDays; i > 0; i--) {
+  if ((numDays - i) % Math.ceil(numDays / maxDatesShown) !== 0) continue;
+
+  const dateMarkingLine = document.createElementNS(SVG_NAMESPACE_URI, "line");
+  dateMarkingLine.classList.add("date-marking-line");
+
+  dateMarkingLine.setAttribute("y1", graphY2);
+  dateMarkingLine.setAttribute("y2", graphY2 + 10);
+
+  const dateMarkingXCoord = leftDateMarkingXCoord +
+      (rightDateMarkingXCoord - leftDateMarkingXCoord) *
+      (i - 1) / (numDays - 1);
+  dateMarkingLine.setAttribute("x1", dateMarkingXCoord);
+  dateMarkingLine.setAttribute("x2", dateMarkingXCoord);
+
+  const dateMarkingText = document.createElementNS(SVG_NAMESPACE_URI, "text");
+  dateMarkingText.classList.add("date-marking-text");
+
+  dateMarkingText.setAttribute("x", dateMarkingXCoord);
+  dateMarkingText.setAttribute("y", graphY2 + 25);
+
+  const dateMarkingDate = new Date(graphStartDate);
+  dateMarkingDate.setDate(dateMarkingDate.getDate() + i - 1);
+  dateMarkingText.textContent = new Intl.DateTimeFormat("en-GB")
+      .format(dateMarkingDate);
+
+  priceGraphSVG.append(dateMarkingLine, dateMarkingText);
 }
 
 // const ctx = priceGraphCanvas.getContext("2d");
