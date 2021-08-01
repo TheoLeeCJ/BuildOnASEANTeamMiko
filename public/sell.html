@@ -51,6 +51,14 @@
             </div>
           </div>
         </div>
+
+        <h2>Suggest a meetup location</h2>
+        <form onsubmit="event.preventDefault(); locationSearch();">
+          <input type="text" list="meetup-list" id="listing-location" onkeypress="locationSearchPrompt();" onchange="truncateLocation();" />
+          <datalist id="meetup-list">
+            <option value="Press enter to see locations ''">
+          </datalist>
+        </form>
   
         <h2>Attach photos</h2>
         <div class="attach-photos">
@@ -59,10 +67,24 @@
           <div class="photos" id="picker-itemImg"></div>
         </div>
       </div>
-
       
       <div id="sell-procedure-step-2" class="sell-procedure-step">
         <h1>About the item</h1>
+
+        <div class="card" id="recommendations">
+          <div id="recommendations-loading">
+            <img src="/media/loader.gif" height="50" />
+            <div>Generating recommendations to help your product sell better...</div>
+          </div>
+          <div id="recommendations-content">
+            <i class="material-icons-outlined">info</i>
+            <div>
+              <b>Recommendations</b>
+              <div>After intelligently analysing your images, we have the following recommendations to help your product sell better:</div>
+            </div>
+            <ol id="recommendations-content-rec"></ol>
+          </div>
+        </div>
 
         <h2>Description</h2>
         <textarea id="listing-description" placeholder="Describe what you are selling and include any details that buyers may be interested in. People love items with stories!"></textarea>
@@ -124,6 +146,9 @@
             <h3 id="summary-category">Category</h3>
             <div>Laptops in Computers & Tech</div>
 
+            <h3 id="summary-location">Suggested location</h3>
+            <div></div>
+
             <h3 id="summary-price">Price</h3>
             <div></div>
 
@@ -147,6 +172,13 @@
       </div>
     </div>
   </main>
+
+  <div id="full-loader">
+    <div>
+      <div class="cssloader"></div>
+    </div>
+    <div id="loader-text">Submitting your listing...</div>
+  </div>
 
   <script src="/scripts/global.js"></script>
   <script src="/scripts/sell.js"></script>

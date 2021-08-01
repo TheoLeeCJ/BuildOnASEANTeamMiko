@@ -174,12 +174,12 @@ exports.handler = async (event, context, lambdaCallback) => {
             if (customFilters.length > 0) {
               let filtersSatisfied = 0;
               for (let i2 = 0; i2 < customFilters.length; i2++) {
-                if (indexData[i]["cond"][customFilters[i2]] == "Yes") filtersSatisfied++;
+                if (indexData[rawResultSet[i]]["cond"][customFilters[i2]] == "Yes") filtersSatisfied++;
               }
-              if (filtersSatisfied == customFilters.length) resultSet.push(indexData[i]);
+              if (filtersSatisfied == customFilters.length) resultSet.push(indexData[rawResultSet[i]]);
             }
             else {
-              resultSet.push(indexData[i]);
+              resultSet.push(indexData[rawResultSet[i]]);
             }
           }
         }
