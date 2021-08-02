@@ -27,11 +27,11 @@
         <div id="profile-menu-bar-actions">
           <div class="profile-tab-switcher"><span>Listings</span></div>
           <!-- <div class="profile-tab-switcher"><span>Reviews</span></div> -->
-          <div class="profile-tab-switcher"><span>Coins</span></div>
+          <div class="profile-tab-switcher profile-tab-switcher-selected"><span>Coins</span></div>
           <!-- <div class="profile-tab-switcher"><span>Balance</span></div> -->
           <!-- <div class="profile-tab-switcher"><span>CarouBiz</span></div> -->
           <div id="green-points-profile-tab-switcher" class="profile-tab-switcher"><span>Green Points</span></div>
-          <div class="profile-tab-switcher profile-tab-switcher-selected"><span>Analytics</span></div>
+          <div id="analytics-profile-tab-switcher" class="profile-tab-switcher"><span>Analytics</span></div>
           <!-- <button id="edit-profile" class="primary-button"><span>Edit profile</span></button> -->
         </div>
       </div>
@@ -231,8 +231,66 @@
         </div>
       </div>
 
-      <div id="coins" class="profile-tab-content">
-        TODO: implement user coins UI
+      <div id="coins" class="profile-tab-content profile-tab-content-selected">
+        <h2>Carousell Coins</h2>
+        <div id="coins-summary" class="card">
+          <img src="/media/carousell-coin.svg" alt="Carousell Coins logo">
+          <div id="coins-summary-test">
+            <div id="coins-count">32768</div>
+            <div>Coins</div>
+          </div>
+          <button id="get-coins" class="platform-currency-action primary-button">
+            <span class="material-icons-outlined">add</span>
+            Get Coins
+          </button>
+          <button id="win-boosts" class="platform-currency-action primary-button">
+            <span class="material-icons-outlined">casino</span>
+            Win Boosts
+          </button>
+          <button id="redeem-boosts" class="platform-currency-action primary-button">
+            <span class="material-icons-outlined">redeem</span>
+            Redeem Boosts
+          </button>
+        </div>
+
+        <h2>Coin transaction history</h2>
+        <table class="platform-currency-transaction-history-table card">
+          <tbody>
+            <th>Boosts received</th>
+            <th>Date</th>
+            <th>Coins used</th>
+            <tr>
+              <td>512</td>
+              <td>22 Jul 2021</td>
+              <td>
+                <span>
+                  800
+                  <img src="/media/carousell-coin.svg" alt="Green points logo">
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>4096</td>
+              <td>22 Jul 2021</td>
+              <td>
+                <span>
+                  800
+                  <img src="/media/carousell-coin.svg" alt="Green points logo">
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>16777216</td>
+              <td>22 Jul 2021</td>
+              <td>
+                <span>
+                  3276800
+                  <img src="/media/carousell-coin.svg" alt="Green points logo">
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div id="green-points" class="profile-tab-content">
@@ -242,49 +300,53 @@
             <div id="green-points-count">65536</div>
             <div>Green Points</div>
           </div>
-          <button id="redeem-rewards" class="primary-button">
+          <button id="green-points-redeem-rewards" class="platform-currency-action primary-button">
             <span class="material-icons-outlined">redeem</span>
             Redeem rewards
           </button>
         </div>
         
         <h2>Redemption history</h2>
-        <div id="green-points-redemption-history" class="card">
-          <table>
-            <tbody>
-              <th>Item</th>
-              <th>Date</th>
-              <th>Points used</th>
-              <tr>
-                <td>Alienware m15 R5</td>
-                <td>22 Jul 2021</td>
-                <td>
+        <table class="platform-currency-transaction-history-table card">
+          <tbody>
+            <th>Item</th>
+            <th>Date</th>
+            <th>Points used</th>
+            <tr>
+              <td>Alienware m15 R5</td>
+              <td>22 Jul 2021</td>
+              <td>
+                <span>
                   100
                   <img src="/media/green-points.svg" alt="Green points logo">
-                </td>
-              </tr>
-              <tr>
-                <td>Alienware m15 R5</td>
-                <td>22 Jul 2021</td>
-                <td>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5</td>
+              <td>22 Jul 2021</td>
+              <td>
+                <span>
                   100
                   <img src="/media/green-points.svg" alt="Green points logo">
-                </td>
-              </tr>
-              <tr>
-                <td>Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 </td>
-                <td>22 Jul 2021</td>
-                <td>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5 Alienware m15 R5</td>
+              <td>22 Jul 2021</td>
+              <td>
+                <span>
                   100
                   <img src="/media/green-points.svg" alt="Green points logo">
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div id="analytics" class="profile-tab-content profile-tab-content-selected">
+      <div id="analytics" class="profile-tab-content">
         <h2>Average prices per category</h2>
         <span>Graph shows 7-day rolling average of category prices.</span>
         <div id="category-search">
@@ -302,7 +364,6 @@
             <text x="0" y="12" id="vertical-axis-label">Price (S$)</text>
             <line y1="28" y2="calc(100% - 2em)" id="vertical-axis"></line>
             <line y1="calc(100% - 2em)" x2="100%" y2="calc(100% - 2em)" id="horizontal-axis"></line>
-
           </svg>
         </div>
       </div>
