@@ -1,0 +1,164 @@
+main {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: calc(100vh - 110px);
+  display: flex;
+}
+
+main > #left-pane {
+  flex: 1;
+  background-color: #f6f6f6;
+  overflow-y: scroll;
+}
+
+.chat-summary {
+  padding: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-summary:hover {
+  background-color: lightgrey;
+}
+
+.chat-summary:not(:last-of-type) {
+  border-bottom: 1px solid grey;
+}
+
+.chat-summary > h3, .chat-summary > h4, .chat-summary > h5 {
+  margin: 0;
+}
+
+.chat-summary > div {
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.chat-summary > h5 {
+  color: grey;
+}
+
+main > #content {
+  flex: 2;
+}
+
+#content-inside {
+  height: 100%;
+  background-color: #fafafa;
+}
+
+#chat-header {
+  padding: 15px;
+  background: #e1e1e1;
+}
+
+#chat-header > * {
+  margin: 0;
+}
+
+#chat {
+  height: calc(100% - 140px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-flow: column-reverse;
+}
+
+#chat .left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#chat .right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.left > .bubble {
+  padding-left: 55px;
+}
+
+.bubble {
+  background-color: #f6f6f6;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 100px;
+  position: relative;
+  box-shadow: 0 0 5px -1px #aaa; /* offset-x | offset-y | blur-radius | spread-radius | color */
+}
+
+.bubble > .profile {
+  position: absolute;
+  background-color: red;
+  color: white;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 2rem;
+  border-radius: 25px;
+  top: -5px;
+  left: -5px;
+}
+
+.bubble > .profile > span {
+  position: relative;
+  top: 3px;
+  left: 1px;
+}
+
+#msg-input {
+  background-color: #e1e1e1;
+  padding: 10px;
+}
+
+#msg-input > input {
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 10px;
+  border: 0;
+  background: #f6f6f6;
+  margin-right: 10px;
+  font-family: inherit;
+  width: calc(100% - 95px);
+  outline: 0;
+}
+
+#msg-input > input:focus {
+  animation: input-pop .5s;
+}
+
+@keyframes input-pop {
+  0% {
+    background: #f6f6f6;
+    border: 0;
+    padding: 10px;
+  }
+
+  50% {
+    background-color: var(--theme-red-transparent);
+    border: 2px solid black;
+    padding: 8px;
+  }
+
+  100% {
+    background: #f6f6f6;
+    border: 0;
+    padding: 10px;
+  }
+}
+
+#msg-input > button {
+  font-size: 1rem;
+  padding: 10px;
+  background: red;
+  color: white;
+  font-family: inherit;
+  font-weight: bold;
+  border: 0;
+  border-radius: 10px;
+}
