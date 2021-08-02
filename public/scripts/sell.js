@@ -9,6 +9,8 @@ let prevFileRes = {};
 let autofieldsData = [];
 let savedFileKey = "";
 
+let categoryData = {};
+
 // un-autofill category
 setTimeout(() => { document.querySelector("#listing-category").value = ""; }, 1000);
 
@@ -268,13 +270,17 @@ const performStepActions = (stepNum) => {
         document.querySelector("#recommendations-content-rec").innerHTML +=
 `<li><b>Use your own image of the product</b> - you may be using an image of the product from the Internet, which may misrepresent its condition. Using your own picture will help it sell better as buyers know what to expect.</li>`;
       }
-      else if (results.fields.length === 0) {
+      else if (results.fields === undefined) {
         document.querySelector("#recommendations-content-rec").innerHTML += `<li><b>no recommendations.</b> nice!</li>`;
+      }
+      
+      if (results.fields === undefined) {
+        results.fields = [];
       }
 
       for (let i = 0; i < results.fields.length; i++) {
         let field = results.fields[i];
-        autofields += SaferHTML`<div><b>${field[0]}: </b><span>${field[1]}</span> <a href='javascript:addField(${i});' onclick='this.parentElement.parentElement.removeChild(this.parentElement);'>add</a>`;
+        autofields += SaferHTML`<div><b>${field[0]}: </b><span>${field[1]}</span> <a href='javascript:addField(${i});' onclick='this.innerText = "added!";'>add</a>`;
       }
 
       autofieldsData = results.fields;
@@ -373,7 +379,7 @@ const showStep = (stepNum) => {
   }
 };
 
-topBarLoadCallbacks.push(async () => {
+async function loadCategories() {
   categoryData = await fetch("https://miko-user-img.s3.amazonaws.com/categories.json").then((res) => res.json());
 
   const filterButton = document.querySelector("#listing-category-wrapper");
@@ -393,7 +399,7 @@ topBarLoadCallbacks.push(async () => {
   });
 
   renderCategories();
-});
+}
 
 function renderCategories() {
   const categoryOptionsDiv = document.querySelector("#category-filter .filter-options");
@@ -525,6 +531,8 @@ function renderCategories() {
     }
   });
 }
+
+loadCategories();
 
 const priceInput = document.querySelector("#price-input-wrapper > input[type='text']");
 

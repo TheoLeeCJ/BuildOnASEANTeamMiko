@@ -50,7 +50,7 @@
         {
           "id": 9,
           "name": "Shirts",
-          "filters": ["Minor Tears?"]
+          "filters": ["Machine-Washable?", "Minor Tears?"]
         }
       ]
     },

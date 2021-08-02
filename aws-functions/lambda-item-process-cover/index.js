@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const https = require("https");
 
 const fields = ["jwt", "category", "key"];
-const rekognitionCategories = [1, 8, 5]; // Digital Storage, Leggings, Measurements on inflatables
+const rekognitionCategories = [1, 8, 5, 9]; // Digital Storage, Leggings, Measurements on inflatables
 
 const SECRET = "dc7bd8c0-06d6-40b0-8bcf-e09d1b4c9f76";
 
@@ -88,16 +88,22 @@ exports.handler = async (event, context, lambdaCallback) => {
           for (let text of texts) {
             if (text.includes("toshiba")) manufacturer = "toshiba";
             if (text.includes("western")) manufacturer = "western digital";
+            if (text.includes("wd")) manufacturer = "western digital";
 
             if (text.includes("hd") && text.length > 4 && manufacturer == "toshiba" && !hasModel) {
               recommendations.fields.push(["Model No.", text]);
               hasModel = true;
             }
-            if (text.includes("wd") && text.length > 4 && manufacturer == "western digital" && !hasModel) {
-              recommendations.fields.push(["Model No.", text]);
-              hasModel = true;
+            if (text.includes("wd") && text.length > 4 && !text.includes("western") && !text.includes("wdc") && manufacturer == "western digital" && !hasModel) {
+              let split = text.split(" ");
+              for (let inner of split) {
+                if (inner.includes("wd") && inner.length > 5) {
+                  recommendations.fields.push(["Model No.", inner]);
+                  hasModel = true;
+                }
+              }
             }
-            if (text.includes("st") && text.length > 5 && !hasModel) {
+            if (text.includes("st") && text.length > 5 && !hasModel && !text.includes("western")) {
               let split = text.split(" ");
               for (let inner of split) {
                 if (inner.includes("st") && inner.length > 5) {
@@ -128,12 +134,12 @@ exports.handler = async (event, context, lambdaCallback) => {
             }
           }
           break;
-        case 8:
+        case 9: case 8:
           for (let text of texts) {
-            if (text.includes("machine") && text.includes("not")) {
+            if (text.includes("hand") && text.includes("wash")) {
               recommendations.fields.push(["Machine-Washable?", "No"]);
             }
-            if (text.includes("washable")) {
+            if (text.includes("achine") && text.includes("wash")) {
               recommendations.fields.push(["Machine-Washable?", "Yes"]);
             }
           }
