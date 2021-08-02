@@ -194,7 +194,7 @@ h2:first-child {
   display: grid;
 }
 
-#green-points-summary {
+#coins-summary, #green-points-summary {
   display: flex;
   align-items: center;
   width: fit-content;
@@ -202,104 +202,119 @@ h2:first-child {
   border-radius: 10px;
 }
 
-#green-points-summary > img {
+#coins-summary > img, #green-points-summary > img {
   width: 60px;
   margin-right: 18px;
 }
 
-#green-points-summary-text {
+#coins-summary-text, #green-points-summary-text {
   transform: translateY(-2px);
 }
 
-#green-points-count {
+#coins-count, #green-points-count {
   font-size: 30px;
   font-weight: 500;
 }
 
-#redeem-rewards {
+.platform-currency-action {
   display: flex;
   align-items: center;
-  margin-left: 38px;
+  margin-left: 18px;
   padding: 6px 12px 6px 11px;
   height: fit-content;
-  background-color: var(--theme-green);
-  border-color: var(--theme-green);
   border-radius: 5px;
   font-family: inherit;
   font-size: 16px;
 }
-#redeem-rewards:hover {
+.platform-currency-action:first-of-type {
+  margin-left: 38px;
+}
+#get-coins {
+  padding-left: 9px;
+}
+#green-points-redeem-rewards {
+  background-color: var(--theme-green);
+  border-color: var(--theme-green);
+}
+#green-points-redeem-rewards:hover {
   background-color: #009c27;
 }
-#redeem-rewards:active {
+#green-points-redeem-rewards:active {
   background-color: #008521;
 }
 
-#redeem-rewards > .material-icons-outlined {
+.platform-currency-action > .material-icons-outlined {
   margin-right: 7px;
 }
 
-#green-points > h2 {
+#coins > h2, #green-points > h2 {
   margin: 32px 0 25px;
 }
-
-#green-points-redemption-history {
-  /* padding: 15px; */
-  border-radius: 10px;
+#coins > h2:first-child, #green-points > h2:first-child {
+  margin-top: initial;
 }
 
-#green-points-redemption-history > table {
-  width: 100%;
+/* .platform-currency-transaction-history {
+  border-radius: 10px;
+} */
+
+.platform-currency-transaction-history-table {
+  /* width: 100%; */
+  border-radius: 10px;
   border-collapse: collapse;
   overflow: hidden;
 }
 
-#green-points-redemption-history > table th {
+.platform-currency-transaction-history-table th {
   padding: 8px 13px 10px;
   background-color: #ddd;
   font-weight: 500;
   text-align: left;
 }
 
-#green-points-redemption-history > table tr {
+.platform-currency-transaction-history-table tr {
   position: relative;
 }
 
-#green-points-redemption-history > table td {
+.platform-currency-transaction-history-table td {
   padding: 10px 13px 12px;
 }
-#green-points-redemption-history > table td:first-child {
+.platform-currency-transaction-history-table td:first-child {
   width: 60%;
 }
 
-#green-points-redemption-history > table th,
-#green-points-redemption-history > table td {
+.platform-currency-transaction-history-table th,
+.platform-currency-transaction-history-table td {
   background-clip: padding-box;
 }
 
-#green-points-redemption-history > table th,
-#green-points-redemption-history > table tr:not(:last-child) > td {
+.platform-currency-transaction-history-table th,
+.platform-currency-transaction-history-table tr:not(:last-child) > td {
   border-bottom: 1px solid #000;
 }
 
-#green-points-redemption-history > table th:not(:last-child),
-#green-points-redemption-history > table td:not(:last-child) {
+.platform-currency-transaction-history-table th:not(:last-child),
+.platform-currency-transaction-history-table td:not(:last-child) {
   border-right: 1px solid #000;
 }
 
-#green-points-redemption-history > table td:nth-child(3) {
-  position: absolute;
+.platform-currency-transaction-history-table td:nth-child(3) {
+  /* position: absolute;
   display: flex;
   align-items: center;
   top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
+  transform: translateY(-50%); */
+  /* width: 100%; */
 }
 
-#green-points-redemption-history > table td:nth-child(3) > img {
+.platform-currency-transaction-history-table td:nth-child(3) > span {
+  display: flex;
+  align-items: center;
+}
+
+.platform-currency-transaction-history-table td:nth-child(3) > span > img {
   margin-left: 6px;
   height: 18px;
-  transform: translateY(1px);
 }
 
 #category-search {
