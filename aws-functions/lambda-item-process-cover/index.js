@@ -32,8 +32,8 @@ function checkOnlineImg(a, b, callback = (c) => {}) {
       const outHtml = Buffer.concat(data).toString();
       // console.log(`<!-- is online image: ${outHtml.includes("Find other sizes of this image:")} -->`);
       // console.log(outHtml);
-      // callback(outHtml);
-      callback(outHtml.includes("Find other sizes of this image:"));
+      callback(outHtml);
+      // callback(outHtml.includes("Find other sizes of this image:"));
     });
   }).on("error", err => {
     console.log("Error: ", err.message);
@@ -66,7 +66,7 @@ exports.handler = async (event, context, lambdaCallback) => {
     let recommendations = {};
     let jwtData = jwt.verify(formFields["jwt"], SECRET, { "algorithms": ["HS256"] }); // important - verify token with HS256; throws error is tampered with
 
-    if (rekognitionCategories.includes(formFields["category"])) {
+    if (rekognitionCategories.includes(parseInt(formFields["category"]))) {
       let texts = await rekognition.detectText({
         Image: {
           S3Object: {
@@ -76,7 +76,71 @@ exports.handler = async (event, context, lambdaCallback) => {
         },
       }).promise();
       
-      recommendations.texts = texts["TextDetections"].map((el) => { return el["DetectedText"]; });
+      texts = texts["TextDetections"].map((el) => { return el["DetectedText"].toLowerCase(); });
+      recommendations.fields = [];
+
+      switch (parseInt(formFields["category"])) {
+        case 1:
+          let manufacturer = "";
+          let hasModel = false;
+          let addedRpm = false;
+
+          for (let text of texts) {
+            if (text.includes("toshiba")) manufacturer = "toshiba";
+            if (text.includes("western")) manufacturer = "western digital";
+
+            if (text.includes("hd") && text.length > 4 && manufacturer == "toshiba" && !hasModel) {
+              recommendations.fields.push(["Model No.", text]);
+              hasModel = true;
+            }
+            if (text.includes("wd") && text.length > 4 && manufacturer == "western digital" && !hasModel) {
+              recommendations.fields.push(["Model No.", text]);
+              hasModel = true;
+            }
+            if (text.includes("st") && text.length > 5 && !hasModel) {
+              let split = text.split(" ");
+              for (let inner of split) {
+                if (inner.includes("st") && inner.length > 5) {
+                  recommendations.fields.push(["Model No.", inner]);
+                }
+              }
+              hasModel = true;
+            }
+
+            if (text.includes("rpm") && !addedRpm) {
+              recommendations.fields.push(["RPM", text]);
+              addedRpm = true;
+            }
+          }
+
+          if (manufacturer !== "") {
+            recommendations.fields.push(["Manufacturer", manufacturer]);
+          }
+          break;
+        case 5:
+          for (let text of texts) {
+            if (text.includes("x") && text.includes(".") && text.includes("m")) {
+              recommendations.fields.push(["Dimensions", text]);
+            }
+            if (text.includes("kg")) {
+              recommendations.fields.push(["Inflatable?", "Yes"]);
+              recommendations.fields.push(["Weight Limit", text]);
+            }
+          }
+          break;
+        case 8:
+          for (let text of texts) {
+            if (text.includes("machine") && text.includes("not")) {
+              recommendations.fields.push(["Machine-Washable?", "No"]);
+            }
+            if (text.includes("washable")) {
+              recommendations.fields.push(["Machine-Washable?", "Yes"]);
+            }
+          }
+          break;
+        default:
+          break;
+      }
     }
 
     lambdaCallback(null, recommendations);
@@ -86,7 +150,8 @@ exports.handler = async (event, context, lambdaCallback) => {
         "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0",
       },
     }, (result) => {
-      recommendations.isOnlineImage = result;
+      // recommendations.isOnlineImage = result;
+      recommendations.isOnlineImage = result.includes("Find other sizes of this image:");
       lambdaCallback(null, recommendations);
     });
 
