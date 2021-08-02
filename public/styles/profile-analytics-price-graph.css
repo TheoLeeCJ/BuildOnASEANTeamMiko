@@ -58,3 +58,13 @@
   fill: #444;
   font-size: 14px;
 }
+
+.price-data-point {
+  fill: var(--theme-red);
+  /* r: 10px; */
+}
+
+.price-data-line {
+  stroke-width: 1px;
+  stroke: var(--theme-red);
+}
