@@ -308,8 +308,10 @@ const leftDateMarkingXCoord = graphX1 + 20;
 const rightDateMarkingXCoord = graphX2 - 50;
 
 const maxDatesShown = 7;
-for (let i = numDays; i > 0; i--) {
-  if ((numDays - i) % Math.ceil(numDays / maxDatesShown) !== 0) continue;
+for (let i = 0; i < numDays; i++) { 
+  if ((numDays - i - 1) % Math.ceil(numDays / maxDatesShown) !== 0) {
+    continue;
+  }
 
   const dateMarkingLine = document.createElementNS(SVG_NAMESPACE_URI, "line");
   dateMarkingLine.classList.add("date-marking-line");
@@ -319,7 +321,7 @@ for (let i = numDays; i > 0; i--) {
 
   const dateMarkingXCoord = leftDateMarkingXCoord +
       (rightDateMarkingXCoord - leftDateMarkingXCoord) *
-      (i - 1) / (numDays - 1);
+      i / (numDays - 1);
   dateMarkingLine.setAttribute("x1", dateMarkingXCoord);
   dateMarkingLine.setAttribute("x2", dateMarkingXCoord);
 
@@ -330,27 +332,41 @@ for (let i = numDays; i > 0; i--) {
   dateMarkingText.setAttribute("y", graphY2 + 25);
 
   const dateMarkingDate = new Date(graphStartDate);
-  dateMarkingDate.setDate(dateMarkingDate.getDate() + i - 1);
+  dateMarkingDate.setDate(dateMarkingDate.getDate() + i);
   dateMarkingText.textContent = new Intl.DateTimeFormat("en-GB")
       .format(dateMarkingDate);
 
   priceGraphSVG.append(dateMarkingLine, dateMarkingText);
 }
 
-// const ctx = priceGraphCanvas.getContext("2d");
+let prevDataPointXCoord = null;
+let prevDataPointYCoord = null;
+for (let i = 0; i < prices.length; i++) {
+  const dataPoint = document.createElementNS(SVG_NAMESPACE_URI, "circle");
+  dataPoint.classList.add("price-data-point");
 
-// priceGraphCanvas.width = 3840;
-// priceGraphCanvas.height = 2160;
+  const dataPointXCoord = leftDateMarkingXCoord +
+      (rightDateMarkingXCoord - leftDateMarkingXCoord) *
+      i / (numDays - 1);
+  const dataPointYCoord = topPriceMarkingYCoord + (bottomPriceMarkingYCoord - topPriceMarkingYCoord) * (maxPrice - prices[i]) / (maxPrice - minPrice);
 
-// vertical axis label
-// ctx.font = "100px Segoe UI";
-// ctx.fillText("Price (S$)", 0, 100);
+  dataPoint.setAttribute("cx", dataPointXCoord);
+  dataPoint.setAttribute("cy", dataPointYCoord);
+  dataPoint.setAttribute("r", 5);
 
-// // vertical axis
-// ctx.beginPath();
-// ctx.moveTo(0, 0);
-// ctx.lineTo(0, 400);
-// ctx.stroke();
+  const lineToPrevDataPoint = document.createElementNS(SVG_NAMESPACE_URI,
+      "line");
+  lineToPrevDataPoint.classList.add("price-data-line");
+  
+  if (prevDataPointXCoord !== null && prevDataPointYCoord !== null) {
+    lineToPrevDataPoint.setAttribute("x1", dataPointXCoord);
+    lineToPrevDataPoint.setAttribute("y1", dataPointYCoord);
+    lineToPrevDataPoint.setAttribute("x2", prevDataPointXCoord);
+    lineToPrevDataPoint.setAttribute("y2", prevDataPointYCoord);
+  }
 
-// ctx.fillStyle ="#00ff00";
-// ctx.fillRect(0, 0, 300, 400);
+  priceGraphSVG.append(dataPoint, lineToPrevDataPoint);
+
+  prevDataPointXCoord = dataPointXCoord;
+  prevDataPointYCoord = dataPointYCoord;
+}
