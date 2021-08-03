@@ -5,46 +5,32 @@ async function startChat(itemId) {
   }
   else {
     if (!notificationsEnabled) {
-      await registerServiceWorker();
-
-      let res = confirm("To use chat functionality of the Used Item Marketplace, we recommend allowing us to send you notifications.\n\n" +
-"If you press OK, you will be prompted to allow notifications; please press 'Allow'.\n\n" +
-"Otherwise, you can just press Cancel.");
-
-      if (res) {
-        let subscription;
-        try {
-          subscription = await subscribeUser();
-          localStorage.setItem("notifications", "");
-          notificationsEnabled = true;
-
-          // POST subscription
-          let subscribeData = new FormData();
-          subscribeData.append("endpoint", subscription.endpoint);
-          subscribeData.append("keys", JSON.stringify(subscription.keys));
-
-          (user !== null) ? subscribeData.append("jwt", localStorage.getItem("session")) : "";
-          
-          await fetch(`${API_ENDPOINT}/chat/subscribe`, {
-            method: "post",
-            body: subscribeData,
-          });
-        }
-        catch (e) {
-          alert("You denied us permission to send you chat notifications. To fully utilise chat, please enable notifications.");
-        }
-      }
+      await initSubscription();
     }
 
     let startChatData = new FormData();
+    startChatData.append("jwt", localStorage.getItem("session"));
+    startChatData.append("productId", itemId);
 
     // POST to start chat API
     let chatData = await fetch(`${API_ENDPOINT}/chat/begin`, {
       method: "post",
       body: startChatData,
     }).then(res => res.json());
+
+    if (chatData.reason === "has-chat" || chatData.reason === "chat-sent") {
+      sessionStorage.setItem("chat-url", chatData.data);
+      location.href = "chat.html";
+    }
+    else {
+      alert("You can't start a chat with yourself!");
+    }
   }
 }
+
+// async function enableBluetooth() {
+  
+// }
 
 async function registerServiceWorker() {
   try {
@@ -53,6 +39,38 @@ async function registerServiceWorker() {
     return registration;
   } catch (err) {
     console.error('Unable to register service worker.', err);
+  }
+}
+
+async function initSubscription() {
+  await registerServiceWorker();
+
+  let res = confirm("To use chat functionality of the Used Item Marketplace, we recommend allowing us to send you notifications.\n\n" +
+"If you press OK, you will be prompted to allow notifications; please press 'Allow'.\n\n" +
+"Otherwise, you can just press Cancel.");
+
+  if (res) {
+    let subscription;
+    try {
+      subscription = await subscribeUser();
+      localStorage.setItem("notifications", "");
+      notificationsEnabled = true;
+
+      // POST subscription
+      let subscribeData = new FormData();
+      subscribeData.append("endpoint", subscription.endpoint);
+      subscribeData.append("keys", JSON.stringify(subscription.keys));
+
+      (user !== null) ? subscribeData.append("jwt", localStorage.getItem("session")) : "";
+      
+      await fetch(`${API_ENDPOINT}/chat/subscribe`, {
+        method: "post",
+        body: subscribeData,
+      });
+    }
+    catch (e) {
+      alert("You denied us permission to send you chat notifications. To fully utilise chat, please enable notifications.");
+    }
   }
 }
 

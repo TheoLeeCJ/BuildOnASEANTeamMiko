@@ -260,7 +260,7 @@ h2:first-child {
 } */
 
 .platform-currency-transaction-history-table {
-  /* width: 100%; */
+  width: 100%;
   border-radius: 10px;
   border-collapse: collapse;
   overflow: hidden;
