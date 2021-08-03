@@ -347,8 +347,6 @@
       </div>
 
       <div id="analytics" class="profile-tab-content">
-        <h2>Average prices per category</h2>
-        <span>Graph shows 7-day rolling average of category prices.</span>
         <div id="category-search">
           <div id="category-search-input-wrapper">
             <span class="material-icons">search</span>
@@ -359,11 +357,24 @@
           </div>
           <div id="category-options"></div>
         </div>
-        <div id="price-graph-wrapper" class="card">
-          <svg id="price-graph">
-            <text x="0" y="12" id="vertical-axis-label">Price (S$)</text>
-            <line y1="28" y2="calc(100% - 2em)" id="vertical-axis"></line>
-            <line y1="calc(100% - 2em)" x2="100%" y2="calc(100% - 2em)" id="horizontal-axis"></line>
+
+        <h2>Average prices per category</h2>
+        <span>Graph shows 7-day rolling average of category prices.</span>
+        <div class="graph-wrapper card">
+          <svg id="price-graph" class="analytics-graph">
+            <text x="0" y="12" class="vertical-axis-label">Price (S$)</text>
+            <line y1="28" y2="calc(100% - 2em)" class="vertical-axis"></line>
+            <line y1="calc(100% - 2em)" x2="100%" y2="calc(100% - 2em)" class="horizontal-axis"></line>
+          </svg>
+        </div>
+
+        <h2>Average sales per category</h2>
+        <span>Graph shows 7-day rolling average of category sales.</span>
+        <div class="graph-wrapper card">
+          <svg id="sales-graph" class="analytics-graph">
+            <text x="0" y="12" class="vertical-axis-label">Price (S$)</text>
+            <line y1="28" y2="calc(100% - 2em)" class="vertical-axis"></line>
+            <line y1="calc(100% - 2em)" x2="100%" y2="calc(100% - 2em)" class="horizontal-axis"></line>
           </svg>
         </div>
       </div>

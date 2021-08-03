@@ -232,9 +232,9 @@ categorySearchInput.addEventListener("input", () => {
   }
 });
 
-let graphLoaded = false;
+let graphsLoaded = false;
 function loadGraph() {
-  if (graphLoaded) {
+  if (graphsLoaded) {
     return;
   }
 
@@ -256,51 +256,69 @@ function loadGraph() {
     244,
     255,
   ];
-  if (prices.length !== ((graphEndDate - graphStartDate) / 1000 / 60 / 60 / 24) + 1) {
+  const sales = [
+    137,
+    294,
+    123,
+    120,
+    438,
+    134,
+    405,
+    482,
+    144,
+    239,
+    305,
+    586,
+    321,
+    342,
+  ];
+  if (sales.length !== prices.length ||
+    prices.length !== ((graphEndDate - graphStartDate) / 1000 / 60 / 60 / 24) + 1) {
     throw Error("Number of prices does not match difference between start and end date");
   }
   const numDays = prices.length;
+  
   const maxPrice = Math.max(...prices);
   const minPrice = Math.min(...prices);
 
   const priceGraphSVG = document.getElementById("price-graph");
-  const verticalAxis = document.getElementById("vertical-axis");
-  const horizontalAxis = document.getElementById("horizontal-axis");
+  const priceVerticalAxis = priceGraphSVG.getElementsByClassName("vertical-axis")[0];
+  const priceHorizontalAxis = priceGraphSVG.getElementsByClassName("horizontal-axis")[0];
 
   const graphX1 = maxPrice.toFixed(2).length * 9;
-  verticalAxis.x1.baseVal.value = graphX1;
-  verticalAxis.x2.baseVal.value = graphX1;
-  horizontalAxis.x1.baseVal.value = graphX1;
+  priceVerticalAxis.x1.baseVal.value = graphX1;
+  priceVerticalAxis.x2.baseVal.value = graphX1;
+  priceHorizontalAxis.x1.baseVal.value = graphX1;
   // verticalAxis.x1 = verticalAxis.x2 = `${Math.round(maxPrice).toString().length}em`;
 
   // const graphX1 = verticalAxis.x1.baseVal.value;
-  const graphY1 = verticalAxis.y1.baseVal.value;
-  const graphX2 = horizontalAxis.x2.baseVal.value;
-  const graphY2 = horizontalAxis.y2.baseVal.value;
+  const graphY1 = priceVerticalAxis.y1.baseVal.value;
+  const graphX2 = priceHorizontalAxis.x2.baseVal.value;
+  const graphY2 = priceHorizontalAxis.y2.baseVal.value;
 
-  const NUM_VERTICAL_MARKINGS = 6;
-  const priceMarkingInterval = (maxPrice - minPrice) / (NUM_VERTICAL_MARKINGS - 1);
+  const NUM_VERTICAL_PRICE_MARKINGS = 6;
+  const priceMarkingInterval = (maxPrice - minPrice) / (NUM_VERTICAL_PRICE_MARKINGS - 1);
 
   const SVG_NAMESPACE_URI = "http://www.w3.org/2000/svg";
 
   const topPriceMarkingYCoord = graphY1 + 20;
   const bottomPriceMarkingYCoord = graphY2;
 
-  for (let i = 0; i < NUM_VERTICAL_MARKINGS; i++) {
+  for (let i = 0; i < NUM_VERTICAL_PRICE_MARKINGS; i++) {
     const priceMarkingLine = document.createElementNS(SVG_NAMESPACE_URI, "line");
-    priceMarkingLine.classList.add("price-marking-line");
+    priceMarkingLine.classList.add("vertical-marking-line");
 
     priceMarkingLine.setAttribute("x1", graphX1);
     priceMarkingLine.setAttribute("x2", "100%");
 
     const priceMarkingYCoord = topPriceMarkingYCoord +
         (bottomPriceMarkingYCoord - topPriceMarkingYCoord) *
-        i / (NUM_VERTICAL_MARKINGS - 1);
+        i / (NUM_VERTICAL_PRICE_MARKINGS - 1);
     priceMarkingLine.setAttribute("y1", priceMarkingYCoord);
     priceMarkingLine.setAttribute("y2", priceMarkingYCoord);
 
     const priceMarkingText = document.createElementNS(SVG_NAMESPACE_URI, "text");
-    priceMarkingText.classList.add("price-marking-text");
+    priceMarkingText.classList.add("vertical-marking-text");
 
     priceMarkingText.setAttribute("x", graphX1 - 10);
     priceMarkingText.setAttribute("y", priceMarkingYCoord + 4);
@@ -349,7 +367,7 @@ function loadGraph() {
   let prevDataPointYCoord = null;
   for (let i = 0; i < prices.length; i++) {
     const dataPoint = document.createElementNS(SVG_NAMESPACE_URI, "circle");
-    dataPoint.classList.add("price-data-point");
+    dataPoint.classList.add("graph-data-point");
 
     const dataPointXCoord = leftDateMarkingXCoord +
         (rightDateMarkingXCoord - leftDateMarkingXCoord) *
@@ -362,7 +380,7 @@ function loadGraph() {
 
     const lineToPrevDataPoint = document.createElementNS(SVG_NAMESPACE_URI,
         "line");
-    lineToPrevDataPoint.classList.add("price-data-line");
+    lineToPrevDataPoint.classList.add("graph-data-line");
     
     if (prevDataPointXCoord !== null && prevDataPointYCoord !== null) {
       lineToPrevDataPoint.setAttribute("x1", dataPointXCoord);
@@ -377,7 +395,122 @@ function loadGraph() {
     prevDataPointYCoord = dataPointYCoord;
   }
 
-  graphLoaded = true;
+  const maxSales = Math.max(...sales);
+  const minSales = Math.min(...sales);
+
+  const salesGraphSVG = document.getElementById("sales-graph");
+  const salesVerticalAxis = salesGraphSVG.getElementsByClassName("vertical-axis")[0];
+  const salesHorizontalAxis = salesGraphSVG.getElementsByClassName("horizontal-axis")[0];
+
+  const salesGraphX1 = maxSales.toFixed(2).length * 9;
+  salesVerticalAxis.x1.baseVal.value = salesGraphX1;
+  salesVerticalAxis.x2.baseVal.value = salesGraphX1;
+  salesHorizontalAxis.x1.baseVal.value = salesGraphX1;
+  // verticalAxis.x1 = verticalAxis.x2 = `${Math.round(maxPrice).toString().length}em`;
+
+  // const graphX1 = verticalAxis.x1.baseVal.value;
+  const salesGraphY1 = salesVerticalAxis.y1.baseVal.value;
+  const salesGraphX2 = salesHorizontalAxis.x2.baseVal.value;
+  const salesGraphY2 = salesHorizontalAxis.y2.baseVal.value;
+
+  const NUM_VERTICAL_SALES_MARKINGS = 10;
+  const salesMarkingInterval = (maxSales - minSales) / (NUM_VERTICAL_SALES_MARKINGS - 1);
+
+  const topSalesMarkingYCoord = salesGraphY1 + 20;
+  const bottomSalesMarkingYCoord = salesGraphY2;
+
+  for (let i = 0; i < NUM_VERTICAL_SALES_MARKINGS; i++) {
+    const salesMarkingLine = document.createElementNS(SVG_NAMESPACE_URI, "line");
+    salesMarkingLine.classList.add("vertical-marking-line");
+
+    salesMarkingLine.setAttribute("x1", salesGraphX1);
+    salesMarkingLine.setAttribute("x2", "100%");
+
+    const salesMarkingYCoord = topSalesMarkingYCoord +
+        (bottomSalesMarkingYCoord - topSalesMarkingYCoord) *
+        i / (NUM_VERTICAL_SALES_MARKINGS - 1);
+    salesMarkingLine.setAttribute("y1", salesMarkingYCoord);
+    salesMarkingLine.setAttribute("y2", salesMarkingYCoord);
+
+    const salesMarkingText = document.createElementNS(SVG_NAMESPACE_URI, "text");
+    salesMarkingText.classList.add("vertical-marking-text");
+
+    salesMarkingText.setAttribute("x", salesGraphX1 - 10);
+    salesMarkingText.setAttribute("y", salesMarkingYCoord + 4);
+
+    salesMarkingText.textContent = (maxSales - salesMarkingInterval * i).toFixed(2);
+
+    salesGraphSVG.append(salesMarkingLine, salesMarkingText);
+  }
+
+  const salesGraphLeftDateMarkingXCoord = salesGraphX1 + 20;
+  const salesGraphRightDateMarkingXCoord = salesGraphX2 - 50;
+
+  const salesGraphMaxDatesShown = 7;
+  for (let i = 0; i < numDays; i++) { 
+    if ((numDays - i - 1) % Math.ceil(numDays / salesGraphMaxDatesShown) !== 0) {
+      continue;
+    }
+
+    const salesGraphDateMarkingLine = document.createElementNS(SVG_NAMESPACE_URI, "line");
+    salesGraphDateMarkingLine.classList.add("date-marking-line");
+
+    salesGraphDateMarkingLine.setAttribute("y1", salesGraphY2);
+    salesGraphDateMarkingLine.setAttribute("y2", salesGraphY2 + 10);
+
+    const salesGraphDateMarkingXCoord = salesGraphLeftDateMarkingXCoord +
+        (salesGraphRightDateMarkingXCoord - salesGraphLeftDateMarkingXCoord) *
+        i / (numDays - 1);
+    salesGraphDateMarkingLine.setAttribute("x1", salesGraphDateMarkingXCoord);
+    salesGraphDateMarkingLine.setAttribute("x2", salesGraphDateMarkingXCoord);
+
+    const salesGraphDateMarkingText = document.createElementNS(SVG_NAMESPACE_URI, "text");
+    salesGraphDateMarkingText.classList.add("date-marking-text");
+
+    salesGraphDateMarkingText.setAttribute("x", salesGraphDateMarkingXCoord);
+    salesGraphDateMarkingText.setAttribute("y", salesGraphY2 + 25);
+
+    const salesGraphDateMarkingDate = new Date(graphStartDate);
+    salesGraphDateMarkingDate.setDate(salesGraphDateMarkingDate.getDate() + i);
+    salesGraphDateMarkingText.textContent = new Intl.DateTimeFormat("en-GB")
+        .format(salesGraphDateMarkingDate);
+
+    salesGraphSVG.append(salesGraphDateMarkingLine, salesGraphDateMarkingText);
+  }
+
+  let salesGraphPrevDataPointXCoord = null;
+  let salesGraphPrevDataPointYCoord = null;
+  for (let i = 0; i < sales.length; i++) {
+    const salesGraphDataPoint = document.createElementNS(SVG_NAMESPACE_URI, "circle");
+    salesGraphDataPoint.classList.add("graph-data-point");
+
+    const salesGraphDataPointXCoord = salesGraphLeftDateMarkingXCoord +
+        (salesGraphRightDateMarkingXCoord - salesGraphLeftDateMarkingXCoord) *
+        i / (numDays - 1);
+    const salesGraphDataPointYCoord = topSalesMarkingYCoord + (bottomSalesMarkingYCoord - topSalesMarkingYCoord) * (maxSales - sales[i]) / (maxSales - minSales);
+
+    salesGraphDataPoint.setAttribute("cx", salesGraphDataPointXCoord);
+    salesGraphDataPoint.setAttribute("cy", salesGraphDataPointYCoord);
+    salesGraphDataPoint.setAttribute("r", 5);
+
+    const salesGraphLineToPrevDataPoint = document.createElementNS(SVG_NAMESPACE_URI,
+        "line");
+    salesGraphLineToPrevDataPoint.classList.add("graph-data-line");
+    
+    if (salesGraphPrevDataPointXCoord !== null && salesGraphPrevDataPointYCoord !== null) {
+      salesGraphLineToPrevDataPoint.setAttribute("x1", salesGraphDataPointXCoord);
+      salesGraphLineToPrevDataPoint.setAttribute("y1", salesGraphDataPointYCoord);
+      salesGraphLineToPrevDataPoint.setAttribute("x2", salesGraphPrevDataPointXCoord);
+      salesGraphLineToPrevDataPoint.setAttribute("y2", salesGraphPrevDataPointYCoord);
+    }
+
+    salesGraphSVG.append(salesGraphDataPoint, salesGraphLineToPrevDataPoint);
+
+    salesGraphPrevDataPointXCoord = salesGraphDataPointXCoord;
+    salesGraphPrevDataPointYCoord = salesGraphDataPointYCoord;
+  }
+
+  graphsLoaded = true;
 };
 
 document.getElementById("analytics-profile-tab-switcher")
