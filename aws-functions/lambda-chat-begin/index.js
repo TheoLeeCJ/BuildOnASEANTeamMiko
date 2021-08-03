@@ -66,8 +66,6 @@ exports.handler = async (event, context, lambdaCallback) => {
       }));
     }
     else {
-      let chatStore = short().generate();
-
       let targetItem = await db.query({
         TableName: "items",
         KeyConditions: {
@@ -83,6 +81,10 @@ exports.handler = async (event, context, lambdaCallback) => {
       }).promise().then((res) => { return res.Items; });
       targetUser = targetItem[0].userId;
       itemName = targetItem[0].name;
+
+      // IMPORTANT: when checking if username is in chatStore name, MUST SPLIT BY '-'
+      // DON'T USE .includes() ON THE STRING DIRECTLY
+      let chatStore = `${jwtData["user"]}-${targetUser}-${short().generate()}`;
 
       if (targetUser === jwtData["user"]) {
         lambdaCallback(null, JSON.stringify({
@@ -155,7 +157,12 @@ exports.handler = async (event, context, lambdaCallback) => {
           keys: JSON.parse(target.keys),
         };
   
-        webpush.sendNotification(pushSubscription, "Push Payload Text");
+        try {
+          webpush.sendNotification(pushSubscription, "A user wants to buy an item from you!");
+        }
+        catch (e) {
+          
+        }
       }
 
       lambdaCallback(null, JSON.stringify({

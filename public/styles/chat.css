@@ -9,6 +9,7 @@ main > #left-pane {
   flex: 1;
   background-color: #f6f6f6;
   overflow-y: scroll;
+  z-index: 2;
 }
 
 .chat-summary {
@@ -25,15 +26,15 @@ main > #left-pane {
   border-bottom: 1px solid grey;
 }
 
-.chat-summary > h3, .chat-summary > h4, .chat-summary > h5 {
+.chat-summary > h3, .chat-summary > h4, .chat-summary > h5, .chat-summary > div {
   margin: 0;
-}
-
-.chat-summary > div {
   overflow-wrap: anywhere;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.chat-summary > div {
   margin-top: 5px;
   margin-bottom: 5px;
 }
@@ -52,8 +53,10 @@ main > #content {
 }
 
 #chat-header {
+  z-index: 1;
   padding: 15px;
   background: #e1e1e1;
+  box-shadow: 0 5px 10px -3px #aaa;
 }
 
 #chat-header > * {
@@ -66,6 +69,7 @@ main > #content {
   flex-direction: column;
   justify-content: flex-start;
   flex-flow: column-reverse;
+  overflow-y: scroll;
 }
 
 #chat .left {
@@ -155,10 +159,13 @@ main > #content {
 #msg-input > button {
   font-size: 1rem;
   padding: 10px;
-  background: red;
-  color: white;
   font-family: inherit;
   font-weight: bold;
   border: 0;
   border-radius: 10px;
+}
+
+.left > a {
+  display: inline-block;
+  margin: 10px;
 }

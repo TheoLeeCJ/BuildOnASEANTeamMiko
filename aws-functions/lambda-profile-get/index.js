@@ -25,31 +25,25 @@ exports.handler = async (event, context, lambdaCallback) => {
         return;
       }
     }
-    
+
     let jwtData = jwt.verify(formFields["jwt"], SECRET, { "algorithms": ["HS256"] }); // important - verify token with HS256; throws error is tampered with
 
-    // PAGING!
-    let existingChats = await db.query({
-      TableName: 'messaging',
+    let userData = await db.query({
+      TableName: "users",
       KeyConditions: {
-        'userId': {
+        "userId": {
           ComparisonOperator: "EQ",
           AttributeValueList: [jwtData["user"]],
         },
       },
-      
-    }).promise().then((res) => { return res.Items; });
+    }).promise();
 
-    lambdaCallback(null, JSON.stringify({
-      statusCode: 200,
-      reason: "chats",
-      data: existingChats,
-    }));
+    lambdaCallback(null, userData.Items[0]);
   }
   catch (e) {
     lambdaCallback(null, JSON.stringify({
       statusCode: 400,
-      // e: e.toString(),
+      e: e.toString(),
     }));
   }
 };

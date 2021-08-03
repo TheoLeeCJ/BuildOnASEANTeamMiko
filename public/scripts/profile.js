@@ -22,6 +22,86 @@ for (let i = 0; i < profileTabSwitchers.length; i++) {
   });
 }
 
+let searchResults = ``;
+
+(async () => {
+  // 
+  document.querySelector("#username").innerText = user["user"];
+
+  // get listings
+  let form = new FormData();
+  form.set("user", user["user"]);
+
+  searchResults = await fetch(`${API_ENDPOINT}/item/user-list`, {
+    body: form,
+    method: "post",
+  }).then(res => res.json());
+  
+  renderSearchResults();
+})();
+
+(async () => {
+  // get profile
+  let form = new FormData();
+  form.set("jwt", localStorage.getItem("session"));
+
+  let profileData = await fetch(`${API_ENDPOINT}/profile/get`, {
+    body: form,
+    method: "post",
+  }).then(res => res.json());
+  
+  document.querySelector("#green-points-count").innerText = profileData.greenPts;
+  document.querySelector("#green-pts-hist").innerHTML = ``;
+
+  for (let item of profileData.sales) {
+    document.querySelector("#green-pts-hist").innerHTML += `<tr>
+  <td>${item.name}</td>
+  <td>${new Date(item.time).toLocaleString()}</td>
+  <td>
+    <span>
+      ${item.pts}
+      <img src="/media/green-points.svg" alt="Green points logo">
+    </span>
+  </td>
+</tr>`;
+  }
+})();
+
+function renderSearchResults() {
+  let resultsHTML = ``;
+
+  if (searchResults.length == 0) {
+    resultsHTML = `<div style="grid-column: 1 / -1; text-align: center; display: block; padding-bottom: 24px;"><h1 style="font-weight: bold; color: grey;">Oh no! No items were found!</h1><p>Try searching using less specific search terms, or remove filters.</p></div>`
+  }
+
+  searchResults.forEach((item) => {
+    // i know that this is bad practice, but we really don't have time!!!
+    resultsHTML += SaferHTML`<div class="listing">
+  <div class="listing-info-top">
+    <img src="/media/placeholder-profile-picture.jpeg" alt="Seller profile picture" class="profile-picture-small">
+    <div class="listing-info-top-text">
+      <div class="seller-username">${item.user}</div>
+      <div class="listing-age">1 day ago</div>
+    </div>
+  </div>
+  <div class="item-image-wrapper">
+    <img src="${ (item.img.includes("http")) ? item.img : `https://miko-user-img.s3.amazonaws.com/user-img/${item.img}` }" alt="Product image" class="item-image">
+  </div>
+  <div class="listing-info-bottom">
+    <div class="item-name">${item.name}</div>
+    <div class="item-price">${item.cash}</div>
+    <div class="item-description">${item.txt}</div>
+  </div>
+  <div class="listing-action-buttons">
+    <button class="like-button liked material-icons"></button>
+    <span class="like-count">${ item.up ? item.up : 0 }</span>
+  </div>
+</div>`;
+  });
+
+  document.querySelector("#listings").innerHTML = resultsHTML;
+}
+
 const categoryOptionsDiv = document.getElementById("category-options");
 const categorySearchDiv = document.getElementById("category-search");
 const categorySearchInputWrapper = document

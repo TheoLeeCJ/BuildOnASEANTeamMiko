@@ -29,27 +29,23 @@
     <div id="content">
       <div id="content-inside">
         <div id="chat-header">
-          <h3>Alienware Laptop</h3>
-          <h4>Long Username</h4>
+          <h3>Carousell Chats</h3>
+          <h4>carousell.com</h4>
         </div>
         <div id="chat">
           <div class="left">
             <div class="bubble">
               <div class="profile">
-                <span>T</span>
+                <span>C</span>
               </div>
-              Hello! How are yuou?
+              Welcome to Carousell Chats! Select a chat from the left to get started.
             </div>
           </div>
-
-          <div class="right">
-            <div class="bubble">B</div>
-          </div>
         </div>
-        <div id="msg-input">
+        <form id="msg-input" onsubmit="event.preventDefault(); sendMsg(this);">
           <input type="text" />
-          <button id="send">Send</button>
-        </div>
+          <button type="submit" id="send" class="secondary-button">Send</button>
+        </form>
       </div>
     </div>
   </main>

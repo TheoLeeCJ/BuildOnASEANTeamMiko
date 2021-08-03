@@ -22,8 +22,15 @@ async function startChat(itemId) {
       sessionStorage.setItem("chat-url", chatData.data);
       location.href = "chat.html";
     }
+    else {
+      alert("You can't start a chat with yourself!");
+    }
   }
 }
+
+// async function enableBluetooth() {
+  
+// }
 
 async function registerServiceWorker() {
   try {

@@ -3,8 +3,9 @@
 self.addEventListener('push', function(event) {
   console.log('Received a push message', event);
 
-  var title = 'Yay a message.';
-  var body = 'We have received a push message.';
+  var title = 'Carousell has news for you!';
+  // var body = 'We have received a push message.';
+  let body = JSON.stringify(event.data.text());
   var icon = '/media/category-placeholder-1.png';
   var tag = 'simple-push-demo-notification-tag';
 
@@ -30,12 +31,21 @@ self.addEventListener('notificationclick', function(event) {
   }).then(function(clientList) {
     for (var i = 0; i < clientList.length; i++) {
       var client = clientList[i];
-      if (client.url === '/' && 'focus' in client) {
+      console.log(client.url);
+      try {
+        client.postMessage({
+          msg: "chat-msg",
+        });
+      }
+      catch (e) {
+        console.log("cannot refresh chat")
+      }
+      if (client.url.includes("chat")) {
         return client.focus();
       }
     }
     if (clients.openWindow) {
-      return clients.openWindow('/');
+      return clients.openWindow('/chat.html');
     }
   }));
 });
