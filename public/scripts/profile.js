@@ -493,7 +493,7 @@ function loadGraph() {
   const salesGraphX2 = salesHorizontalAxis.x2.baseVal.value;
   const salesGraphY2 = salesHorizontalAxis.y2.baseVal.value;
 
-  const NUM_VERTICAL_SALES_MARKINGS = 10;
+  const NUM_VERTICAL_SALES_MARKINGS = 6;
   const salesMarkingInterval = (maxSales - minSales) / (NUM_VERTICAL_SALES_MARKINGS - 1);
 
   const topSalesMarkingYCoord = salesGraphY1 + 20;
