@@ -84,6 +84,14 @@ exports.handler = async (event, context, lambdaCallback) => {
       targetUser = targetItem[0].userId;
       itemName = targetItem[0].name;
 
+      if (targetUser === jwtData["user"]) {
+        lambdaCallback(null, JSON.stringify({
+          statusCode: 200,
+          reason: "self-chat",
+        }));
+        return;
+      }
+
       await s3.putObject({
         Bucket: "miko-internal",
         Key: `chats/${chatStore}`,
