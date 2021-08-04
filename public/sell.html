@@ -53,11 +53,11 @@
         </div>
 
         <h2>Suggest a meetup location</h2>
-        <form onsubmit="event.preventDefault(); locationSearch();">
-          <input type="text" list="meetup-list" id="listing-location" onkeypress="locationSearchPrompt();" onchange="truncateLocation();" />
-          <datalist id="meetup-list">
-            <option value="Press enter to see locations ''">
-          </datalist>
+        <form class="dropdown-suggestible" onsubmit="event.preventDefault(); locationSearch();">
+          <input type="text" list="meetup-list" id="listing-location" onchange="truncateLocation();" />
+          <div class="dropdown-suggest">
+            <div>Start typing to see suggestions...</div>
+          </div>
         </form>
   
         <h2>Attach photos</h2>
@@ -89,14 +89,6 @@
         <h2>Description</h2>
         <textarea id="listing-description" placeholder="Describe what you are selling and include any details that buyers may be interested in. People love items with stories!"></textarea>
 
-        <datalist id="questions">
-          <option value="Edge">
-          <option value="Firefox">
-          <option value="Chrome">
-          <option value="Opera">
-          <option value="Safari">
-        </datalist>
-
         <h2>Provide details about item condition</h2>
         <div>Having more information about item condition helps your item sell faster.</div>
 
@@ -106,7 +98,10 @@
             <button data-additional-field="1" onclick="removeAdditionalField(this)" title="Delete this field" class="remove-field material-icons">delete_outline</button>
           </h2>
           <h3>Field title</h3>
-          <input list="questions" type="text" class="additional-field-title" placeholder="Name of the field (e.g. item material, stains on the item, etc)">
+          <div class="dropdown-suggestible">
+            <input list="questions" type="text" class="additional-field-title" placeholder="Name of the field (e.g. item material, stains on the item, etc)">
+            <div class="dropdown-suggest"></div>
+          </div>
           <h3>Field value</h3>
           <input type="text" class="additional-field-text" placeholder="Details">
           <div class="attach-photos">
@@ -185,5 +180,7 @@
   <script src="/scripts/global.js"></script>
   <script src="/scripts/sell.js"></script>
   <script src="/scripts/utils.js"></script>
+
+  <script src="/scripts/datalist-polyfill.js"></script>
 </body>
 </html>

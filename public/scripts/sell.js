@@ -19,6 +19,49 @@ for (const filePicker of filePickers) {
   filePicker.addEventListener("change", addPhoto);
 }
 
+let dropdownSuggestions = [];
+let dropdownRefs = [];
+
+[...document.querySelectorAll(".dropdown-suggestible")].forEach((el) => {
+  dropdownRefs.push(el);
+  dropdownSuggestions.push([]);
+
+  el.querySelector("input").addEventListener("click", () => {
+    el.querySelector(".dropdown-suggest").classList.add("display");
+  });
+
+  el.querySelector("input").addEventListener("keyup", () => {
+    renderSuggestions();
+  });
+
+  document.addEventListener("click", (event) => {
+    const rect = el.getBoundingClientRect();
+
+    if (!mouseEventIsWithinDOMRect(event, rect)) {
+      el.querySelector(".dropdown-suggest").classList.remove("display");
+    }
+  });
+});
+
+function setDropValue(index, text) {
+  dropdownRefs[index].querySelector("input").value = text;
+  if (index === 0) truncateLocation();
+}
+
+function renderSuggestions() {
+  let i = 0;
+  for (let block of dropdownSuggestions) {
+    let blockHtml = ``;
+    let value = dropdownRefs[i].querySelector("input").value.toLowerCase();
+    console.log(value, block);
+    for (let suggestion of block) {
+      if (suggestion.toLowerCase().includes(value)) blockHtml += `<div onclick="setDropValue(${i}, '${suggestion}');">${suggestion}</div>`;
+    }
+    dropdownRefs[i].querySelector(".dropdown-suggest").innerHTML = blockHtml;
+    i++;
+  }
+}
+
 async function submitItem() {
   let finalForm = new FormData();
   let conditionFields = {};
@@ -200,21 +243,9 @@ for (let i = 0; i < NUM_STEPS; i++) {
 async function locationSearch() {
   let search = document.querySelector("#listing-location").value;
 
-  document.querySelector("#meetup-list").innerHTML = "<option>";
-  document.querySelector("#meetup-list > option").value = `Press enter to see locations for '${search}'`;
-
   let results = await fetch(`https://nominatim.openstreetmap.org/search.php?q=${encodeURI(search)}&countrycodes=SG&format=jsonv2`).then((res) => res.json());
-  results.map((el) => { return el.display_name + " - " + el.category; }).forEach((el) => {
-    let itemElement = document.createElement("option");
-    itemElement.value = search + ": " + el;
-    document.querySelector("#meetup-list").appendChild(itemElement);
-  });
-}
-
-function locationSearchPrompt() {
-  setTimeout(() => {
-    document.querySelector("#meetup-list > option").value = `Press enter to see locations for '${document.querySelector("#listing-location").value}'`;
-  }, 100);
+  dropdownSuggestions[0] = results.map((el) => { return search + ": " + el.display_name + " - " + el.category; });
+  renderSuggestions();
 }
 
 function truncateLocation() {
@@ -247,13 +278,7 @@ const performStepActions = (stepNum) => {
     }
 
     // populate questions
-    let qnsList = document.querySelector("#questions");
-    qnsList.innerHTML = "";
-    selectedCatQns.forEach((qn) => {
-      let qnElement = document.createElement("option");
-      qnElement.value = qn;
-      qnsList.appendChild(qnElement);
-    });
+    dropdownSuggestions[1] = selectedCatQns;
 
     // img analysis can be run outside (so that it doesn't delay the next step)
     setTimeout(async () => {

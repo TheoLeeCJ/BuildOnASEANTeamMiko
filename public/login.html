@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      input[type=text], input[type=email], input[type=password] {
+        width: calc(100% - 32px);
+        padding: 8px;
+        font-size: 1rem;
+        margin: 8px 16px;
+      }
+
+      input[type=submit] {
+        font-size: 1rem;
+        margin: 8px 16px;
+        padding: 8px;
+        font-size: 1rem;
+      }
+
+      #output {
+        width: calc(100% - 32px);
+        margin: 8px 16px;
+        background-color: #f6f6f6;
+        padding: 8px;
+        font-family: 'Cascadia Code', 'Consolas', monospace;
+        white-space: pre-wrap;
+        overflow: hidden;
+        text-overflow: clip;
+        overflow-wrap: break-word;
+      }
+    </style>
+
+    <form onsubmit="event.preventDefault(); postRequest(this);" method="post">
+      <input style="display: none;" type="text" name="endpoint" placeholder="Endpoint" value="https://xdpj2nme28.execute-api.us-east-1.amazonaws.com/account/login" />
+      <input type="text" name="username" value="sakuramiko35" />
+      <input type="password" name="password" value="pekomikoteetee" />
+      
+      <input type="submit" value="Login" />
+    </form>
+
+    <script>
+      function getJWTData(jwt) {
+        return JSON.parse(atob(jwt.split(".")[1]));
+      }
+
+      async function postRequest(form) {
+        let formData = new FormData(form);
+        let responseText = await (
+          await (
+            fetch(formData.get("endpoint"), {
+              method: "post",
+              body: formData,
+            })
+          )
+        ).text();
+        
+        try {
+          localStorage.setItem("session", JSON.parse(responseText).msg.jwt);
+          alert("Logged in!");
+          location.href = "/profile.html";
+        }
+        catch (e) {
+          alert("Your username or password is incorrect. Please try again.");
+        }
+      }
+    </script>
+  </body>
+</html>

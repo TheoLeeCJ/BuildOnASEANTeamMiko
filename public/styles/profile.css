@@ -480,3 +480,12 @@ h2:first-child {
 .subcategories > div:hover {
   background-color: #d6d6d6;
 }
+
+.tweet-button {
+  background: url("/media/tweet.png");
+  background-size: cover;
+  border-radius: 3px;
+  width: 66px;
+  display: inline-block;
+  color: transparent;
+}

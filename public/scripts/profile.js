@@ -24,6 +24,16 @@ for (let i = 0; i < profileTabSwitchers.length; i++) {
 
 let searchResults = ``;
 
+if (location.hash) {
+  if (location.hash.includes("green")) {
+    document.querySelectorAll(".profile-tab-switcher")[2].click();
+  }
+}
+
+document.querySelector("#green-points-redeem-rewards").addEventListener("click", () => {
+  document.querySelector("#greendialog").classList.toggle("display");
+});
+
 (async () => {
   // 
   document.querySelector("#username").innerText = user["user"];
@@ -36,6 +46,15 @@ let searchResults = ``;
     body: form,
     method: "post",
   }).then(res => res.json());
+
+  searchResults = searchResults.sort((a, b) => {
+    if (parseInt(a.id.split("-")[0]) > parseInt(b.id.split("-")[0])) {
+      return -1;
+    }
+    else {
+      return 1;
+    }
+  });
   
   renderSearchResults();
 })();
@@ -59,9 +78,12 @@ let searchResults = ``;
   <td>${new Date(item.time).toLocaleString()}</td>
   <td>
     <span>
-      ${item.pts}
+      +${item.pts}
       <img src="/media/green-points.svg" alt="Green points logo">
     </span>
+  </td>
+  <td>
+    <a class="tweet-button" href="https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw%7Ctwcamp%5Ebuttonembed%7Ctwterm%5Eshare%7Ctwgr%5E&text=${encodeURI(`I have saved ${item.pts / 2}kg of CO2 from being emitted by choosing used on Carousell!`)}">Tweet</a>
   </td>
 </tr>`;
   }
