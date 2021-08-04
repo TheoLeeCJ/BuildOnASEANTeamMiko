@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/styles/global.css">
   <link rel="stylesheet" href="/styles/top-bar.css">
   <link rel="stylesheet" href="/styles/chat.css">
+  <link rel="stylesheet" href="/styles/loc-dialog.css" />
 
   <title>Carousell Chats</title>
 </head>
@@ -22,7 +23,7 @@
       <div class="chat-summary">
         <h3>Alienware Laptop</h3>
         <h4>Long Username</h4>
-        <div>Are you interested in a trade agreement with England?</div>
+        <div>Loading...</div>
         <h5>3/8/21</h5>
       </div>
     </div>
@@ -49,6 +50,16 @@
       </div>
     </div>
   </main>
+
+  <div id="locdialog" onclick="this.classList.toggle('display');">
+    <div id="locdialog-content" onclick="event.stopPropagation();">
+      <h2>Waiting for other user...</h2>
+      <hr>
+      <p>
+        The other use should be here any minute...
+      </p>
+    </div>
+  </div>
 
   <script src="/scripts/global.js"></script>
   <script src="/scripts/utils.js"></script>

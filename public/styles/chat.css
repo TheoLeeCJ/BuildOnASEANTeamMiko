@@ -7,6 +7,7 @@ main {
 
 main > #left-pane {
   flex: 1;
+  max-width: 33%;
   background-color: #f6f6f6;
   overflow-y: scroll;
   z-index: 2;
@@ -45,6 +46,7 @@ main > #left-pane {
 
 main > #content {
   flex: 2;
+  max-width: 66%;
 }
 
 #content-inside {

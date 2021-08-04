@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/styles/top-bar.css">
   <link rel="stylesheet" href="/styles/profile.css">
   <link rel="stylesheet" href="/styles/profile-analytics-price-graph.css">
+  <link rel="stylesheet" href="/styles/green-dialog.css">
 
   <title>Your Profile | Carousell</title>
 </head>
@@ -167,7 +168,8 @@
           <tr>
             <th>Item</th>
             <th>Date</th>
-            <th>Points used</th>
+            <th>Points</th>
+            <th>Share</th>
           </tr>
           <tbody id="green-pts-hist"></tbody>
         </table>
@@ -208,8 +210,24 @@
     </div>
   </main>
 
+  <div id="greendialog" onclick="this.classList.toggle('display');">
+    <div id="greendialog-content" onclick="event.stopPropagation();">
+      <h2>Green Points Redemption</h2>
+      <hr>
+      <p>
+        Swap <input size="4" placeholder="0" type="number" value="1200" /> GreenPoints for:
+        <div class="card">
+          <h1 id="num-greenpts">1</h1> Boosts
+        </div>
+        or win a random number of boosts!
+      </p>
+    </div>
+  </div>
+
   <script src="/scripts/global.js"></script>
   <script src="/scripts/profile.js" defer></script>
   <script src="/scripts/utils.js"></script>
+
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

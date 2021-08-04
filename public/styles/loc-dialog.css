@@ -1,0 +1,56 @@
+#locdialog {
+  /* z-index: 999999999; */
+  z-index: 1000000000;
+  pointer-events: none;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.75); color: white;
+  display: flex;
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh; width: 100vw;
+  backdrop-filter: blur(8px);
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 0.25s;
+  opacity: 0;
+}
+
+#locdialog.display {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#locdialog-content {
+  background-color: white; color: grey;
+  border-radius: 15px;
+  padding: 30px;
+  transition: transform 0.4s;
+  transform: translate(0, -50vh);
+  width: 70%;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+#locdialog.display > #locdialog-content {
+  transform: translate(0, 0);
+}
+
+#locdialog-content h2 {
+  color: var(--theme-green);
+  font-weight: bold;
+}
+
+#locdialog-content h1 {
+  color: var(--theme-green);
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+#locdialog-content .card {
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
