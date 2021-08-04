@@ -1,6 +1,8 @@
 let currentChatItemCatWithId;
 let currentChat;
 
+let notyf = new Notyf();
+
 function refreshChat() {
   openChat(currentChat, currentChatItemCatWithId);
 }
@@ -96,9 +98,7 @@ async function initChatPage() {
 
     navigator.serviceWorker.addEventListener("message", event => {
       refreshChat();
-      document.querySelector("#locdialog").classList.add("display");
-      document.querySelector("#locdialog-content h2").innerText = "Chat Update!";
-      document.querySelector("#locdialog-content p").innerText = "You have a chat update!";
+      notyf.success("You have a chat update!");
     });
 
     let presigned = sessionStorage.getItem("chat-url");
