@@ -33,6 +33,15 @@ async function sendMsg() {
     return;
   }
 
+  console.log(message);
+  console.log(message.indexOf(" at "));
+
+  if (message.indexOf(" at ") !== -1) {
+    document.querySelector("#locdialog").classList.add("display");
+    document.querySelector("#locdialog-content h2").innerText = "Location Suggestions";
+    document.querySelector("#locdialog-content p").innerText = "Your selected location may be a little crowded at this time. Please consider potential alternatives below (not mandatory):\n\nHeartland Mall, Kovan\nBlock Kovan Residences";
+  }
+
   let sendForm = new FormData();
   sendForm.set("jwt", localStorage.getItem("session"));
   sendForm.set("chatstore", currentChat);
@@ -87,15 +96,23 @@ async function initChatPage() {
 
     navigator.serviceWorker.addEventListener("message", event => {
       refreshChat();
+      document.querySelector("#locdialog").classList.add("display");
+      document.querySelector("#locdialog-content h2").innerText = "Chat Update!";
+      document.querySelector("#locdialog-content p").innerText = "You have a chat update!";
     });
 
     let presigned = sessionStorage.getItem("chat-url");
     if (presigned !== null) {
-      await fetch(presigned).then(res => res.json()).then((chatData) => {
-        chatData["chatStore"] = new URL(presigned).pathname.replace("/chats/", "");
-        console.log(chatData["chatStore"]);
-        renderChat(chatData);
-      });
+      try {
+        await fetch(presigned).then(res => res.json()).then((chatData) => {
+          chatData["chatStore"] = new URL(presigned).pathname.replace("/chats/", "");
+          console.log(chatData["chatStore"]);
+          renderChat(chatData);
+        });
+      }
+      catch (e) {
+
+      }
     }
 
     let listData = new FormData();
@@ -177,6 +194,8 @@ function geoFindMe() {
     console.log(longitude);
 
     document.querySelector("#locdialog").classList.add("display");
+    document.querySelector("#locdialog-content h2").innerText = "Waiting for other user...";
+    document.querySelector("#locdialog-content p").innerText = "The other user should be here any minute... They will be reminded to turn on location-tracking too.";
   }
 
   function error() {
